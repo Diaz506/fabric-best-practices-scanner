@@ -1,0 +1,124 @@
+# Tenant Settings & Administration — best-practice rules.
+#
+# NOTE: `setting:` values are Fabric/Power BI tenant `settingName`s. Exact names can vary
+# by tenant/release; if a setting isn't found the check returns `insufficient-data`
+# (safe) rather than guessing. Adjust names to match `GET /admin/tenantsettings` output.
+rules:
+  - id: tenant.publish-to-web-restricted
+    dimension: tenant-settings
+    title: Restrict Publish-to-Web (anonymous public embed)
+    waf_pillar: Security
+    impact: high
+    severity: critical
+    effort: low
+    applicability:
+      base_confidence: 80
+      boosts:
+        - when: { archetype: regulated-enterprise }
+          confidence: 100
+        - when: { has_sensitive_data: true }
+          confidence: 95
+    evaluate:
+      check: tenant_setting_is_disabled
+      params: { setting: PublishToWeb }
+    recommendation: >-
+      Disable Publish-to-Web tenant-wide, or limit it to a small vetted security group.
+      Publish-to-Web creates anonymous public links to reports.
+    rationale: >-
+      Publish-to-Web exposes report data to the anonymous internet. It is a common
+      data-leakage vector and should be off (or tightly scoped) by default.
+    references:
+      - https://learn.microsoft.com/power-bi/admin/service-admin-portal-export-sharing
+
+  - id: tenant.workspace-creation-restricted
+    dimension: tenant-settings
+    title: Restrict who can create workspaces
+    waf_pillar: Operational Excellence
+    impact: high
+    severity: high
+    effort: low
+    applicability:
+      base_confidence: 75
+      boosts:
+        - when: { archetype: [regulated-enterprise, large-enterprise] }
+          confidence: 95
+    evaluate:
+      check: tenant_setting_is_restricted
+      params: { setting: CreateWorkspaces }
+    recommendation: >-
+      Limit workspace creation to an approved security group and pair it with naming
+      standards and a request/approval process.
+    rationale: >-
+      Unrestricted workspace creation drives sprawl, inconsistent naming, and ungoverned
+      data. Controlling creation is a foundational governance step.
+    references:
+      - https://learn.microsoft.com/fabric/governance/governance-compliance-overview
+
+  - id: tenant.external-sharing-restricted
+    dimension: tenant-settings
+    title: Restrict external sharing / guest access
+    waf_pillar: Security
+    impact: high
+    severity: high
+    effort: medium
+    applicability:
+      base_confidence: 80
+      boosts:
+        - when: { regulated: true }
+          confidence: 100
+    evaluate:
+      check: tenant_setting_is_restricted
+      params: { setting: ShareContentWithExternalUsers }
+    recommendation: >-
+      Restrict external sharing to specific security groups and govern guest access with
+      Conditional Access and periodic reviews.
+    rationale: >-
+      External sharing and guest access are common exfiltration vectors. Scope them
+      intentionally and within compliance boundaries.
+    references:
+      - https://learn.microsoft.com/power-bi/enterprise/service-admin-portal-export-sharing
+
+  - id: tenant.export-data-controlled
+    dimension: tenant-settings
+    title: Control data export (Excel/CSV/underlying data)
+    waf_pillar: Security
+    impact: medium
+    severity: medium
+    effort: medium
+    applicability:
+      base_confidence: 70
+      boosts:
+        - when: { has_sensitive_data: true }
+          confidence: 90
+    evaluate:
+      check: tenant_setting_is_restricted
+      params: { setting: ExportData }
+    recommendation: >-
+      Limit data export to vetted groups, especially where sensitivity labels or
+      regulated data are in scope.
+    rationale: >-
+      Uncontrolled export undermines label protection and DLP by moving data outside
+      governed surfaces.
+    references:
+      - https://learn.microsoft.com/power-bi/admin/service-admin-portal-export-sharing
+
+  - id: tenant.service-principal-admin-api-scoped
+    dimension: tenant-settings
+    title: Scope service-principal access to read-only admin APIs
+    waf_pillar: Security
+    impact: medium
+    severity: medium
+    effort: low
+    applicability:
+      base_confidence: 65
+    evaluate:
+      check: tenant_setting_is_restricted
+      params: { setting: AllowServicePrincipalsUseReadOnlyAdminAPIs }
+    recommendation: >-
+      Enable service-principal access to read-only admin APIs only for a dedicated
+      security group used by governance tooling (like this scanner) — not tenant-wide.
+    rationale: >-
+      Automation needs read-only admin API access, but granting it broadly widens the
+      attack surface. Scope it to a purpose-built group.
+    references:
+      - https://learn.microsoft.com/power-bi/enterprise/read-only-apis-service-principal-authentication

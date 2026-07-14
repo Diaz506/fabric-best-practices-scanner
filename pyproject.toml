@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fabric-best-practices-scanner"
+version = "0.1.0"
+description = "Scan a Microsoft Fabric tenant against a contextual best-practices catalog and produce prioritized, evidence-backed governance findings (no manual questionnaire)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Diego Diaz" }]
+keywords = ["microsoft-fabric", "governance", "best-practices", "jumpstart", "power-bi"]
+dependencies = [
+  "pyyaml>=6.0",
+  "requests>=2.28",
+]
+
+[project.optional-dependencies]
+sp = ["msal>=1.24"]              # service-principal auth (headless)
+ai = ["openai>=1.0"]            # optional Azure OpenAI rationale enrichment
+fabric = ["pandas>=1.5"]       # local parquet fallback for the findings table
+dev = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+fabric_bps = ["catalog/*.yaml"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

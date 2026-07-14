@@ -1,0 +1,47 @@
+{
+  "tenant_settings": {
+    "PublishToWeb": {
+      "settingName": "PublishToWeb",
+      "enabled": true,
+      "canSpecifySecurityGroups": false,
+      "enabledSecurityGroups": []
+    },
+    "CreateWorkspaces": {
+      "settingName": "CreateWorkspaces",
+      "enabled": true,
+      "canSpecifySecurityGroups": true,
+      "enabledSecurityGroups": [{ "name": "Fabric Workspace Creators" }]
+    },
+    "ShareContentWithExternalUsers": {
+      "settingName": "ShareContentWithExternalUsers",
+      "enabled": false,
+      "canSpecifySecurityGroups": false,
+      "enabledSecurityGroups": []
+    },
+    "AllowServicePrincipalsUseReadOnlyAdminAPIs": {
+      "settingName": "AllowServicePrincipalsUseReadOnlyAdminAPIs",
+      "enabled": true,
+      "canSpecifySecurityGroups": true,
+      "enabledSecurityGroups": [{ "name": "Governance Automation SPs" }]
+    }
+  },
+  "capacities": [
+    {
+      "id": "cap-1",
+      "displayName": "Prod F64",
+      "sku": "F64",
+      "region": "West US 2",
+      "state": "Active",
+      "admins": ["admin@contoso.com"]
+    },
+    {
+      "id": "cap-2",
+      "displayName": "Sandbox Trial",
+      "sku": "Trial",
+      "region": "West US 2",
+      "state": "Active",
+      "admins": []
+    }
+  ],
+  "meta": {}
+}

@@ -5,10 +5,12 @@
 > Built to run self-service inside a customer's own Fabric workspace, aligned to the
 > **Fabric Jumpstart** methodology.
 
-**This is not a maturity score.** Every best practice is a *rule* with an *applicability
-condition* + an *evidence check*. The engine reads your tenant's actual state from the
-Fabric/Power BI **read-only admin APIs**, decides which practices apply to *you*, and
-reports where you adhere, where there are gaps, and what it couldn't verify automatically.
+**Evaluates your Fabric tenant against a contextual best-practices catalog and returns
+prioritized, evidence-backed governance findings tailored to your environment.** Every best
+practice is a *rule* with an *applicability condition* + an *evidence check*. The engine reads
+your tenant's actual state from the Fabric/Power BI **read-only admin APIs**, decides which
+practices apply to *you*, and reports where you adhere, where there are gaps, and what it
+couldn't verify automatically.
 
 > ⚠️ Not an official Microsoft tool. Advisory only — validate against your org's
 > requirements and Microsoft's official documentation.
@@ -23,6 +25,10 @@ underlying best-practice knowledge — so customers can run it themselves, on a 
 and trend their posture over time in Power BI.
 
 ## How it works
+
+> **Findings, not a score.** Rather than compressing governance into a single 1–5 maturity
+> number, the scanner reports discrete, actionable findings — each tied to a specific best
+> practice and the evidence behind it.
 
 ```
 collect (admin APIs)  ->  classify (archetype)  ->  evaluate (rules + evidence)

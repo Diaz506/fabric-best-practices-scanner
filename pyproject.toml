@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "fabric-best-practices-scanner"
 version = "0.1.0"
-description = "Scan a Microsoft Fabric tenant against a contextual best-practices catalog and produce prioritized, evidence-backed governance findings (no manual questionnaire)."
+description = "Evaluate a Microsoft Fabric tenant against a contextual best-practices catalog and produce prioritized, evidence-backed governance findings tailored to your environment (near-zero manual input)."
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }

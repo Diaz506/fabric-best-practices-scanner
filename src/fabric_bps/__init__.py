@@ -1,8 +1,9 @@
 """Fabric Best Practices Scanner.
 
-Scan a Microsoft Fabric tenant against a contextual best-practices catalog and produce
-prioritized, evidence-backed findings (no manual questionnaire). Not a maturity score:
-each best practice is a rule with an applicability condition + an evidence check.
+Evaluate a Microsoft Fabric tenant against a contextual best-practices catalog and produce
+prioritized, evidence-backed governance findings tailored to your environment (no manual
+questionnaire). Each best practice is a rule with an applicability condition + an evidence
+check; the engine reports discrete findings rather than a single maturity score.
 
 Quickstart (offline / testing):
     from fabric_bps import scan_from_signals

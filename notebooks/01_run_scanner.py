@@ -44,3 +44,30 @@ for f in result["findings"]:
     if f.status.value in ("gap", "verify-applicability"):
         print(f"[{f.status.value}] {f.title}")
         print(f"    -> {f.recommendation.strip()}")
+
+# %% [markdown]
+# ## Auto-deploy the report model (optional, one click)
+#
+# Creates a **Direct Lake semantic model** bound to *this* Lakehouse (no connection
+# placeholders) and adds the prebuilt governance measures. Re-running is safe: the model
+# is refreshed and only missing measures are added. After this, build visuals using the
+# recipe in `powerbi/README.md`, or use the shipped `.pbip` report.
+#
+# Requires `semantic-link-labs` (already present in the Fabric runtime).
+
+# %%
+from fabric_bps.report import deploy_semantic_model
+
+dataset = deploy_semantic_model(
+    dataset="FabricGovernance",
+    lakehouse=None,   # None = the Lakehouse attached to this notebook
+    workspace=None,   # None = this notebook's workspace
+    refresh=True,
+)
+print("Semantic model deployed:", dataset)
+
+# %%
+# Optional: also create a bound starter report (non-fatal if unavailable).
+from fabric_bps.report import deploy_report
+
+print(deploy_report(dataset="FabricGovernance", report="FabricGovernance"))

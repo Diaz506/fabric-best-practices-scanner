@@ -20,6 +20,7 @@ dependencies = [
 sp = ["msal>=1.24"]              # service-principal auth (headless)
 ai = ["openai>=1.0"]            # optional Azure OpenAI rationale enrichment
 fabric = ["pandas>=1.5"]       # local parquet fallback for the findings table
+deploy = ["semantic-link-labs>=0.8"]  # auto-deploy the semantic model into Fabric (provided by the Fabric runtime)
 dev = ["pytest>=7.0"]
 
 [tool.setuptools.packages.find]

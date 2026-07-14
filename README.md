@@ -50,9 +50,10 @@ collect (admin APIs)  ->  classify (archetype)  ->  evaluate (rules + evidence)
 4. **AI only for rationale** — Azure OpenAI (optional) expands narrative; it never decides status.
 
 ## Coverage
-All seven governance dimensions are included:
-**Tenant Settings & Administration**, **Capacity & Cost Governance**, **Workspace Governance**,
+The catalog checks seven areas of Fabric governance:
+**Tenant Settings & Administration**, **Capacity & Cost**, **Workspace Governance**,
 **Roles & Access**, **Domains & Data Mesh**, **Data Security**, and **Monitoring & Deployment**.
+These are how this catalog is organized, not an official Microsoft taxonomy.
 Add or tune rules by editing the YAML files in `src/fabric_bps/catalog/`.
 
 ---

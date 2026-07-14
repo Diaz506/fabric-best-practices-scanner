@@ -1,0 +1,14 @@
+/// Connection to your Fabric Lakehouse (or Warehouse) SQL analytics endpoint.
+/// Replace the two placeholders below with your own before first refresh:
+///   1. The SQL analytics endpoint (Lakehouse -> Settings -> SQL analytics endpoint -> Server / connection string).
+///   2. The Lakehouse (or Warehouse) name that holds the governance_findings table.
+/// When deployed into a Fabric workspace via Git integration, Fabric can rebind this
+/// automatically; the placeholders are only needed when authoring in Power BI Desktop.
+expression DatabaseQuery =
+		let
+		    Source = Sql.Database("REPLACE-WITH-SQL-ENDPOINT.datawarehouse.fabric.microsoft.com", "REPLACE-WITH-LAKEHOUSE-NAME")
+		in
+		    Source
+	lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0100
+	annotation PBI_IncludeFutureArtifacts = False
+	annotation PBI_NavigationStepName = Navigation

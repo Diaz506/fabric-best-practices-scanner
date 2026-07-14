@@ -144,7 +144,6 @@ powerbi/            # semantic model + report template
 ```
 
 ## Roadmap
-- Ship the `.pbip` report template + prebuilt semantic model.
 - Add the Scanner API collector for deeper per-item lineage, endorsement, and label coverage.
 - Add collectors for sensitivity labels, activity events, and Git integration.
 - Publish to PyPI; list in the Fabric Jumpstart catalog.

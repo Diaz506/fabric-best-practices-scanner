@@ -76,11 +76,11 @@ admin APIs. The only work is one-time setup:
 | Deploy notebook + semantic model + report into the workspace | **Automated** (Jumpstart install / Git integration) | Once |
 | Provide a read-only admin identity | **~0 min** if you already have an admin login; **~10 min** to configure a service principal | Once |
 | Attach the notebook to a Lakehouse | **~1 min** | Once |
-| Run the scan | **1 click** (or scheduled) | Each run |
-| Bind the semantic model to the Lakehouse | **~2 min** (auto-binds via Git integration) | Once |
+| Run the scan + auto-deploy the model | **1 click** (creates a Lakehouse-bound Direct Lake model with measures) | Each run |
 | Finish report visuals | **Optional ~10–15 min** (measures prebuilt; drag-and-drop recipe) | Once |
 
-**Minimum happy path (admin identity): ~5 minutes** — attach Lakehouse → run → bind the model.
+**Minimum happy path (admin identity): ~2–3 minutes** — attach a Lakehouse and run all cells;
+the scan runs and the semantic model is created and bound automatically.
 Full breakdown in [`docs/deployment.md`](docs/deployment.md).
 
 ## Install

@@ -11,15 +11,15 @@ one-time setup (identity + wiring), summarized below.
 | 1 | Deploy the solution (notebook + semantic model + report) into the workspace | **Automated** | — | Once | Yes — done by the Jumpstart install / Git integration |
 | 2 | Provide a read-only admin identity | **Manual, ~5–10 min** | Tenant admin | Once | Path A is free if you already have an admin login; Path B (SP) is the ~10-min part |
 | 3 | Attach the run notebook to a Lakehouse | **Manual, ~1 min** | Analyst | Once | Required (holds the `governance_findings` table) |
-| 4 | Run the scan | **1 click / automated** | Analyst | Each run | Yes — schedule it (step 7) |
-| 5 | Bind the semantic model to the Lakehouse SQL endpoint | **Manual, ~2 min** | Analyst | Once | Auto-rebinds when deployed via Git integration |
-| 6 | Finish the report visuals | **Optional, ~10–15 min** | Analyst | Once | Optional — measures are prebuilt; drag-and-drop recipe provided |
-| 7 | Schedule re-runs for trend | **Optional, ~2 min** | Analyst | Once | Optional |
-| 8 | Enable AI rationale | **Optional** | Analyst | Once | Optional — set Azure OpenAI env vars |
+| 4 | Run the scan + auto-deploy the semantic model | **1 click / automated** | Analyst | Each run | The notebook scans and creates a Lakehouse-bound Direct Lake model with the measures — **no connection placeholders to fill in** |
+| 5 | Finish the report visuals | **Optional, ~10–15 min** | Analyst | Once | Optional — measures are prebuilt; drag-and-drop recipe provided |
+| 6 | Schedule re-runs for trend | **Optional, ~2 min** | Analyst | Once | Optional |
+| 7 | Enable AI rationale | **Optional** | Analyst | Once | Optional — set Azure OpenAI env vars |
 
 **Bottom line:** if you already have a Fabric/Power BI admin login, the minimum path is
-**steps 3 → 4 → 5 (~5 minutes total)** and then the report is live. The service-principal path
-(step 2, Path B) adds a one-time ~10 minutes but gives you a headless, schedulable setup.
+**attach a Lakehouse → run all cells (~2–3 minutes)** — the scan runs and the semantic model
+is created and bound automatically. The service-principal path (step 2, Path B) adds a one-time
+~10 minutes but gives you a headless, schedulable setup.
 
 ## Step 2 — the only real "it depends" choice: which identity?
 
@@ -47,10 +47,15 @@ Choose Path B only if you want the scan to run unattended on a schedule.
 
 ## The 5-minute happy path (admin identity)
 1. Open `notebooks/01_run_scanner.py` as a notebook and **attach a Lakehouse**.
-2. **Run all cells.** It installs the package, scans, and writes `governance_findings`.
-3. Open `powerbi/FabricGovernance.pbip`, set the two connection placeholders in
-   `expressions.tmdl` (or deploy via Git integration to auto-bind), and refresh.
-4. Drop the prebuilt measures onto the two report pages using the recipe in
-   [`powerbi/README.md`](../powerbi/README.md).
+2. **Run all cells.** It installs the package, scans, writes `governance_findings`, and
+   **auto-deploys a Lakehouse-bound Direct Lake semantic model** (with all measures) — no
+   connection placeholders to fill in.
+3. Build the report visuals from the prebuilt measures using the recipe in
+   [`powerbi/README.md`](../powerbi/README.md), or open the shipped `.pbip`.
 
 That's the whole deployment. Re-run the notebook (or schedule it) to build the posture trend.
+
+## Authoring path (no Fabric compute)
+Prefer to work in Power BI Desktop instead of the notebook auto-deploy? Open
+`powerbi/FabricGovernance.pbip`, set the two connection placeholders in `expressions.tmdl`,
+and refresh. The auto-deploy path above avoids this entirely.

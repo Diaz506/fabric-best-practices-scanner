@@ -1,6 +1,6 @@
 """Core data models for the Fabric Best Practices Scanner.
 
-The scanner is a *contextual best-practices rules engine*, not a maturity score.
+The scanner is a *contextual best-practices rules engine* that reports evidence-backed findings.
 Each best practice is a Rule with an applicability condition + an evidence check.
 The engine emits Findings (one per applicable rule) with a Status.
 """

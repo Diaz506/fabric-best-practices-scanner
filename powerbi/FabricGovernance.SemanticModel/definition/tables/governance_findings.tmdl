@@ -176,7 +176,7 @@ table governance_findings
 		formatString: 0
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0306
 
-	/// Share of clearly evaluated rules that are adhered. NOT a maturity score.
+	/// Share of clearly evaluated rules that are adhered (adhered / (adhered + gaps)).
 	measure 'Adherence Rate (Latest Run)' = DIVIDE ( [Adhered (Latest Run)], [Evaluated (Latest Run)] )
 		formatString: 0.0%
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0307

@@ -30,7 +30,7 @@ Rule catalog (YAML) ───────────────┼──► Ev
 - **AI** (`ai.py`) — optional Azure OpenAI rationale enrichment; never decides status.
 
 ## Design decisions (locked)
-- **Best-practices rules engine, not a maturity score.**
+- **Contextual best-practices rules engine** — reports evidence-backed findings per rule.
 - **Near-zero manual input** — auto-collect from admin APIs; residual process items surface
   as `verify-applicability` / `insufficient-data` (optional review, not required input).
 - **Applicability policy** — archetype + confidence + impact-gated flagging; AI for rationale only.

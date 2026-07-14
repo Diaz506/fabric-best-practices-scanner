@@ -17,16 +17,16 @@ and what it couldn't verify automatically.
 
 ## Why this exists
 
-Traditional governance reviews rely on lengthy manual questionnaires. This package instead
-**collects the answers from your tenant automatically** and evaluates them against a curated
-best-practice catalog — so you can run it yourself, on a schedule, and trend your posture
-over time in Power BI.
+This package collects your tenant's configuration from the **read-only admin APIs**
+automatically and evaluates it against a curated best-practice catalog — so you can run it
+yourself, on a schedule, and trend your posture over time in Power BI, with **near-zero
+manual input**.
 
 ## How it works
 
-> **Findings, not a score.** Rather than compressing governance into a single 1–5 maturity
-> number, the scanner reports discrete, actionable findings — each tied to a specific best
-> practice and the evidence behind it.
+> **Actionable findings.** The scanner reports discrete findings — each tied to a specific
+> best practice, a clear status, and the evidence behind it — so you know exactly what to
+> act on.
 
 ```
 collect (admin APIs)  ->  classify (archetype)  ->  evaluate (rules + evidence)
@@ -44,7 +44,7 @@ collect (admin APIs)  ->  classify (archetype)  ->  evaluate (rules + evidence)
 
 ### Applicability policy (why not every best practice appears)
 1. **Archetype classification** — one explainable, auto-derived call ("what matters for this tenant").
-2. **Confidence-scored applicability** — each rule scores 0–100% applicability from signals.
+2. **Confidence-rated applicability** — each rule gets a 0–100% applicability confidence from signals.
 3. **Impact-gated flagging** — ambiguous *high-impact* rules are surfaced + flagged; ambiguous
    low/medium-impact rules are dropped to keep the report clean.
 4. **AI only for rationale** — Azure OpenAI (optional) expands narrative; it never decides status.
@@ -68,7 +68,7 @@ Add or tune rules by editing the YAML files in `src/fabric_bps/catalog/`.
 
 ## Deployment & manual effort
 
-There is **no manual data entry and no questionnaire** — every finding is observed from the
+There is **no manual data entry** — every finding is observed from the
 admin APIs. The only work is one-time setup:
 
 | Step | Effort | When |

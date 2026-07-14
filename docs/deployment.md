@@ -1,9 +1,9 @@
 # Deployment & manual effort
 
 This is a self-service Jumpstart solution: it deploys into **your** Fabric workspace and reads
-your tenant's configuration through the read-only admin APIs. There is **no manual data entry
-and no questionnaire** — every finding comes from what the APIs report. The only manual work is
-one-time setup (identity + wiring), summarized below.
+your tenant's configuration through the read-only admin APIs. There is **no manual data entry** —
+every finding comes from what the APIs report. The only manual work is one-time setup
+(identity + wiring), summarized below.
 
 ## Manual effort at a glance
 | # | Step | Effort | Who | When | Can it be skipped/automated? |
@@ -37,8 +37,8 @@ One-time tenant-admin configuration (~10 min):
 Choose Path B only if you want the scan to run unattended on a schedule.
 
 ## What is *not* manual
-- **No questionnaire / no self-assessment** — the scanner does not ask you anything about your
-  tenant; it observes it via the admin APIs.
+- **No data entry** — the scanner does not ask you anything about your tenant; it observes it
+  via the admin APIs.
 - **No per-rule tuning required** — applicability is derived automatically (archetype +
   confidence + impact gating). You *can* tune rules by editing the YAML catalog, but you don't
   have to.

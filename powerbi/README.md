@@ -56,8 +56,8 @@ Trend (put `run_id` or `timestamp` on the axis):
 `Adhered (This Run)`, `Gaps (This Run)`, `Adherence Rate (This Run)`.
 
 > `Adherence Rate` is the share of *clearly evaluated* rules (adhered ÷ (adhered + gaps)).
-> It deliberately excludes `verify-applicability` and `insufficient-data`, and is **not** a
-> maturity score.
+> It deliberately excludes `verify-applicability` and `insufficient-data` — it is a simple
+> adherence percentage over the rules with a clear verdict, not an overall rating.
 
 ## Build the report (drag-and-drop recipe)
 **Page 1 — Governance Overview**

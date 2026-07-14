@@ -65,7 +65,7 @@ MEASURES = [
         "name": "Adherence Rate (Latest Run)",
         "expression": "DIVIDE ( [Adhered (Latest Run)], [Evaluated (Latest Run)] )",
         "format_string": "0.0%",
-        "description": "Share of clearly evaluated rules that are adhered. Not a maturity score.",
+        "description": "Share of clearly evaluated rules that are adhered (adhered / (adhered + gaps)).",
     },
     {
         "name": "High-Impact Gaps (Latest Run)",

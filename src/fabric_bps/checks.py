@@ -157,3 +157,143 @@ def capacity_not_paused(sig: Signals, params: dict):
             "reason": "paused/suspended may be intentional cost control; confirm",
         }
     return Status.ADHERED, {"activeCapacities": len(caps)}
+
+
+# --- Workspace governance ---------------------------------------------------
+
+def _real_workspaces(sig: Signals) -> list:
+    """Non-personal workspaces (exclude PersonalGroup 'My workspace' entries)."""
+    return [
+        w
+        for w in (sig.workspaces or [])
+        if str(w.get("type") or "").lower() not in ("personalgroup", "personal")
+    ]
+
+
+def _admin_count(w: dict) -> int:
+    return sum(
+        1
+        for u in (w.get("users") or [])
+        if str(u.get("groupUserAccessRight") or u.get("workspaceUserAccessRight") or "").lower()
+        == "admin"
+    )
+
+
+@check("workspaces_on_dedicated_capacity")
+def workspaces_on_dedicated_capacity(sig: Signals, params: dict):
+    ws = _real_workspaces(sig)
+    if not ws:
+        return Status.INSUFFICIENT_DATA, {"reason": "no workspaces collected"}
+    shared = [w.get("name") for w in ws if not w.get("isOnDedicatedCapacity")]
+    if shared:
+        return Status.GAP, {"sharedCapacityWorkspaces": [s for s in shared if s][:25]}
+    return Status.ADHERED, {"workspaceCount": len(ws)}
+
+
+@check("workspaces_have_minimum_admins")
+def workspaces_have_minimum_admins(sig: Signals, params: dict):
+    minimum = int(params.get("minimum", 2))
+    ws = _real_workspaces(sig)
+    if not ws:
+        return Status.INSUFFICIENT_DATA, {"reason": "no workspaces collected"}
+    if all(not (w.get("users")) for w in ws):
+        return Status.INSUFFICIENT_DATA, {"reason": "workspace role membership not collected"}
+    low = [w.get("name") for w in ws if _admin_count(w) < minimum]
+    if low:
+        return Status.GAP, {"workspacesBelowMinAdmins": [s for s in low if s][:25], "minimum": minimum}
+    return Status.ADHERED, {"workspaceCount": len(ws), "minimum": minimum}
+
+
+@check("personal_workspaces_reviewed")
+def personal_workspaces_reviewed(sig: Signals, params: dict):
+    threshold = int(params.get("threshold", 25))
+    if not sig.workspaces:
+        return Status.INSUFFICIENT_DATA, {"reason": "no workspaces collected"}
+    personal = [
+        w for w in sig.workspaces if str(w.get("type") or "").lower() in ("personalgroup", "personal")
+    ]
+    if len(personal) > threshold:
+        return Status.VERIFY_APPLICABILITY, {
+            "personalWorkspaceCount": len(personal),
+            "reason": "high number of personal workspaces; confirm they hold no shared/governed content",
+        }
+    return Status.ADHERED, {"personalWorkspaceCount": len(personal)}
+
+
+# --- Roles & access ---------------------------------------------------------
+
+@check("workspace_roles_group_based")
+def workspace_roles_group_based(sig: Signals, params: dict):
+    threshold = float(params.get("threshold", 0.5))
+    ws = _real_workspaces(sig)
+    users = [u for w in ws for u in (w.get("users") or [])]
+    if not users:
+        return Status.INSUFFICIENT_DATA, {"reason": "workspace role membership not collected"}
+    direct = [u for u in users if str(u.get("principalType") or "").lower() == "user"]
+    ratio = len(direct) / len(users)
+    if ratio > threshold:
+        return Status.GAP, {
+            "directUserAssignments": len(direct),
+            "totalAssignments": len(users),
+            "reason": "most access is granted to individual users rather than security groups",
+        }
+    return Status.ADHERED, {"directUserRatio": round(ratio, 2)}
+
+
+@check("workspace_admin_sprawl")
+def workspace_admin_sprawl(sig: Signals, params: dict):
+    maximum = int(params.get("maximum", 5))
+    ws = _real_workspaces(sig)
+    if not ws or all(not (w.get("users")) for w in ws):
+        return Status.INSUFFICIENT_DATA, {"reason": "workspace role membership not collected"}
+    sprawling = [w.get("name") for w in ws if _admin_count(w) > maximum]
+    if sprawling:
+        return Status.GAP, {"workspacesOverAdminLimit": [s for s in sprawling if s][:25], "maximum": maximum}
+    return Status.ADHERED, {"maximum": maximum}
+
+
+# --- Domains & data mesh -----------------------------------------------------
+
+@check("domains_defined")
+def domains_defined(sig: Signals, params: dict):
+    if sig.domains is None:
+        return Status.INSUFFICIENT_DATA, {"reason": "domains not collected"}
+    if len(sig.domains) == 0:
+        return Status.GAP, {"domainCount": 0}
+    return Status.ADHERED, {"domainCount": len(sig.domains)}
+
+
+@check("workspaces_assigned_to_domains")
+def workspaces_assigned_to_domains(sig: Signals, params: dict):
+    threshold = float(params.get("threshold", 0.6))
+    ws = _real_workspaces(sig)
+    if not ws:
+        return Status.INSUFFICIENT_DATA, {"reason": "no workspaces collected"}
+    if all(w.get("domainId") is None for w in ws):
+        return Status.INSUFFICIENT_DATA, {"reason": "workspace domain assignment not collected"}
+    assigned = [w for w in ws if w.get("domainId")]
+    ratio = len(assigned) / len(ws)
+    if ratio < threshold:
+        return Status.GAP, {"assigned": len(assigned), "total": len(ws), "ratio": round(ratio, 2)}
+    return Status.ADHERED, {"ratio": round(ratio, 2)}
+
+
+# --- Monitoring & deployment -------------------------------------------------
+
+@check("deployment_pipelines_used")
+def deployment_pipelines_used(sig: Signals, params: dict):
+    pipelines = sig.meta.get("pipelines")
+    if pipelines is None:
+        return Status.INSUFFICIENT_DATA, {"reason": "deployment pipelines not collected"}
+    if len(pipelines) == 0:
+        return Status.GAP, {"pipelineCount": 0}
+    return Status.ADHERED, {"pipelineCount": len(pipelines)}
+
+
+@check("audit_log_accessible")
+def audit_log_accessible(sig: Signals, params: dict):
+    if sig.activity_available:
+        return Status.ADHERED, {"reason": "activity/audit events are accessible"}
+    return Status.VERIFY_APPLICABILITY, {
+        "reason": "audit-log access could not be confirmed in this run; verify audit retention and access",
+    }

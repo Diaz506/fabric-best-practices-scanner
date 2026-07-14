@@ -1,0 +1,64 @@
+# Workspace Governance — best-practice rules.
+rules:
+  - id: workspace.on-dedicated-capacity
+    dimension: workspace-governance
+    title: Governed workspaces run on dedicated (Fabric) capacity
+    waf_pillar: Operational Excellence
+    impact: medium
+    severity: medium
+    effort: medium
+    applicability:
+      base_confidence: 75
+    evaluate:
+      check: workspaces_on_dedicated_capacity
+      params: {}
+    recommendation: >-
+      Move shared/production content onto dedicated Fabric capacity so it inherits
+      governance, monitoring, and predictable performance.
+    rationale: >-
+      Workspaces on shared capacity lack the isolation, scaling, and governance controls
+      of dedicated capacity, undermining consistent management.
+    references:
+      - https://learn.microsoft.com/fabric/enterprise/licenses
+
+  - id: workspace.minimum-admins
+    dimension: workspace-governance
+    title: Every workspace has at least two admins
+    waf_pillar: Reliability
+    impact: medium
+    severity: medium
+    effort: low
+    applicability:
+      base_confidence: 75
+    evaluate:
+      check: workspaces_have_minimum_admins
+      params: { minimum: 2 }
+    recommendation: >-
+      Assign at least two administrators (ideally a security group) per workspace to avoid
+      single-owner bus-factor risk.
+    rationale: >-
+      A workspace with a single admin risks orphaning if that person leaves, blocking
+      changes and access recovery.
+    references:
+      - https://learn.microsoft.com/fabric/governance/workspace-governance
+
+  - id: workspace.personal-workspaces-reviewed
+    dimension: workspace-governance
+    title: Personal workspaces do not hold shared/governed content
+    waf_pillar: Security
+    impact: low
+    severity: low
+    effort: low
+    applicability:
+      base_confidence: 70
+    evaluate:
+      check: personal_workspaces_reviewed
+      params: { threshold: 25 }
+    recommendation: >-
+      Encourage moving shared content out of personal workspaces into governed team
+      workspaces; personal workspaces should hold only individual drafts.
+    rationale: >-
+      Content in personal workspaces is outside team governance and disappears when the
+      user is deprovisioned.
+    references:
+      - https://learn.microsoft.com/power-bi/collaborate-share/service-new-workspaces

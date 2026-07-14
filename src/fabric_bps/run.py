@@ -34,6 +34,15 @@ def scan_from_signals(
     return {"run_id": run_id, "context": context, "findings": findings}
 
 
+def _safe(fn, default, errors, label):
+    """Run a collector; on failure record the error and continue with a default."""
+    try:
+        return fn()
+    except Exception as exc:  # noqa: BLE001 - collectors must not abort the whole scan
+        errors[label] = f"{type(exc).__name__}: {exc}"
+        return default
+
+
 def scan(
     token_provider,
     dimensions=None,
@@ -44,13 +53,27 @@ def scan(
     table: str = "governance_findings",
     spark=None,
 ) -> dict:
-    from .collectors import AdminClient, collect_capacities, collect_tenant_settings
+    from .collectors import (
+        AdminClient,
+        collect_capacities,
+        collect_domains,
+        collect_pipelines,
+        collect_tenant_settings,
+        collect_workspaces,
+    )
 
     client = AdminClient(token_provider)
+    errors: dict = {}
+
     signals_dict = {
-        "tenant_settings": collect_tenant_settings(client),
-        "capacities": collect_capacities(client),
+        "tenant_settings": _safe(lambda: collect_tenant_settings(client), {}, errors, "tenant_settings"),
+        "capacities": _safe(lambda: collect_capacities(client), [], errors, "capacities"),
+        "workspaces": _safe(lambda: collect_workspaces(client), [], errors, "workspaces"),
+        "domains": _safe(lambda: collect_domains(client), [], errors, "domains"),
+        "meta": {"pipelines": _safe(lambda: collect_pipelines(client), [], errors, "pipelines")},
     }
+    if errors:
+        signals_dict["meta"]["collection_errors"] = errors
 
     result = scan_from_signals(
         signals_dict,
@@ -60,6 +83,8 @@ def scan(
         ai_rationale=ai_rationale,
     )
     result["signals"] = signals_dict
+    if errors:
+        result["collection_errors"] = errors
 
     if write == "json":
         from .writers import write_json

@@ -1,0 +1,80 @@
+# Data Security — best-practice rules.
+# These read tenant-level security controls. Setting names can vary by release; when a
+# setting is not present in the collected payload the rule reports insufficient-data
+# rather than guessing.
+rules:
+  - id: security.information-protection-enabled
+    dimension: data-security
+    title: Sensitivity labels (information protection) are enabled
+    waf_pillar: Security
+    impact: high
+    severity: high
+    effort: medium
+    applicability:
+      base_confidence: 70
+      boosts:
+        - when: { has_sensitive_data: true }
+          confidence: 90
+        - when: { regulated: true }
+          confidence: 95
+    evaluate:
+      check: tenant_setting_is_enabled
+      params: { setting: InformationProtection }
+    recommendation: >-
+      Enable Microsoft Purview Information Protection sensitivity labels in Fabric so
+      content can be classified and protected consistently.
+    rationale: >-
+      Without sensitivity labels there is no consistent classification to drive protection,
+      DLP, and downstream controls on sensitive data.
+    references:
+      - https://learn.microsoft.com/fabric/governance/information-protection
+
+  - id: security.block-resourcekey-authentication
+    dimension: data-security
+    title: Resource-key (non-Entra) authentication is blocked
+    waf_pillar: Security
+    impact: medium
+    severity: medium
+    effort: low
+    applicability:
+      base_confidence: 65
+      boosts:
+        - when: { regulated: true }
+          confidence: 90
+    evaluate:
+      check: tenant_setting_is_enabled
+      params: { setting: BlockResourceKeyAuthentication }
+    recommendation: >-
+      Block resource-key authentication so all access flows through Entra ID identity and
+      conditional access rather than shared keys.
+    rationale: >-
+      Shared resource keys bypass identity-based controls and are hard to rotate and audit,
+      increasing the risk of undetected access.
+    references:
+      - https://learn.microsoft.com/fabric/security/security-fundamentals
+
+  - id: security.private-link
+    dimension: data-security
+    title: Private connectivity (Private Link) is in place for sensitive estates
+    waf_pillar: Security
+    impact: medium
+    severity: medium
+    effort: high
+    applicability:
+      base_confidence: 40
+      boosts:
+        - when: { regulated: true }
+          confidence: 85
+      not_applicable_when:
+        - { archetype: startup-analytics }
+    evaluate:
+      check: tenant_setting_is_enabled
+      params: { setting: AzurePrivateLink }
+    recommendation: >-
+      Configure Azure Private Link so Fabric traffic stays on your private network rather
+      than traversing the public internet.
+    rationale: >-
+      For regulated or sensitive workloads, private connectivity reduces exposure and helps
+      meet network-isolation requirements.
+    references:
+      - https://learn.microsoft.com/fabric/security/security-private-links-overview

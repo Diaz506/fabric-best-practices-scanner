@@ -1,0 +1,43 @@
+# Roles & Access — best-practice rules.
+rules:
+  - id: roles.group-based-access
+    dimension: roles-access
+    title: Workspace access is granted through groups, not individuals
+    waf_pillar: Security
+    impact: medium
+    severity: medium
+    effort: medium
+    applicability:
+      base_confidence: 75
+    evaluate:
+      check: workspace_roles_group_based
+      params: { threshold: 0.5 }
+    recommendation: >-
+      Grant workspace roles to Entra security groups rather than individual users so
+      access follows joiner/mover/leaver processes automatically.
+    rationale: >-
+      Per-user role grants drift out of sync with real membership and are hard to audit,
+      increasing the risk of lingering access.
+    references:
+      - https://learn.microsoft.com/fabric/governance/workspace-governance
+
+  - id: roles.admin-sprawl
+    dimension: roles-access
+    title: Workspace admin counts are kept lean
+    waf_pillar: Security
+    impact: medium
+    severity: medium
+    effort: low
+    applicability:
+      base_confidence: 70
+    evaluate:
+      check: workspace_admin_sprawl
+      params: { maximum: 5 }
+    recommendation: >-
+      Review workspaces with many admins and reduce to the least-privilege set; broad
+      admin membership widens the blast radius of a compromised account.
+    rationale: >-
+      Excess admins grant more people full control than needed, increasing both accidental
+      and malicious change risk.
+    references:
+      - https://learn.microsoft.com/fabric/governance/workspace-governance

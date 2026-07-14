@@ -1,0 +1,48 @@
+# Monitoring & Deployment — best-practice rules.
+rules:
+  - id: monitoring.deployment-pipelines
+    dimension: monitoring-deployment
+    title: Deployment pipelines (or Git) manage promotion across stages
+    waf_pillar: Operational Excellence
+    impact: medium
+    severity: medium
+    effort: medium
+    applicability:
+      base_confidence: 65
+      boosts:
+        - when: { archetype: [large-enterprise, data-mesh-adopter, regulated-enterprise] }
+          confidence: 85
+      not_applicable_when:
+        - { archetype: startup-analytics }
+    evaluate:
+      check: deployment_pipelines_used
+      params: {}
+    recommendation: >-
+      Adopt Fabric deployment pipelines or Git integration to promote content through
+      dev/test/prod with review, instead of editing production directly.
+    rationale: >-
+      Without a managed promotion path, changes go straight to production untested and
+      unreviewed, raising the risk of outages and untracked change.
+    references:
+      - https://learn.microsoft.com/fabric/cicd/deployment-pipelines/intro-to-deployment-pipelines
+
+  - id: monitoring.audit-log-accessible
+    dimension: monitoring-deployment
+    title: Audit / activity logs are accessible for governance
+    waf_pillar: Operational Excellence
+    impact: medium
+    severity: medium
+    effort: low
+    applicability:
+      base_confidence: 75
+    evaluate:
+      check: audit_log_accessible
+      params: {}
+    recommendation: >-
+      Ensure activity/audit events are retained and accessible (via the admin activity
+      API or Microsoft Purview) so usage and changes can be reviewed.
+    rationale: >-
+      Audit access is the foundation of monitoring — without it you cannot investigate
+      incidents, track adoption, or demonstrate compliance.
+    references:
+      - https://learn.microsoft.com/fabric/admin/track-user-activities

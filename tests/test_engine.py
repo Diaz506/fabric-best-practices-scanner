@@ -12,12 +12,32 @@ def load_sample():
         return json.load(f)
 
 
+def load_full_sample():
+    with open(os.path.join(HERE, "sample_signals_full.json"), encoding="utf-8") as f:
+        return json.load(f)
+
+
 def test_catalog_loads_both_dimensions():
     rules = load_catalog()
     dims = {r.dimension for r in rules}
     assert "tenant-settings" in dims
     assert "capacity-cost" in dims
     assert len(rules) >= 9
+
+
+def test_catalog_loads_all_seven_dimensions():
+    rules = load_catalog()
+    dims = {r.dimension for r in rules}
+    expected = {
+        "tenant-settings",
+        "capacity-cost",
+        "workspace-governance",
+        "roles-access",
+        "domains-data-mesh",
+        "data-security",
+        "monitoring-deployment",
+    }
+    assert expected.issubset(dims)
 
 
 def test_dimension_filter():
@@ -62,3 +82,40 @@ def test_findings_serialize_to_rows():
     row = res["findings"][0].to_row()
     for key in ("run_id", "rule_id", "dimension", "status", "impact", "evidence"):
         assert key in row
+
+
+def test_full_sample_archetype_is_data_mesh():
+    res = scan_from_signals(load_full_sample())
+    assert res["context"]["archetype"] == "data-mesh-adopter"
+
+
+def test_new_dimension_statuses():
+    res = scan_from_signals(load_full_sample())
+    by_id = {f.rule_id: f for f in res["findings"]}
+
+    # Workspace governance
+    assert by_id["workspace.on-dedicated-capacity"].status == Status.GAP
+    assert by_id["workspace.minimum-admins"].status == Status.GAP
+    assert by_id["workspace.personal-workspaces-reviewed"].status == Status.ADHERED
+
+    # Roles & access
+    assert by_id["roles.group-based-access"].status == Status.GAP
+    assert by_id["roles.admin-sprawl"].status == Status.ADHERED
+
+    # Domains & data mesh
+    assert by_id["domains.defined"].status == Status.ADHERED
+    assert by_id["domains.workspaces-assigned"].status == Status.GAP
+
+    # Data security
+    assert by_id["security.information-protection-enabled"].status == Status.ADHERED
+
+    # Monitoring & deployment
+    assert by_id["monitoring.deployment-pipelines"].status == Status.ADHERED
+    assert by_id["monitoring.audit-log-accessible"].status == Status.ADHERED
+
+
+def test_private_link_dropped_for_non_regulated():
+    # Low base confidence + medium impact -> silently dropped for a non-regulated tenant.
+    res = scan_from_signals(load_full_sample())
+    ids = {f.rule_id for f in res["findings"]}
+    assert "security.private-link" not in ids

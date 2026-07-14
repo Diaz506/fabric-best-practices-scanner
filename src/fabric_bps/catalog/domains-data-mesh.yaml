@@ -1,0 +1,55 @@
+# Domains & Data Mesh — best-practice rules.
+# Domains matter most for organizations adopting a data-mesh / federated model. For small
+# or single-team estates the base confidence stays low, so these rules are gated out.
+rules:
+  - id: domains.defined
+    dimension: domains-data-mesh
+    title: Business domains are defined for a federated data estate
+    waf_pillar: Operational Excellence
+    impact: medium
+    severity: medium
+    effort: medium
+    applicability:
+      base_confidence: 35
+      boosts:
+        - when: { archetype: [data-mesh-adopter, large-enterprise] }
+          confidence: 85
+      not_applicable_when:
+        - { archetype: startup-analytics }
+    evaluate:
+      check: domains_defined
+      params: {}
+    recommendation: >-
+      Define Fabric domains that mirror your business areas so ownership, discovery, and
+      delegated administration align to how the organization is structured.
+    rationale: >-
+      Domains provide federated governance and delegated administration; without them a
+      large estate relies on central teams and content is hard to discover by ownership.
+    references:
+      - https://learn.microsoft.com/fabric/governance/domains
+
+  - id: domains.workspaces-assigned
+    dimension: domains-data-mesh
+    title: Workspaces are assigned to their owning domain
+    waf_pillar: Operational Excellence
+    impact: medium
+    severity: medium
+    effort: medium
+    applicability:
+      base_confidence: 35
+      boosts:
+        - when: { has_domains: true }
+          confidence: 85
+      not_applicable_when:
+        - { archetype: startup-analytics }
+    evaluate:
+      check: workspaces_assigned_to_domains
+      params: { threshold: 0.6 }
+    recommendation: >-
+      Assign workspaces to their owning domain so delegated domain admins can govern their
+      area and content inherits domain context.
+    rationale: >-
+      Unassigned workspaces sit outside domain governance, defeating the delegated
+      ownership and discoverability that domains provide.
+    references:
+      - https://learn.microsoft.com/fabric/governance/domains

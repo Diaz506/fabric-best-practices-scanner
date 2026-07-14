@@ -1,0 +1,78 @@
+{
+  "tenant_settings": {
+    "PublishToWeb": {
+      "settingName": "PublishToWeb",
+      "enabled": true,
+      "canSpecifySecurityGroups": false,
+      "enabledSecurityGroups": []
+    },
+    "InformationProtection": {
+      "settingName": "InformationProtection",
+      "enabled": true,
+      "canSpecifySecurityGroups": false,
+      "enabledSecurityGroups": []
+    },
+    "AllowServicePrincipalsUseReadOnlyAdminAPIs": {
+      "settingName": "AllowServicePrincipalsUseReadOnlyAdminAPIs",
+      "enabled": true,
+      "canSpecifySecurityGroups": true,
+      "enabledSecurityGroups": [{ "name": "Governance Automation SPs" }]
+    }
+  },
+  "capacities": [
+    {
+      "id": "cap-1",
+      "displayName": "Prod F64",
+      "sku": "F64",
+      "region": "West US 2",
+      "state": "Active",
+      "admins": ["admin@contoso.com"]
+    }
+  ],
+  "workspaces": [
+    {
+      "id": "ws-1",
+      "name": "Finance-Prod",
+      "type": "Workspace",
+      "state": "Active",
+      "isOnDedicatedCapacity": true,
+      "capacityId": "cap-1",
+      "domainId": "dom-1",
+      "users": [
+        { "principalType": "SecurityGroup", "groupUserAccessRight": "Admin", "displayName": "grp-fin-admins" },
+        { "principalType": "SecurityGroup", "groupUserAccessRight": "Admin", "displayName": "grp-fin-admins-2" },
+        { "principalType": "User", "groupUserAccessRight": "Member", "identifier": "u1@contoso.com" },
+        { "principalType": "User", "groupUserAccessRight": "Member", "identifier": "u3@contoso.com" }
+      ]
+    },
+    {
+      "id": "ws-2",
+      "name": "Marketing-Dev",
+      "type": "Workspace",
+      "state": "Active",
+      "isOnDedicatedCapacity": false,
+      "capacityId": null,
+      "domainId": null,
+      "users": [
+        { "principalType": "User", "groupUserAccessRight": "Admin", "identifier": "u2@contoso.com" }
+      ]
+    },
+    {
+      "id": "ws-personal-1",
+      "name": "PersonalWorkspace",
+      "type": "PersonalGroup",
+      "state": "Active",
+      "isOnDedicatedCapacity": false,
+      "users": []
+    }
+  ],
+  "domains": [
+    { "id": "dom-1", "displayName": "Finance", "parentDomainId": null }
+  ],
+  "activity_available": true,
+  "meta": {
+    "pipelines": [
+      { "id": "pipe-1", "displayName": "Finance CI/CD", "stages": [] }
+    ]
+  }
+}

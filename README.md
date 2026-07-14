@@ -49,9 +49,11 @@ collect (admin APIs)  ->  classify (archetype)  ->  evaluate (rules + evidence)
    low/medium-impact rules are dropped to keep the report clean.
 4. **AI only for rationale** — Azure OpenAI (optional) expands narrative; it never decides status.
 
-## v1 scope
-Dimensions: **Tenant Settings & Administration** and **Capacity & Cost Governance**.
-Add more by dropping new YAML files into `src/fabric_bps/catalog/`.
+## Coverage
+All seven governance dimensions are included:
+**Tenant Settings & Administration**, **Capacity & Cost Governance**, **Workspace Governance**,
+**Roles & Access**, **Domains & Data Mesh**, **Data Security**, and **Monitoring & Deployment**.
+Add or tune rules by editing the YAML files in `src/fabric_bps/catalog/`.
 
 ---
 
@@ -142,9 +144,7 @@ powerbi/            # semantic model + report template
 ```
 
 ## Roadmap
-- Expand the catalog to the remaining 5 governance dimensions (Workspaces, Domains,
-  Roles & Access, Data Security, Monitoring & Deployment).
-- Add collectors: Scanner API, workspaces, domains, sensitivity labels, activity events,
-  deployment pipelines, git integration.
 - Ship the `.pbip` report template + prebuilt semantic model.
+- Add the Scanner API collector for deeper per-item lineage, endorsement, and label coverage.
+- Add collectors for sensitivity labels, activity events, and Git integration.
 - Publish to PyPI; list in the Fabric Jumpstart catalog.

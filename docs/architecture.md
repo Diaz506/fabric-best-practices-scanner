@@ -20,7 +20,7 @@ Rule catalog (YAML) ───────────────┼──► Ev
   making the engine testable offline.
 - **Rule catalog** (`catalog/*.yaml`) — best practices as **declarative data**: dimension,
   WAF pillar, impact/severity, applicability conditions, an `evaluate` check reference,
-  recommendation, rationale, references. Language-neutral; the web app can reuse it later.
+  recommendation, rationale, references. Language-neutral and reusable by other clients.
 - **Checks** (`checks.py`) — reusable Python primitives that implement the actual evidence
   logic; referenced by name from the catalog. Returns `(Status, evidence)`.
 - **Archetype classifier** (`archetype.py`) — one explainable, auto-derived context decision.
@@ -36,11 +36,9 @@ Rule catalog (YAML) ───────────────┼──► Ev
 - **Applicability policy** — archetype + confidence + impact-gated flagging; AI for rationale only.
 - **Delivery** — Python module/notebook inside the customer's Fabric workspace (Jumpstart-native).
 - **Primary output** — Power BI governance report over a Lakehouse findings table (trend per run).
-- **Catalog is data, not code** — content translated from the web app's `recommendations.ts`.
+- **Catalog is data, not code** — best practices are maintained as declarative YAML.
 
 ## Known tradeoffs
 - **Setting-name drift** — tenant `settingName`s vary by release/tenant; unknown settings
   return `insufficient-data` (safe) rather than a wrong answer.
-- **Catalog duplication** — content currently lives here and in the web app; long-term the
-  web app should consume this shared catalog for a single source of truth.
 - **Process/people practices** — not API-observable; represented honestly as verify/insufficient.

@@ -19,10 +19,10 @@ couldn't verify automatically.
 
 ## Why this exists
 
-The web-based Fabric Governance Workshop asks a person ~59 questions. This package instead
-**collects the answers from your tenant automatically** and evaluates them against the same
-underlying best-practice knowledge — so customers can run it themselves, on a schedule,
-and trend their posture over time in Power BI.
+Traditional governance reviews rely on lengthy manual questionnaires. This package instead
+**collects the answers from your tenant automatically** and evaluates them against a curated
+best-practice catalog — so you can run it yourself, on a schedule, and trend your posture
+over time in Power BI.
 
 ## How it works
 

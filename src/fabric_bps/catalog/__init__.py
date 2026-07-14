@@ -1,8 +1,8 @@
 """Best-practice rule catalog loader.
 
 Rules live as declarative YAML data files in this folder (one per dimension), so the
-catalog is language-neutral and maintainable. Content is translated from the existing
-web app's recommendations. Add a new dimension by dropping in a new *.yaml file.
+catalog is language-neutral and maintainable. Add a new dimension by dropping in a new
+*.yaml file.
 """
 from __future__ import annotations
 

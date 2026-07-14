@@ -2,15 +2,13 @@
 
 > Scan a Microsoft Fabric tenant against a **contextual best-practices catalog** and produce
 > prioritized, evidence-backed governance **findings** — with **near-zero manual input**.
-> Built to run self-service inside a customer's own Fabric workspace, aligned to the
+> Built to run self-service inside your own Fabric workspace, aligned to the
 > **Fabric Jumpstart** methodology.
 
-**Evaluates your Fabric tenant against a contextual best-practices catalog and returns
-prioritized, evidence-backed governance findings tailored to your environment.** Every best
-practice is a *rule* with an *applicability condition* + an *evidence check*. The engine reads
-your tenant's actual state from the Fabric/Power BI **read-only admin APIs**, decides which
-practices apply to *you*, and reports where you adhere, where there are gaps, and what it
-couldn't verify automatically.
+Every best practice is a *rule* with an *applicability condition* + an *evidence check*. The
+engine reads your tenant's actual state from the Fabric/Power BI **read-only admin APIs**,
+decides which practices apply to *you*, and reports where you adhere, where there are gaps,
+and what it couldn't verify automatically.
 
 > ⚠️ Not an official Microsoft tool. Advisory only — validate against your org's
 > requirements and Microsoft's official documentation.
@@ -41,10 +39,10 @@ collect (admin APIs)  ->  classify (archetype)  ->  evaluate (rules + evidence)
 | `adhered` | Evidence shows the practice is followed |
 | `gap` | Evidence shows the practice is not followed |
 | `verify-applicability` | Auto-collection was ambiguous / partial — confirm (5-second review) |
-| `not-applicable` | The practice does not apply to this customer's context |
+| `not-applicable` | The practice does not apply to your environment |
 | `insufficient-data` | No API signal available to judge — confirm manually |
 
-### Applicability policy (why not every recommendation shows)
+### Applicability policy (why not every best practice appears)
 1. **Archetype classification** — one explainable, auto-derived call ("what matters for this tenant").
 2. **Confidence-scored applicability** — each rule scores 0–100% applicability from signals.
 3. **Impact-gated flagging** — ambiguous *high-impact* rules are surfaced + flagged; ambiguous
@@ -68,8 +66,14 @@ Add more by dropping new YAML files into `src/fabric_bps/catalog/`.
 ## Install
 
 ```bash
-pip install -e .            # core
-pip install -e ".[sp,fabric,ai]"   # + service-principal auth, parquet fallback, AI rationale
+# From PyPI (once published)
+pip install fabric-best-practices-scanner
+pip install "fabric-best-practices-scanner[sp,fabric,ai]"   # + service-principal auth, parquet fallback, AI rationale
+```
+
+### From source
+```bash
+pip install -e ".[sp,fabric,ai]"
 ```
 
 ## Usage
@@ -112,7 +116,7 @@ for f in result["findings"]:
 ## Output → Power BI
 Findings are written to a Lakehouse Delta table (`governance_findings`), appended per run
 with `run_id` + `timestamp`. A semantic model + report template over that table gives a
-governance scorecard with trend-over-time. See [`powerbi/README.md`](powerbi/README.md).
+governance report with trend over time. See [`powerbi/README.md`](powerbi/README.md).
 
 ## Develop / test
 ```bash
@@ -138,8 +142,8 @@ powerbi/            # semantic model + report template
 ```
 
 ## Roadmap
-- Expand catalog to all 7 governance dimensions (Workspaces, Domains, Roles & Access,
-  Data Security, Monitoring & Deployment).
+- Expand the catalog to the remaining 5 governance dimensions (Workspaces, Domains,
+  Roles & Access, Data Security, Monitoring & Deployment).
 - Add collectors: Scanner API, workspaces, domains, sensitivity labels, activity events,
   deployment pipelines, git integration.
 - Ship the `.pbip` report template + prebuilt semantic model.

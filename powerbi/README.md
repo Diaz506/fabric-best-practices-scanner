@@ -1,4 +1,4 @@
-# Power BI — Governance Scorecard report
+# Power BI — Governance report
 
 The scanner writes findings to a Lakehouse Delta table (`governance_findings`), one row per
 `(run_id, rule_id)`, appended each run. Build a semantic model + report over that table.
@@ -45,4 +45,4 @@ DIVIDE(
 
 ## TODO
 Ship a prebuilt `.pbip` project (report + semantic model bound to the Lakehouse) so
-customers get the report deployed as part of the Jumpstart install.
+the report is deployed as part of the Jumpstart install.

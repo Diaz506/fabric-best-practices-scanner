@@ -10,7 +10,13 @@
 #   configure a service principal (see `00-setup.md`).
 
 # %%
-# Install the package (or %pip install fabric-best-practices-scanner once published).
+# Install the package.
+#
+# Pre-publish (testing on your own tenant): upload the wheel from `dist/` to your Lakehouse
+# (Files) and install it from there — no PyPI or repo auth needed:
+#   %pip install -q /lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl
+#
+# Once published to PyPI, use:
 %pip install -q fabric-best-practices-scanner
 
 # %%

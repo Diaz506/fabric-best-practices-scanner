@@ -65,6 +65,23 @@ Add or tune rules by editing the YAML files in `src/fabric_bps/catalog/`.
   - A **service principal** added to the group allowed by the tenant setting
     **"Service principals can use read-only admin APIs"** (enable it once as a tenant admin).
 
+## Deployment & manual effort
+
+There is **no manual data entry and no questionnaire** — every finding is observed from the
+admin APIs. The only work is one-time setup:
+
+| Step | Effort | When |
+|---|---|---|
+| Deploy notebook + semantic model + report into the workspace | **Automated** (Jumpstart install / Git integration) | Once |
+| Provide a read-only admin identity | **~0 min** if you already have an admin login; **~10 min** to configure a service principal | Once |
+| Attach the notebook to a Lakehouse | **~1 min** | Once |
+| Run the scan | **1 click** (or scheduled) | Each run |
+| Bind the semantic model to the Lakehouse | **~2 min** (auto-binds via Git integration) | Once |
+| Finish report visuals | **Optional ~10–15 min** (measures prebuilt; drag-and-drop recipe) | Once |
+
+**Minimum happy path (admin identity): ~5 minutes** — attach Lakehouse → run → bind the model.
+Full breakdown in [`docs/deployment.md`](docs/deployment.md).
+
 ## Install
 
 ```bash

@@ -3,8 +3,8 @@
 #
 # Run **all cells** to stand up the scanner in *this* workspace end to end:
 #
-# 1. Provisions the **Lakehouse** that stores findings (creates it if missing).
-# 2. Installs the scanner package.
+# 1. Installs the scanner package.
+# 2. Provisions the **Lakehouse** that stores findings (creates it if missing).
 # 3. Runs the scan and writes `governance_findings` to the Lakehouse.
 # 4. Deploys the **Direct Lake semantic model** (with prebuilt measures) bound to it.
 #
@@ -13,31 +13,35 @@
 # **Prerequisites**
 # - Run as a user with **Fabric Administrator / Power BI Service Administrator**, OR
 #   configure a service principal (see `00-setup.md`).
-# - The install cell below pulls the package from the **public GitHub repo** — no wheel
+# - The first cell installs the package from the **public GitHub repo** — no wheel
 #   upload and no Lakehouse attach required.
+#
+# **Cell order matters:** `%pip install` restarts the Python session, so it must run
+# **first** — the parameters are defined *after* it, or they would be wiped on install.
 
 # %%
-# Parameters — safe to leave as defaults.
-LAKEHOUSE_NAME = "GovernanceScanner"      # created in this workspace if it doesn't exist
-DATASET_NAME = "FabricGovernance"          # semantic model name
-TABLE_NAME = "governance_findings"
-
-# %%
-# Install the package from the public GitHub repo (no upload, no attach).
+# 1) Install the package FIRST. %pip restarts the Python session, so it must run before
+#    any other code (otherwise variables defined earlier are wiped).
 %pip install -q "git+https://github.com/Diaz506/fabric-best-practices-scanner.git"
 # Pin to a release:  ...fabric-best-practices-scanner.git@v0.1.0
 # Once on PyPI:      %pip install -q fabric-best-practices-scanner
 # Offline wheel:     %pip install -q /lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl
 
 # %%
-# 1) Provision the findings Lakehouse (idempotent — reused if it already exists).
+# 2) Parameters — defined AFTER %pip (the session restarts on install). Safe to leave as-is.
+LAKEHOUSE_NAME = "GovernanceScanner"      # created in this workspace if it doesn't exist
+DATASET_NAME = "FabricGovernance"          # semantic model name
+TABLE_NAME = "governance_findings"
+
+# %%
+# 3) Provision the findings Lakehouse (idempotent — reused if it already exists).
 from fabric_bps.report import provision_lakehouse
 
 lh = provision_lakehouse(name=LAKEHOUSE_NAME)
 print(("Created" if lh["created"] else "Reusing"), "Lakehouse:", lh["name"], lh["id"])
 
 # %%
-# 2) Run the scan and write findings straight to the provisioned Lakehouse.
+# 4) Run the scan and write findings straight to the provisioned Lakehouse.
 from fabric_bps import scan
 from fabric_bps.collectors import fabric_notebook_token_provider
 

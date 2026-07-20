@@ -13,8 +13,8 @@
 # **Prerequisites**
 # - Run as a user with **Fabric Administrator / Power BI Service Administrator**, OR
 #   configure a service principal (see `00-setup.md`).
-# - Pre-publish only: upload the wheel from `dist/` to a Lakehouse's Files and point the
-#   `%pip install` line below at it. Once on PyPI this step goes away.
+# - The install cell below pulls the package from the **public GitHub repo** — no wheel
+#   upload and no Lakehouse attach required.
 
 # %%
 # Parameters — safe to leave as defaults.
@@ -23,12 +23,11 @@ DATASET_NAME = "FabricGovernance"          # semantic model name
 TABLE_NAME = "governance_findings"
 
 # %%
-# Install the package.
-# Pre-publish: install the wheel you uploaded to a Lakehouse's Files (edit the path if yours
-# differs). `%pip` installs into the live session for all executors.
-%pip install -q /lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl
-# Published (PyPI): comment the line above and uncomment the line below instead.
-# %pip install -q fabric-best-practices-scanner
+# Install the package from the public GitHub repo (no upload, no attach).
+%pip install -q "git+https://github.com/Diaz506/fabric-best-practices-scanner.git"
+# Pin to a release:  ...fabric-best-practices-scanner.git@v0.1.0
+# Once on PyPI:      %pip install -q fabric-best-practices-scanner
+# Offline wheel:     %pip install -q /lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl
 
 # %%
 # 1) Provision the findings Lakehouse (idempotent — reused if it already exists).

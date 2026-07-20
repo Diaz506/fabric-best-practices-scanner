@@ -10,14 +10,11 @@
 #   configure a service principal (see `00-setup.md`).
 
 # %%
-# Install the package.
-#
-# Pre-publish (testing on your own tenant): upload the wheel from `dist/` to your Lakehouse
-# (Files) and install it from there — no PyPI or repo auth needed:
-#   %pip install -q /lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl
-#
-# Once published to PyPI, use:
-%pip install -q fabric-best-practices-scanner
+# Install the package from the public GitHub repo (no wheel upload needed).
+%pip install -q "git+https://github.com/Diaz506/fabric-best-practices-scanner.git"
+# Pin to a release:  ...fabric-best-practices-scanner.git@v0.1.0
+# Once on PyPI:      %pip install -q fabric-best-practices-scanner
+# Offline wheel:     %pip install -q /lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl
 
 # %%
 from fabric_bps import scan

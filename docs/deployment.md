@@ -46,11 +46,12 @@ Choose Path B only if you want the scan to run unattended on a schedule.
   prebuilt; you only bind the connection (step 5).
 
 ## The 2-minute happy path (admin identity)
-1. Import `notebooks/00_deploy.py` as a notebook. (No Lakehouse to create or attach — the
+1. Import `notebooks/00_deploy.ipynb` as a notebook. (No Lakehouse to create or attach — the
    notebook provisions it for you.)
-2. **Run all cells.** It installs the package, **creates the `GovernanceScanner` Lakehouse**,
-   scans, writes `governance_findings`, and **auto-deploys a Lakehouse-bound Direct Lake
-   semantic model** (with all measures) — no connection placeholders to fill in.
+2. **Run all cells.** It installs the package **from the public GitHub repo**, **creates the
+   `GovernanceScanner` Lakehouse**, scans, writes `governance_findings`, and **auto-deploys a
+   Lakehouse-bound Direct Lake semantic model** (with all measures) — no connection
+   placeholders to fill in.
 3. Build the report visuals from the prebuilt measures using the recipe in
    [`powerbi/README.md`](../powerbi/README.md), or open the shipped `.pbip`.
 

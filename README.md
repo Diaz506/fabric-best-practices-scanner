@@ -86,13 +86,14 @@ model automatically. Full breakdown in [`docs/deployment.md`](docs/deployment.md
 ## Quickstart (one-click, in Fabric)
 
 1. Sign in as a user with **Fabric Administrator / Power BI Service Administrator**.
-2. Import [`notebooks/00_deploy.py`](notebooks/00_deploy.py) into your workspace.
+2. Import [`notebooks/00_deploy.ipynb`](notebooks/00_deploy.ipynb) into your workspace.
 3. **Run all cells.** It provisions the `GovernanceScanner` Lakehouse, scans your tenant,
    writes `governance_findings`, and deploys the `FabricGovernance` semantic model.
 
-> **Pre-publish (until this is on PyPI):** upload the wheel from `dist/` to any Lakehouse's
-> Files and point the notebook's `%pip install` line at it. Once published, use the
-> `pip install fabric-best-practices-scanner` line instead (both are in the notebook).
+> The notebook installs the package from this **public GitHub repo**
+> (`%pip install "git+https://github.com/Diaz506/fabric-best-practices-scanner.git"`) —
+> no wheel upload and no Lakehouse attach required. Once it's on PyPI you can switch to
+> `%pip install fabric-best-practices-scanner`.
 
 Prefer to attach an existing Lakehouse and run manually? Use
 [`notebooks/01_run_scanner.py`](notebooks/01_run_scanner.py) — same scan, you attach the
@@ -100,15 +101,19 @@ Lakehouse yourself.
 
 ## Install
 
+Runs in a Fabric notebook — install straight from this **public GitHub repo** (no wheel
+upload, no Lakehouse attach):
+
+```bash
+%pip install "git+https://github.com/Diaz506/fabric-best-practices-scanner.git"
+# pin to a release:  ...fabric-best-practices-scanner.git@v0.1.0
+```
+
 ```bash
 # From PyPI (once published)
 pip install fabric-best-practices-scanner
 pip install "fabric-best-practices-scanner[sp,fabric,ai]"   # + service-principal auth, parquet fallback, AI rationale
 ```
-
-> **Not on PyPI yet.** Until it is published, install from the built wheel in `dist/`
-> (in a Fabric notebook, upload it to a Lakehouse's Files and `%pip install` that path —
-> see the Quickstart), or from source below.
 
 ### From source
 ```bash

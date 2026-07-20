@@ -20,6 +20,8 @@
 
 # %%
 # 1) Install the package and its deploy extra (semantic-link-labs). Run this cell first.
+# Note: pip may print red PyJWT/fsspec-wrapper "dependency conflict" warnings from Fabric's
+# base image — these are harmless; the install completes and the notebook runs normally.
 %pip install -q "fabric-best-practices-scanner[deploy] @ git+https://github.com/Diaz506/fabric-best-practices-scanner.git"
 # Pin to a release:  ...fabric-best-practices-scanner.git@v0.1.0
 # Once on PyPI:      %pip install -q "fabric-best-practices-scanner[deploy]"

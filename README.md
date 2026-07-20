@@ -77,7 +77,7 @@ admin APIs. The only work is one-time setup:
 | Provide a read-only admin identity | **~0 min** if you already have an admin login; **~10 min** to configure a service principal | Once |
 | Create the findings Lakehouse | **Automated** — `00_deploy.py` creates it for you | Once |
 | Run the scan + auto-deploy the model | **1 click** (creates a Lakehouse-bound Direct Lake model with measures) | Each run |
-| Finish report visuals | **Optional ~10–15 min** (measures prebuilt; drag-and-drop recipe) | Once |
+| Report visuals | **Automated** — `deploy_report` builds a populated report (cards + charts + findings table) | Once |
 
 **Minimum happy path (admin identity): ~2–3 minutes** — import `notebooks/00_deploy.py` and
 run all cells; it provisions the Lakehouse, runs the scan, and creates and binds the semantic

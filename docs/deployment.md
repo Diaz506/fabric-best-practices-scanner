@@ -12,7 +12,7 @@ every finding comes from what the APIs report. The only manual work is one-time 
 | 2 | Provide a read-only admin identity | **Manual, ~5–10 min** | Tenant admin | Once | Path A is free if you already have an admin login; Path B (SP) is the ~10-min part |
 | 3 | Create the findings Lakehouse | **Automated** | — | Once | Yes — `00_deploy.py` creates it and writes by path (no manual attach) |
 | 4 | Run the scan + auto-deploy the semantic model | **1 click / automated** | Analyst | Each run | The notebook provisions the Lakehouse, scans, and creates a Lakehouse-bound Direct Lake model with the measures — **no connection placeholders to fill in** |
-| 5 | Finish the report visuals | **Optional, ~10–15 min** | Analyst | Once | Optional — measures are prebuilt; drag-and-drop recipe provided |
+| 5 | Report visuals | **Automated** | — | Once | Yes — `deploy_report` creates a populated report (cards + charts + findings table); customize optionally |
 | 6 | Schedule re-runs for trend | **Optional, ~2 min** | Analyst | Once | Optional |
 | 7 | Enable AI rationale | **Optional** | Analyst | Once | Optional — set Azure OpenAI env vars |
 
@@ -42,8 +42,8 @@ Choose Path B only if you want the scan to run unattended on a schedule.
 - **No per-rule tuning required** — applicability is derived automatically (archetype +
   confidence + impact gating). You *can* tune rules by editing the YAML catalog, but you don't
   have to.
-- **No report modeling from scratch** — the DirectLake semantic model and all measures ship
-  prebuilt; you only bind the connection (step 5).
+- **No report building from scratch** — the DirectLake semantic model, all measures, *and* a
+  populated report (cards + charts + findings table) are created and bound automatically.
 
 ## The 2-minute happy path (admin identity)
 1. Import `notebooks/00_deploy.ipynb` as a notebook. (No Lakehouse to create or attach — the
@@ -52,8 +52,9 @@ Choose Path B only if you want the scan to run unattended on a schedule.
    `GovernanceScanner` Lakehouse**, scans, writes `governance_findings`, and **auto-deploys a
    Lakehouse-bound Direct Lake semantic model** (with all measures) — no connection
    placeholders to fill in.
-3. Build the report visuals from the prebuilt measures using the recipe in
-   [`powerbi/README.md`](../powerbi/README.md), or open the shipped `.pbip`.
+3. Open the deployed **`FabricGovernance`** report to review your posture (overview cards +
+   charts and a findings table), or customize it further with the recipe in
+   [`powerbi/README.md`](../powerbi/README.md).
 
 That's the whole deployment. Re-run the notebook (or schedule it) to build the posture trend.
 

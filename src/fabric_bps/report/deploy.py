@@ -72,48 +72,21 @@ def deploy_report(
     report: str = "FabricGovernance",
     workspace: str = None,
 ) -> str:
-    """Optional: create a bound (starter) report on the model.
+    """Create a populated report (cards + charts + table) bound to the model.
 
     Non-fatal: if report creation is unavailable, the shipped `.pbip` report can be used
     instead. Returns the report name (or an explanatory message).
     """
-    starter = {
-        "config": '{"version":"5.55","themeCollection":{"baseTheme":{"name":"CY24SU10"}},"activeSectionIndex":0,"settings":{"useStylableVisualContainerHeader":true}}',
-        "layoutOptimization": 0,
-        "publicCustomVisuals": [],
-        "resourcePackages": [],
-        "sections": [
-            {
-                "name": "page-overview",
-                "displayName": "Governance Overview",
-                "filters": "[]",
-                "ordinal": 0,
-                "visualContainers": [],
-                "config": "{}",
-                "displayOption": 1,
-                "width": 1280,
-                "height": 720,
-            },
-            {
-                "name": "page-detail",
-                "displayName": "Findings Detail",
-                "filters": "[]",
-                "ordinal": 1,
-                "visualContainers": [],
-                "config": "{}",
-                "displayOption": 1,
-                "width": 1280,
-                "height": 720,
-            },
-        ],
-    }
+    from .report_layout import build_report_json
+
+    report_json = build_report_json()
     try:
         from sempy_labs.report import create_report_from_reportjson
 
         create_report_from_reportjson(
             report=report,
             dataset=dataset,
-            report_json=starter,
+            report_json=report_json,
             workspace=workspace,
         )
         return report

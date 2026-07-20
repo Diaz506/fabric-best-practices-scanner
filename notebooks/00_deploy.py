@@ -80,7 +80,8 @@ dataset = deploy_semantic_model(
 print("Semantic model deployed:", dataset)
 
 # %%
-# Optional: also create a bound starter report (non-fatal if unavailable).
+# Create the populated report (cards + charts + findings table) bound to the model.
+# Non-fatal: if report creation is unavailable, open the shipped `.pbip` report instead.
 from fabric_bps.report import deploy_report
 
 print(deploy_report(dataset=DATASET_NAME, report=DATASET_NAME, workspace=lh["workspace_id"]))
@@ -88,9 +89,10 @@ print(deploy_report(dataset=DATASET_NAME, report=DATASET_NAME, workspace=lh["wor
 # %% [markdown]
 # ## Done
 #
-# Findings are in the **`governance_findings`** table of the `GovernanceScanner` Lakehouse,
-# and the **`FabricGovernance`** semantic model is ready. Build visuals using the recipe in
-# `powerbi/README.md`, or open the shipped `.pbip` report.
+# You now have, in *this* workspace: the **`governance_findings`** table in the
+# `GovernanceScanner` Lakehouse, the **`FabricGovernance`** semantic model, and a populated
+# **`FabricGovernance`** report (overview cards + charts and a findings table). Open the
+# report to review your posture, or customize it further with the recipe in `powerbi/README.md`.
 #
 # Re-run any time to refresh — findings append (with run id + timestamp) so the report can
 # trend posture over successive runs.

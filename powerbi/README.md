@@ -2,8 +2,12 @@
 
 The scanner writes findings to a Lakehouse Delta table (`governance_findings`), one row per
 `(run_id, rule_id)`, appended each run. This folder ships a **DirectLake semantic model**
-(the model comes first) and a **starter report** bound to it, as a `.pbip` project so both
+(the model comes first) and a **populated report** bound to it, as a `.pbip` project so both
 are versioned as plain text and deploy via Fabric Git integration.
+
+The one-click notebook's `deploy_report` step builds this same report automatically in your
+workspace (overview cards + charts and a findings table), so you normally don't touch this
+folder. The recipe below is here if you want to rebuild or customize the visuals by hand.
 
 ## What's in this folder
 ```
@@ -11,11 +15,11 @@ FabricGovernance.pbip                     <- open this in Power BI Desktop (Fabr
 FabricGovernance.SemanticModel/           <- DirectLake model over governance_findings (TMDL)
   definition/expressions.tmdl             <- Lakehouse SQL endpoint connection (edit placeholders)
   definition/tables/governance_findings.tmdl  <- columns + all governance measures
-FabricGovernance.Report/                  <- starter report (2 named pages) bound to the model
+FabricGovernance.Report/                  <- report (2 named pages, populated) bound to the model
 ```
-The semantic model is the reusable asset: schema + measures. The report pages ship empty on
-purpose so the project opens cleanly everywhere; assemble the visuals in minutes using the
-recipe below (all measures are pre-built).
+The semantic model is the reusable asset: schema + measures. The report ships populated (and
+`deploy_report` rebuilds it in your workspace); the recipe below documents how the visuals are
+assembled from the pre-built measures if you want to customize them.
 
 ## Bind it to your Lakehouse (one-time)
 1. In Fabric, open your Lakehouse → **Settings → SQL analytics endpoint** and copy the

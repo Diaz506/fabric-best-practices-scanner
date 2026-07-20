@@ -54,8 +54,8 @@ for f in result["findings"]:
 #
 # Creates a **Direct Lake semantic model** bound to *this* Lakehouse (no connection
 # placeholders) and adds the prebuilt governance measures. Re-running is safe: the model
-# is refreshed and only missing measures are added. After this, build visuals using the
-# recipe in `powerbi/README.md`, or use the shipped `.pbip` report.
+# is refreshed and only missing measures are added. `deploy_report` then creates a populated
+# report (overview cards + charts and a findings table) bound to the model.
 #
 # Requires `semantic-link-labs` — installed by the `[deploy]` extra in the first cell
 # (it is not preinstalled in the Fabric runtime).
@@ -72,7 +72,8 @@ dataset = deploy_semantic_model(
 print("Semantic model deployed:", dataset)
 
 # %%
-# Optional: also create a bound starter report (non-fatal if unavailable).
+# Create the populated report (cards + charts + findings table) bound to the model.
+# Non-fatal: if report creation is unavailable, open the shipped `.pbip` report instead.
 from fabric_bps.report import deploy_report
 
 print(deploy_report(dataset="FabricGovernance", report="FabricGovernance"))

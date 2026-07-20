@@ -11,7 +11,7 @@ one of the two identities below.
 
 > The notebook installs the package from the **public GitHub repo**
 > (`%pip install "git+https://github.com/Diaz506/fabric-best-practices-scanner.git"`) —
-> no wheel upload needed. Switch to `%pip install fabric-best-practices-scanner` once on PyPI.
+> no wheel upload needed.
 
 ## Option B — Service principal (headless / scheduled)
 One-time tenant-admin configuration:

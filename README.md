@@ -92,8 +92,7 @@ model automatically. Full breakdown in [`docs/deployment.md`](docs/deployment.md
 
 > The notebook installs the package from this **public GitHub repo**
 > (`%pip install "git+https://github.com/Diaz506/fabric-best-practices-scanner.git"`) —
-> no wheel upload and no Lakehouse attach required. Once it's on PyPI you can switch to
-> `%pip install fabric-best-practices-scanner`.
+> no wheel upload and no Lakehouse attach required.
 
 Prefer to attach an existing Lakehouse and run manually? Use
 [`notebooks/01_run_scanner.py`](notebooks/01_run_scanner.py) — same scan, you attach the
@@ -106,13 +105,7 @@ upload, no Lakehouse attach):
 
 ```bash
 %pip install "git+https://github.com/Diaz506/fabric-best-practices-scanner.git"
-# pin to a release:  ...fabric-best-practices-scanner.git@v0.1.0
-```
-
-```bash
-# From PyPI (once published)
-pip install fabric-best-practices-scanner
-pip install "fabric-best-practices-scanner[sp,fabric,ai]"   # + service-principal auth, parquet fallback, AI rationale
+# with extras:  %pip install "fabric-best-practices-scanner[sp,fabric,ai] @ git+https://github.com/Diaz506/fabric-best-practices-scanner.git"
 ```
 
 ### From source
@@ -188,4 +181,4 @@ powerbi/            # semantic model + report template
 ## Roadmap
 - Add the Scanner API collector for deeper per-item lineage, endorsement, and label coverage.
 - Add collectors for sensitivity labels, activity events, and Git integration.
-- Publish to PyPI; list in the Fabric Jumpstart catalog.
+- Publish as a listed solution in the Fabric Jumpstart catalog.

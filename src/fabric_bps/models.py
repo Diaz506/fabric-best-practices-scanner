@@ -115,6 +115,7 @@ class Finding:
             "recommendation": self.recommendation,
             "rationale": self.rationale,
             "references": ", ".join(self.references),
+            "reference_url": self.references[0] if self.references else "",
             "effort": self.effort,
             "evidence": json.dumps(self.evidence, ensure_ascii=False),
             "archetype": self.archetype,

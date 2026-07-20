@@ -75,7 +75,7 @@ def _container(name, vtype, x, y, w, h, z, projections, selects, table, title=No
     }
 
 
-def _card(name, measure, x, y, w, h, z, table):
+def _card(name, measure, x, y, w, h, z, table, title=None):
     return _container(
         name,
         "card",
@@ -87,6 +87,43 @@ def _card(name, measure, x, y, w, h, z, table):
         {"Values": [{"queryRef": f"{table}.{measure}"}]},
         [_measure_select(measure, table)],
         table,
+        title=title,
+    )
+
+
+def _matrix(name, rows, cols, measure, x, y, w, h, z, table, title):
+    return _container(
+        name,
+        "pivotTable",
+        x,
+        y,
+        w,
+        h,
+        z,
+        {
+            "Rows": [{"queryRef": f"{table}.{rows}"}],
+            "Columns": [{"queryRef": f"{table}.{cols}"}],
+            "Values": [{"queryRef": f"{table}.{measure}"}],
+        },
+        [_column_select(rows, table), _column_select(cols, table), _measure_select(measure, table)],
+        table,
+        title=title,
+    )
+
+
+def _slicer(name, column, x, y, w, h, z, table, title):
+    return _container(
+        name,
+        "slicer",
+        x,
+        y,
+        w,
+        h,
+        z,
+        {"Values": [{"queryRef": f"{table}.{column}"}]},
+        [_column_select(column, table)],
+        table,
+        title=title,
     )
 
 
@@ -112,31 +149,28 @@ def _cat_value(name, vtype, category, measure, x, y, w, h, z, table, title):
 def build_report_json(table: str = FACT_TABLE) -> dict:
     count = "Findings (Latest Run)"
 
+    # Page 1 — Governance Overview: labeled KPIs, a categorized area x status matrix,
+    # and supporting charts.
     overview = [
-        _card("cardFindings", count, 16, 16, 296, 92, 1, table),
-        _card("cardGaps", "Gaps (Latest Run)", 324, 16, 296, 92, 2, table),
-        _card("cardHighGaps", "High-Impact Gaps (Latest Run)", 632, 16, 296, 92, 3, table),
-        _card("cardAdherence", "Adherence Rate (Latest Run)", 940, 16, 296, 92, 4, table),
-        _cat_value("barArea", "clusteredBarChart", "dimension", count, 16, 120, 616, 290, 5, table, "Findings by area"),
-        _cat_value("donutStatus", "donutChart", "status", count, 648, 120, 616, 290, 6, table, "Findings by status"),
-        _cat_value("colSeverity", "clusteredColumnChart", "severity", count, 16, 422, 616, 282, 7, table, "Findings by severity"),
-        _cat_value("colImpact", "clusteredColumnChart", "impact", "Gaps (Latest Run)", 648, 422, 616, 282, 8, table, "Gaps by impact"),
+        _card("cardFindings", count, 16, 16, 296, 96, 1, table, title="Findings (latest run)"),
+        _card("cardGaps", "Gaps (Latest Run)", 324, 16, 296, 96, 2, table, title="Gaps"),
+        _card("cardHighGaps", "High-Impact Gaps (Latest Run)", 632, 16, 296, 96, 3, table, title="High-impact gaps"),
+        _card("cardAdherence", "Adherence Rate (Latest Run)", 940, 16, 296, 96, 4, table, title="Adherence rate"),
+        _matrix(
+            "matrixAreaStatus", "dimension", "status", count,
+            16, 124, 760, 300, 5, table, "Findings by area and status",
+        ),
+        _cat_value("donutStatus", "donutChart", "status", count, 792, 124, 472, 300, 6, table, "Findings by status"),
+        _cat_value("colSeverity", "clusteredColumnChart", "severity", count, 16, 436, 616, 268, 7, table, "Findings by severity"),
+        _cat_value("colImpact", "clusteredColumnChart", "impact", "Gaps (Latest Run)", 648, 436, 616, 268, 8, table, "Gaps by impact"),
     ]
 
-    table_cols = ["dimension", "title", "status", "severity", "recommendation"]
+    # Page 2 — Findings Detail: filter by area/status, read the finding + recommendation,
+    # and open the official documentation via the clickable link column.
+    table_cols = ["dimension", "title", "status", "impact", "severity", "effort", "recommendation", "reference_url"]
     detail = [
-        _container(
-            "slicerStatus",
-            "slicer",
-            16,
-            16,
-            250,
-            400,
-            1,
-            {"Values": [{"queryRef": f"{table}.status"}]},
-            [_column_select("status", table)],
-            table,
-        ),
+        _slicer("slicerArea", "dimension", 16, 16, 250, 336, 1, table, "Area"),
+        _slicer("slicerStatus", "status", 16, 360, 250, 344, 2, table, "Status"),
         _container(
             "tableFindings",
             "tableEx",
@@ -144,11 +178,11 @@ def build_report_json(table: str = FACT_TABLE) -> dict:
             16,
             982,
             688,
-            2,
+            3,
             {"Values": [{"queryRef": f"{table}.{c}"} for c in table_cols]},
             [_column_select(c, table) for c in table_cols],
             table,
-            title="Findings",
+            title="Findings & recommendations (open the link for official guidance)",
         ),
     ]
 

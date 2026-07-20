@@ -23,6 +23,19 @@ def _resolve_source(lakehouse):
     return fabric.get_lakehouse_id()  # the Lakehouse attached to this notebook
 
 
+def _categorize_url_columns(tom, table: str) -> None:
+    """Mark the reference_url column as a Web URL so the report renders it as a link."""
+    for t in tom.model.Tables:
+        if t.Name != table:
+            continue
+        for col in t.Columns:
+            if col.Name == "reference_url":
+                try:
+                    col.DataCategory = "WebUrl"
+                except Exception:  # noqa: BLE001 - categorization is best-effort
+                    pass
+
+
 def deploy_semantic_model(
     dataset: str = "FabricGovernance",
     lakehouse=None,
@@ -52,6 +65,7 @@ def deploy_semantic_model(
     )
 
     with connect_semantic_model(dataset=dataset, workspace=workspace, readonly=False) as tom:
+        _categorize_url_columns(tom, table)
         existing = {m.Name: m for t in tom.model.Tables for m in t.Measures}
         for m in MEASURES:
             fmt = m.get("format_string")

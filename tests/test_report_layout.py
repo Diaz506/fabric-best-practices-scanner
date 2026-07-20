@@ -11,7 +11,7 @@ from fabric_bps.report import MEASURE_NAMES, build_report_json
 COLUMNS = {
     "run_id", "timestamp", "rule_id", "dimension", "title", "waf_pillar", "status",
     "impact", "severity", "applicability_confidence", "recommendation", "rationale",
-    "references", "effort", "evidence", "archetype",
+    "references", "reference_url", "effort", "evidence", "archetype",
 }
 
 

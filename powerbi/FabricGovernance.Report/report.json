@@ -15,8 +15,8 @@
           "y": 16,
           "z": 1,
           "width": 296,
-          "height": 92,
-          "config": "{\"name\": \"cardFindings\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 16, \"z\": 1, \"width\": 296, \"height\": 92, \"tabOrder\": 1}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.Findings (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Findings (Latest Run)\"}, \"Name\": \"governance_findings.Findings (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true}}",
+          "height": 96,
+          "config": "{\"name\": \"cardFindings\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 16, \"z\": 1, \"width\": 296, \"height\": 96, \"tabOrder\": 1}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.Findings (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Findings (Latest Run)\"}, \"Name\": \"governance_findings.Findings (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Findings (latest run)'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
           "filters": "[]"
         },
         {
@@ -24,8 +24,8 @@
           "y": 16,
           "z": 2,
           "width": 296,
-          "height": 92,
-          "config": "{\"name\": \"cardGaps\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 324, \"y\": 16, \"z\": 2, \"width\": 296, \"height\": 92, \"tabOrder\": 2}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.Gaps (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Gaps (Latest Run)\"}, \"Name\": \"governance_findings.Gaps (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true}}",
+          "height": 96,
+          "config": "{\"name\": \"cardGaps\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 324, \"y\": 16, \"z\": 2, \"width\": 296, \"height\": 96, \"tabOrder\": 2}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.Gaps (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Gaps (Latest Run)\"}, \"Name\": \"governance_findings.Gaps (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Gaps'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
           "filters": "[]"
         },
         {
@@ -33,8 +33,8 @@
           "y": 16,
           "z": 3,
           "width": 296,
-          "height": 92,
-          "config": "{\"name\": \"cardHighGaps\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 632, \"y\": 16, \"z\": 3, \"width\": 296, \"height\": 92, \"tabOrder\": 3}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.High-Impact Gaps (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"High-Impact Gaps (Latest Run)\"}, \"Name\": \"governance_findings.High-Impact Gaps (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true}}",
+          "height": 96,
+          "config": "{\"name\": \"cardHighGaps\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 632, \"y\": 16, \"z\": 3, \"width\": 296, \"height\": 96, \"tabOrder\": 3}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.High-Impact Gaps (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"High-Impact Gaps (Latest Run)\"}, \"Name\": \"governance_findings.High-Impact Gaps (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'High-impact gaps'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
           "filters": "[]"
         },
         {
@@ -42,44 +42,44 @@
           "y": 16,
           "z": 4,
           "width": 296,
-          "height": 92,
-          "config": "{\"name\": \"cardAdherence\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 940, \"y\": 16, \"z\": 4, \"width\": 296, \"height\": 92, \"tabOrder\": 4}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.Adherence Rate (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Adherence Rate (Latest Run)\"}, \"Name\": \"governance_findings.Adherence Rate (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true}}",
+          "height": 96,
+          "config": "{\"name\": \"cardAdherence\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 940, \"y\": 16, \"z\": 4, \"width\": 296, \"height\": 96, \"tabOrder\": 4}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.Adherence Rate (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Adherence Rate (Latest Run)\"}, \"Name\": \"governance_findings.Adherence Rate (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Adherence rate'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
           "filters": "[]"
         },
         {
           "x": 16,
-          "y": 120,
+          "y": 124,
           "z": 5,
-          "width": 616,
-          "height": 290,
-          "config": "{\"name\": \"barArea\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 120, \"z\": 5, \"width\": 616, \"height\": 290, \"tabOrder\": 5}}], \"singleVisual\": {\"visualType\": \"clusteredBarChart\", \"projections\": {\"Category\": [{\"queryRef\": \"governance_findings.dimension\"}], \"Y\": [{\"queryRef\": \"governance_findings.Findings (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"dimension\"}, \"Name\": \"governance_findings.dimension\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Findings (Latest Run)\"}, \"Name\": \"governance_findings.Findings (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Findings by area'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "width": 760,
+          "height": 300,
+          "config": "{\"name\": \"matrixAreaStatus\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 124, \"z\": 5, \"width\": 760, \"height\": 300, \"tabOrder\": 5}}], \"singleVisual\": {\"visualType\": \"pivotTable\", \"projections\": {\"Rows\": [{\"queryRef\": \"governance_findings.dimension\"}], \"Columns\": [{\"queryRef\": \"governance_findings.status\"}], \"Values\": [{\"queryRef\": \"governance_findings.Findings (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"dimension\"}, \"Name\": \"governance_findings.dimension\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"status\"}, \"Name\": \"governance_findings.status\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Findings (Latest Run)\"}, \"Name\": \"governance_findings.Findings (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Findings by area and status'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
           "filters": "[]"
         },
         {
-          "x": 648,
-          "y": 120,
+          "x": 792,
+          "y": 124,
           "z": 6,
-          "width": 616,
-          "height": 290,
-          "config": "{\"name\": \"donutStatus\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 648, \"y\": 120, \"z\": 6, \"width\": 616, \"height\": 290, \"tabOrder\": 6}}], \"singleVisual\": {\"visualType\": \"donutChart\", \"projections\": {\"Category\": [{\"queryRef\": \"governance_findings.status\"}], \"Y\": [{\"queryRef\": \"governance_findings.Findings (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"status\"}, \"Name\": \"governance_findings.status\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Findings (Latest Run)\"}, \"Name\": \"governance_findings.Findings (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Findings by status'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "width": 472,
+          "height": 300,
+          "config": "{\"name\": \"donutStatus\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 792, \"y\": 124, \"z\": 6, \"width\": 472, \"height\": 300, \"tabOrder\": 6}}], \"singleVisual\": {\"visualType\": \"donutChart\", \"projections\": {\"Category\": [{\"queryRef\": \"governance_findings.status\"}], \"Y\": [{\"queryRef\": \"governance_findings.Findings (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"status\"}, \"Name\": \"governance_findings.status\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Findings (Latest Run)\"}, \"Name\": \"governance_findings.Findings (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Findings by status'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
           "filters": "[]"
         },
         {
           "x": 16,
-          "y": 422,
+          "y": 436,
           "z": 7,
           "width": 616,
-          "height": 282,
-          "config": "{\"name\": \"colSeverity\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 422, \"z\": 7, \"width\": 616, \"height\": 282, \"tabOrder\": 7}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"governance_findings.severity\"}], \"Y\": [{\"queryRef\": \"governance_findings.Findings (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"severity\"}, \"Name\": \"governance_findings.severity\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Findings (Latest Run)\"}, \"Name\": \"governance_findings.Findings (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Findings by severity'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "height": 268,
+          "config": "{\"name\": \"colSeverity\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 436, \"z\": 7, \"width\": 616, \"height\": 268, \"tabOrder\": 7}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"governance_findings.severity\"}], \"Y\": [{\"queryRef\": \"governance_findings.Findings (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"severity\"}, \"Name\": \"governance_findings.severity\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Findings (Latest Run)\"}, \"Name\": \"governance_findings.Findings (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Findings by severity'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
           "filters": "[]"
         },
         {
           "x": 648,
-          "y": 422,
+          "y": 436,
           "z": 8,
           "width": 616,
-          "height": 282,
-          "config": "{\"name\": \"colImpact\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 648, \"y\": 422, \"z\": 8, \"width\": 616, \"height\": 282, \"tabOrder\": 8}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"governance_findings.impact\"}], \"Y\": [{\"queryRef\": \"governance_findings.Gaps (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"impact\"}, \"Name\": \"governance_findings.impact\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Gaps (Latest Run)\"}, \"Name\": \"governance_findings.Gaps (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Gaps by impact'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "height": 268,
+          "config": "{\"name\": \"colImpact\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 648, \"y\": 436, \"z\": 8, \"width\": 616, \"height\": 268, \"tabOrder\": 8}}], \"singleVisual\": {\"visualType\": \"clusteredColumnChart\", \"projections\": {\"Category\": [{\"queryRef\": \"governance_findings.impact\"}], \"Y\": [{\"queryRef\": \"governance_findings.Gaps (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"impact\"}, \"Name\": \"governance_findings.impact\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Gaps (Latest Run)\"}, \"Name\": \"governance_findings.Gaps (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Gaps by impact'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
           "filters": "[]"
         }
       ],
@@ -99,17 +99,26 @@
           "y": 16,
           "z": 1,
           "width": 250,
-          "height": 400,
-          "config": "{\"name\": \"slicerStatus\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 16, \"z\": 1, \"width\": 250, \"height\": 400, \"tabOrder\": 1}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.status\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"status\"}, \"Name\": \"governance_findings.status\"}]}, \"drillFilterOtherVisuals\": true}}",
+          "height": 336,
+          "config": "{\"name\": \"slicerArea\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 16, \"z\": 1, \"width\": 250, \"height\": 336, \"tabOrder\": 1}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.dimension\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"dimension\"}, \"Name\": \"governance_findings.dimension\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Area'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 16,
+          "y": 360,
+          "z": 2,
+          "width": 250,
+          "height": 344,
+          "config": "{\"name\": \"slicerStatus\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 360, \"z\": 2, \"width\": 250, \"height\": 344, \"tabOrder\": 2}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.status\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"status\"}, \"Name\": \"governance_findings.status\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Status'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
           "filters": "[]"
         },
         {
           "x": 282,
           "y": 16,
-          "z": 2,
+          "z": 3,
           "width": 982,
           "height": 688,
-          "config": "{\"name\": \"tableFindings\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 282, \"y\": 16, \"z\": 2, \"width\": 982, \"height\": 688, \"tabOrder\": 2}}], \"singleVisual\": {\"visualType\": \"tableEx\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.dimension\"}, {\"queryRef\": \"governance_findings.title\"}, {\"queryRef\": \"governance_findings.status\"}, {\"queryRef\": \"governance_findings.severity\"}, {\"queryRef\": \"governance_findings.recommendation\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"dimension\"}, \"Name\": \"governance_findings.dimension\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"title\"}, \"Name\": \"governance_findings.title\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"status\"}, \"Name\": \"governance_findings.status\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"severity\"}, \"Name\": \"governance_findings.severity\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"recommendation\"}, \"Name\": \"governance_findings.recommendation\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Findings'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "config": "{\"name\": \"tableFindings\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 282, \"y\": 16, \"z\": 3, \"width\": 982, \"height\": 688, \"tabOrder\": 3}}], \"singleVisual\": {\"visualType\": \"tableEx\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_findings.dimension\"}, {\"queryRef\": \"governance_findings.title\"}, {\"queryRef\": \"governance_findings.status\"}, {\"queryRef\": \"governance_findings.impact\"}, {\"queryRef\": \"governance_findings.severity\"}, {\"queryRef\": \"governance_findings.effort\"}, {\"queryRef\": \"governance_findings.recommendation\"}, {\"queryRef\": \"governance_findings.reference_url\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_findings\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"dimension\"}, \"Name\": \"governance_findings.dimension\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"title\"}, \"Name\": \"governance_findings.title\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"status\"}, \"Name\": \"governance_findings.status\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"impact\"}, \"Name\": \"governance_findings.impact\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"severity\"}, \"Name\": \"governance_findings.severity\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"effort\"}, \"Name\": \"governance_findings.effort\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"recommendation\"}, \"Name\": \"governance_findings.recommendation\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"reference_url\"}, \"Name\": \"governance_findings.reference_url\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Findings & recommendations (open the link for official guidance)'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
           "filters": "[]"
         }
       ],

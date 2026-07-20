@@ -112,6 +112,16 @@ table governance_findings
 
 		annotation SummarizationSetBy = Automatic
 
+	/// First official documentation link for the finding; rendered as a clickable URL.
+	column reference_url
+		dataType: string
+		dataCategory: WebURL
+		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0211
+		summarizeBy: none
+		sourceColumn: reference_url
+
+		annotation SummarizationSetBy = Automatic
+
 	column effort
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d020e

@@ -16,19 +16,17 @@
 # - The first cell installs the package from the **public GitHub repo** — no wheel
 #   upload and no Lakehouse attach required.
 #
-# **Cell order matters:** `%pip install` restarts the Python session, so it must run
-# **first** — the parameters are defined *after* it, or they would be wiped on install.
+# Run the cells top to bottom.
 
 # %%
-# 1) Install the package + deploy extra FIRST. %pip restarts the Python session, so it must
-#    run before any other code. The [deploy] extra pulls semantic-link-labs (not preinstalled).
+# 1) Install the package and its deploy extra (semantic-link-labs). Run this cell first.
 %pip install -q "fabric-best-practices-scanner[deploy] @ git+https://github.com/Diaz506/fabric-best-practices-scanner.git"
 # Pin to a release:  ...fabric-best-practices-scanner.git@v0.1.0
 # Once on PyPI:      %pip install -q "fabric-best-practices-scanner[deploy]"
 # Offline wheel:     %pip install -q "/lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl[deploy]"
 
 # %%
-# 2) Parameters — defined AFTER %pip (the session restarts on install). Safe to leave as-is.
+# 2) Parameters — safe to leave as-is.
 LAKEHOUSE_NAME = "GovernanceScanner"      # created in this workspace if it doesn't exist
 DATASET_NAME = "FabricGovernance"          # semantic model name
 TABLE_NAME = "governance_findings"

@@ -67,7 +67,7 @@
     }
   ],
   "domains": [
-    { "id": "dom-1", "displayName": "Finance", "parentDomainId": null }
+    { "id": "dom-1", "displayName": "Finance", "parentDomainId": null, "contributorsScope": "SpecificUsersAndGroups" }
   ],
   "activity_available": true,
   "meta": {

@@ -159,6 +159,59 @@ def capacity_not_paused(sig: Signals, params: dict):
     return Status.ADHERED, {"activeCapacities": len(caps)}
 
 
+@check("capacity_uses_fabric_sku")
+def capacity_uses_fabric_sku(sig: Signals, params: dict):
+    """Prefer Fabric (F) SKUs over legacy Power BI Premium/embedded (P/EM/A) SKUs."""
+    caps = sig.capacities
+    if not caps:
+        return Status.INSUFFICIENT_DATA, {"reason": "no capacities collected"}
+    legacy = []
+    for c in caps:
+        sku = _sku(c)
+        if not sku or sku.startswith("trial"):
+            continue  # trial handled by its own rule
+        if not sku.startswith("f"):
+            legacy.append(c.get("displayName"))
+    if legacy:
+        return Status.VERIFY_APPLICABILITY, {
+            "legacySkuCapacities": [x for x in legacy if x][:25],
+            "reason": "capacities on legacy P/EM/A SKUs; plan migration to Fabric (F) SKUs",
+        }
+    return Status.ADHERED, {"capacityCount": len(caps)}
+
+
+@check("capacity_region_consistency")
+def capacity_region_consistency(sig: Signals, params: dict):
+    """Multiple capacity regions can signal data-residency drift; confirm it's intentional."""
+    caps = sig.capacities
+    if not caps:
+        return Status.INSUFFICIENT_DATA, {"reason": "no capacities collected"}
+    regions = sorted({str(c.get("region") or "").strip() for c in caps if c.get("region")})
+    if not regions:
+        return Status.INSUFFICIENT_DATA, {"reason": "capacity region not collected"}
+    if len(regions) <= 1:
+        return Status.ADHERED, {"regions": regions}
+    return Status.VERIFY_APPLICABILITY, {
+        "regions": regions,
+        "reason": "capacities span multiple regions; confirm this is intentional (data residency/latency)",
+    }
+
+
+@check("capacity_min_admins")
+def capacity_min_admins(sig: Signals, params: dict):
+    """Each capacity should have at least N admins so no single person is a bottleneck."""
+    minimum = int(params.get("minimum", 2))
+    caps = sig.capacities
+    if not caps:
+        return Status.INSUFFICIENT_DATA, {"reason": "no capacities collected"}
+    if all(not (c.get("admins")) for c in caps):
+        return Status.INSUFFICIENT_DATA, {"reason": "capacity admins not collected"}
+    low = [c.get("displayName") for c in caps if len(c.get("admins") or []) < minimum]
+    if low:
+        return Status.GAP, {"capacitiesBelowMinAdmins": [x for x in low if x][:25], "minimum": minimum}
+    return Status.ADHERED, {"capacityCount": len(caps), "minimum": minimum}
+
+
 # --- Workspace governance ---------------------------------------------------
 
 def _real_workspaces(sig: Signals) -> list:
@@ -220,6 +273,44 @@ def personal_workspaces_reviewed(sig: Signals, params: dict):
     return Status.ADHERED, {"personalWorkspaceCount": len(personal)}
 
 
+@check("workspaces_in_active_state")
+def workspaces_in_active_state(sig: Signals, params: dict):
+    """Flag workspaces in non-active states (Orphaned/Deleted/Removing) for cleanup."""
+    ws = _real_workspaces(sig)
+    if not ws:
+        return Status.INSUFFICIENT_DATA, {"reason": "no workspaces collected"}
+    if all(not w.get("state") for w in ws):
+        return Status.INSUFFICIENT_DATA, {"reason": "workspace state not collected"}
+    non_active = [
+        w.get("name")
+        for w in ws
+        if w.get("state") and str(w.get("state")).lower() != "active"
+    ]
+    if non_active:
+        return Status.GAP, {
+            "nonActiveWorkspaces": [x for x in non_active if x][:25],
+            "reason": "workspaces in Orphaned/Deleted/Removing states should be cleaned up or reassigned",
+        }
+    return Status.ADHERED, {"workspaceCount": len(ws)}
+
+
+@check("workspaces_have_role_assignments")
+def workspaces_have_role_assignments(sig: Signals, params: dict):
+    """A workspace with no explicit role assignments is ungoverned."""
+    ws = _real_workspaces(sig)
+    if not ws:
+        return Status.INSUFFICIENT_DATA, {"reason": "no workspaces collected"}
+    if all(not (w.get("users")) for w in ws):
+        return Status.INSUFFICIENT_DATA, {"reason": "workspace role membership not collected"}
+    ungoverned = [w.get("name") for w in ws if not (w.get("users") or [])]
+    if ungoverned:
+        return Status.GAP, {
+            "workspacesWithoutRoleAssignments": [x for x in ungoverned if x][:25],
+            "reason": "workspaces with no explicit role assignments are ungoverned",
+        }
+    return Status.ADHERED, {"workspaceCount": len(ws)}
+
+
 # --- Roles & access ---------------------------------------------------------
 
 @check("workspace_roles_group_based")
@@ -276,6 +367,28 @@ def workspaces_assigned_to_domains(sig: Signals, params: dict):
     if ratio < threshold:
         return Status.GAP, {"assigned": len(assigned), "total": len(ws), "ratio": round(ratio, 2)}
     return Status.ADHERED, {"ratio": round(ratio, 2)}
+
+
+@check("domains_contributors_scoped")
+def domains_contributors_scoped(sig: Signals, params: dict):
+    """Domain contributor assignment should be scoped, not open to the whole tenant."""
+    if sig.domains is None:
+        return Status.INSUFFICIENT_DATA, {"reason": "domains not collected"}
+    if len(sig.domains) == 0:
+        return Status.INSUFFICIENT_DATA, {"reason": "no domains defined"}
+    if all(d.get("contributorsScope") is None for d in sig.domains):
+        return Status.INSUFFICIENT_DATA, {"reason": "domain contributorsScope not collected"}
+    open_domains = [
+        d.get("displayName")
+        for d in sig.domains
+        if str(d.get("contributorsScope") or "").lower() == "alltenant"
+    ]
+    if open_domains:
+        return Status.GAP, {
+            "openContributorDomains": [x for x in open_domains if x][:25],
+            "reason": "domains where any tenant user can contribute; scope to specific users/groups",
+        }
+    return Status.ADHERED, {"domainCount": len(sig.domains)}
 
 
 # --- Monitoring & deployment -------------------------------------------------

@@ -62,3 +62,45 @@ rules:
       user is deprovisioned.
     references:
       - https://learn.microsoft.com/power-bi/collaborate-share/service-new-workspaces
+
+  - id: workspace.no-orphaned-state
+    dimension: workspace-governance
+    title: No workspaces left in orphaned/deleted states
+    waf_pillar: Operational Excellence
+    impact: medium
+    severity: medium
+    effort: low
+    applicability:
+      base_confidence: 75
+    evaluate:
+      check: workspaces_in_active_state
+      params: {}
+    recommendation: >-
+      Reassign or permanently remove workspaces stuck in Orphaned/Deleted/Removing states
+      so the estate reflects only live, owned content.
+    rationale: >-
+      Non-active workspaces clutter the estate, can retain data and access, and obscure a
+      clear picture of what is actually governed.
+    references:
+      - https://learn.microsoft.com/fabric/governance/workspace-governance
+
+  - id: workspace.governed-access
+    dimension: workspace-governance
+    title: Every workspace has explicit role assignments
+    waf_pillar: Security
+    impact: medium
+    severity: medium
+    effort: low
+    applicability:
+      base_confidence: 75
+    evaluate:
+      check: workspaces_have_role_assignments
+      params: {}
+    recommendation: >-
+      Assign explicit workspace roles (ideally via security groups) to every workspace so
+      access is intentional and auditable.
+    rationale: >-
+      A workspace with no explicit role assignments is ungoverned — access is unclear and
+      cannot be reviewed or attested.
+    references:
+      - https://learn.microsoft.com/fabric/governance/workspace-governance

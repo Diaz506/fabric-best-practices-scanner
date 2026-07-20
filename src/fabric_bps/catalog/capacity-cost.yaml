@@ -85,3 +85,75 @@ rules:
       (cost control) or an incident — it should be a known, documented state.
     references:
       - https://learn.microsoft.com/fabric/enterprise/pause-resume
+
+  - id: capacity.fabric-sku-preferred
+    dimension: capacity-cost
+    title: Prefer Fabric (F) SKUs over legacy Premium/embedded capacities
+    waf_pillar: Cost Optimization
+    impact: medium
+    severity: medium
+    effort: high
+    applicability:
+      base_confidence: 70
+      boosts:
+        - when: { archetype: [regulated-enterprise, large-enterprise, data-mesh-adopter] }
+          confidence: 85
+    evaluate:
+      check: capacity_uses_fabric_sku
+      params: {}
+    recommendation: >-
+      Migrate workloads from legacy Power BI Premium (P) or embedded (EM/A) capacities to
+      Fabric (F) SKUs to access the full Fabric workload set and pay-as-you-go/reservation
+      cost model.
+    rationale: >-
+      Fabric (F) SKUs are the forward-looking capacity model; legacy P/EM/A SKUs limit
+      access to Fabric workloads and to current cost-optimization options.
+    references:
+      - https://learn.microsoft.com/fabric/enterprise/licenses
+
+  - id: capacity.region-consistency
+    dimension: capacity-cost
+    title: Keep capacity regions intentional (data residency)
+    waf_pillar: Reliability
+    impact: medium
+    severity: medium
+    effort: medium
+    applicability:
+      base_confidence: 65
+      boosts:
+        - when: { regulated: true }
+          confidence: 90
+        - when: { has_sensitive_data: true }
+          confidence: 85
+    evaluate:
+      check: capacity_region_consistency
+      params: {}
+    recommendation: >-
+      Confirm that capacities spread across multiple regions is intentional and aligned
+      with data-residency requirements and user locality; consolidate otherwise.
+    rationale: >-
+      Capacities in unexpected regions can breach data-residency commitments and add
+      cross-region latency and egress cost.
+    references:
+      - https://learn.microsoft.com/fabric/admin/region-availability
+
+  - id: capacity.resilient-admins
+    dimension: capacity-cost
+    title: Each capacity has at least two administrators
+    waf_pillar: Operational Excellence
+    impact: medium
+    severity: medium
+    effort: low
+    applicability:
+      base_confidence: 70
+    evaluate:
+      check: capacity_min_admins
+      params: { minimum: 2 }
+    recommendation: >-
+      Assign at least two capacity administrators (ideally via a security group) so that
+      scaling and throttling decisions are never blocked by a single person's absence.
+    rationale: >-
+      A capacity with a single admin is a continuity and bus-factor risk; a second admin
+      keeps capacity operations resilient.
+    references:
+      - https://learn.microsoft.com/fabric/enterprise/scale-capacity

@@ -53,3 +53,31 @@ rules:
       ownership and discoverability that domains provide.
     references:
       - https://learn.microsoft.com/fabric/governance/domains
+
+  - id: domains.contributors-scoped
+    dimension: domains-data-mesh
+    title: Domain contributors are scoped to specific users/groups
+    waf_pillar: Security
+    impact: medium
+    severity: medium
+    effort: low
+    applicability:
+      base_confidence: 35
+      boosts:
+        - when: { has_domains: true }
+          confidence: 85
+        - when: { archetype: [data-mesh-adopter, large-enterprise] }
+          confidence: 85
+      not_applicable_when:
+        - { archetype: startup-analytics }
+    evaluate:
+      check: domains_contributors_scoped
+      params: {}
+    recommendation: >-
+      Set each domain's contributor scope to specific security groups rather than the whole
+      tenant, so only intended teams can assign workspaces to the domain.
+    rationale: >-
+      A domain open to all tenant users lets anyone attach workspaces, eroding the
+      delegated ownership boundary domains are meant to enforce.
+    references:
+      - https://learn.microsoft.com/fabric/governance/domains-setup

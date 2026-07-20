@@ -105,6 +105,16 @@ def test_new_dimension_statuses():
     # Domains & data mesh
     assert by_id["domains.defined"].status == Status.ADHERED
     assert by_id["domains.workspaces-assigned"].status == Status.GAP
+    assert by_id["domains.contributors-scoped"].status == Status.ADHERED
+
+    # New capacity checks (Prod F64, single region, single admin)
+    assert by_id["capacity.fabric-sku-preferred"].status == Status.ADHERED
+    assert by_id["capacity.region-consistency"].status == Status.ADHERED
+    assert by_id["capacity.resilient-admins"].status == Status.GAP
+
+    # New workspace checks (all Active, all have role assignments)
+    assert by_id["workspace.no-orphaned-state"].status == Status.ADHERED
+    assert by_id["workspace.governed-access"].status == Status.ADHERED
 
     # Data security
     assert by_id["security.information-protection-enabled"].status == Status.ADHERED

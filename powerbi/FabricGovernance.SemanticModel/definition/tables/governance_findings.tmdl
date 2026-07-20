@@ -151,7 +151,11 @@ table governance_findings
 			```
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0300
 
-	measure 'Findings (Latest Run)' = CALCULATE ( COUNTROWS ( governance_findings ), governance_findings[run_id] = [Latest Run ID] )
+	measure 'Findings (Latest Run)' = ```
+			VAR lr = [Latest Run ID]
+			RETURN
+			    CALCULATE ( COUNTROWS ( governance_findings ), governance_findings[run_id] = lr )
+			```
 		formatString: 0
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0301
 

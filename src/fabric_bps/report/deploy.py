@@ -52,16 +52,25 @@ def deploy_semantic_model(
     )
 
     with connect_semantic_model(dataset=dataset, workspace=workspace, readonly=False) as tom:
-        existing = {m.Name for t in tom.model.Tables for m in t.Measures}
+        existing = {m.Name: m for t in tom.model.Tables for m in t.Measures}
         for m in MEASURES:
+            fmt = m.get("format_string")
+            desc = m.get("description")
             if m["name"] in existing:
+                # Keep existing measures in sync with the spec (self-healing on re-run).
+                meas = existing[m["name"]]
+                meas.Expression = m["expression"]
+                if fmt is not None:
+                    meas.FormatString = fmt
+                if desc is not None:
+                    meas.Description = desc
                 continue
             tom.add_measure(
                 table_name=table,
                 measure_name=m["name"],
                 expression=m["expression"],
-                format_string=m.get("format_string"),
-                description=m.get("description"),
+                format_string=fmt,
+                description=desc,
             )
 
     return dataset

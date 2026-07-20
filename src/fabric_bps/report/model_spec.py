@@ -27,7 +27,11 @@ MEASURES = [
     },
     {
         "name": "Findings (Latest Run)",
-        "expression": "CALCULATE ( COUNTROWS ( governance_findings ), governance_findings[run_id] = [Latest Run ID] )",
+        "expression": (
+            "VAR lr = [Latest Run ID]\n"
+            "RETURN\n"
+            "    CALCULATE ( COUNTROWS ( governance_findings ), governance_findings[run_id] = lr )"
+        ),
         "format_string": "0",
         "description": None,
     },

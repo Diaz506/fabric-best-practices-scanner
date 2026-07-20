@@ -75,13 +75,28 @@ admin APIs. The only work is one-time setup:
 |---|---|---|
 | Deploy notebook + semantic model + report into the workspace | **Automated** (Jumpstart install / Git integration) | Once |
 | Provide a read-only admin identity | **~0 min** if you already have an admin login; **~10 min** to configure a service principal | Once |
-| Attach the notebook to a Lakehouse | **~1 min** | Once |
+| Create the findings Lakehouse | **Automated** — `00_deploy.py` creates it for you | Once |
 | Run the scan + auto-deploy the model | **1 click** (creates a Lakehouse-bound Direct Lake model with measures) | Each run |
 | Finish report visuals | **Optional ~10–15 min** (measures prebuilt; drag-and-drop recipe) | Once |
 
-**Minimum happy path (admin identity): ~2–3 minutes** — attach a Lakehouse and run all cells;
-the scan runs and the semantic model is created and bound automatically.
-Full breakdown in [`docs/deployment.md`](docs/deployment.md).
+**Minimum happy path (admin identity): ~2–3 minutes** — import `notebooks/00_deploy.py` and
+run all cells; it provisions the Lakehouse, runs the scan, and creates and binds the semantic
+model automatically. Full breakdown in [`docs/deployment.md`](docs/deployment.md).
+
+## Quickstart (one-click, in Fabric)
+
+1. Sign in as a user with **Fabric Administrator / Power BI Service Administrator**.
+2. Import [`notebooks/00_deploy.py`](notebooks/00_deploy.py) into your workspace.
+3. **Run all cells.** It provisions the `GovernanceScanner` Lakehouse, scans your tenant,
+   writes `governance_findings`, and deploys the `FabricGovernance` semantic model.
+
+> **Pre-publish (until this is on PyPI):** upload the wheel from `dist/` to any Lakehouse's
+> Files and point the notebook's `%pip install` line at it. Once published, use the
+> `pip install fabric-best-practices-scanner` line instead (both are in the notebook).
+
+Prefer to attach an existing Lakehouse and run manually? Use
+[`notebooks/01_run_scanner.py`](notebooks/01_run_scanner.py) — same scan, you attach the
+Lakehouse yourself.
 
 ## Install
 
@@ -90,6 +105,10 @@ Full breakdown in [`docs/deployment.md`](docs/deployment.md).
 pip install fabric-best-practices-scanner
 pip install "fabric-best-practices-scanner[sp,fabric,ai]"   # + service-principal auth, parquet fallback, AI rationale
 ```
+
+> **Not on PyPI yet.** Until it is published, install from the built wheel in `dist/`
+> (in a Fabric notebook, upload it to a Lakehouse's Files and `%pip install` that path —
+> see the Quickstart), or from source below.
 
 ### From source
 ```bash

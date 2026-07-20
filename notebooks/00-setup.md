@@ -5,8 +5,12 @@ one of the two identities below.
 
 ## Option A — Run in a Fabric notebook as an admin (simplest)
 1. Sign in as a user with **Fabric Administrator** or **Power BI Service Administrator**.
-2. Open `01_run_scanner.py` as a notebook, attach a **Lakehouse**, and run all cells.
+2. Import `00_deploy.py` (one-click: provisions the Lakehouse, scans, and deploys the model)
+   and **run all cells**. Prefer to attach your own Lakehouse? Use `01_run_scanner.py` instead.
 3. `fabric_notebook_token_provider()` acquires the token via `notebookutils` automatically.
+
+> Pre-publish only: upload the wheel from `dist/` to a Lakehouse's Files and point the
+> notebook's `%pip install` line at it. Once on PyPI, use the `pip install` line instead.
 
 ## Option B — Service principal (headless / scheduled)
 One-time tenant-admin configuration:

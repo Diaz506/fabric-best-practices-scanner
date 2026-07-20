@@ -13,8 +13,8 @@
 # **Prerequisites**
 # - Run as a user with **Fabric Administrator / Power BI Service Administrator**, OR
 #   configure a service principal (see `00-setup.md`).
-# - Pre-publish only: upload the wheel from `dist/` to *any* Lakehouse's Files, or set
-#   `WHEEL_PATH` below to an accessible path. Once on PyPI this step goes away.
+# - Pre-publish only: upload the wheel from `dist/` to a Lakehouse's Files and point the
+#   `%pip install` line below at it. Once on PyPI this step goes away.
 
 # %%
 # Parameters — safe to leave as defaults.
@@ -22,15 +22,13 @@ LAKEHOUSE_NAME = "GovernanceScanner"      # created in this workspace if it does
 DATASET_NAME = "FabricGovernance"          # semantic model name
 TABLE_NAME = "governance_findings"
 
-# Pre-publish install source (uploaded wheel). Set to None once installing from PyPI.
-WHEEL_PATH = "/lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl"
-
 # %%
-# Install the package. Pre-publish: from the uploaded wheel. Published: from PyPI.
-if WHEEL_PATH:
-    %pip install -q {WHEEL_PATH}
-else:
-    %pip install -q fabric-best-practices-scanner
+# Install the package.
+# Pre-publish: install the wheel you uploaded to a Lakehouse's Files (edit the path if yours
+# differs). `%pip` installs into the live session for all executors.
+%pip install -q /lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl
+# Published (PyPI): comment the line above and uncomment the line below instead.
+# %pip install -q fabric-best-practices-scanner
 
 # %%
 # 1) Provision the findings Lakehouse (idempotent — reused if it already exists).

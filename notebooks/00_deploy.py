@@ -20,12 +20,12 @@
 # **first** — the parameters are defined *after* it, or they would be wiped on install.
 
 # %%
-# 1) Install the package FIRST. %pip restarts the Python session, so it must run before
-#    any other code (otherwise variables defined earlier are wiped).
-%pip install -q "git+https://github.com/Diaz506/fabric-best-practices-scanner.git"
+# 1) Install the package + deploy extra FIRST. %pip restarts the Python session, so it must
+#    run before any other code. The [deploy] extra pulls semantic-link-labs (not preinstalled).
+%pip install -q "fabric-best-practices-scanner[deploy] @ git+https://github.com/Diaz506/fabric-best-practices-scanner.git"
 # Pin to a release:  ...fabric-best-practices-scanner.git@v0.1.0
-# Once on PyPI:      %pip install -q fabric-best-practices-scanner
-# Offline wheel:     %pip install -q /lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl
+# Once on PyPI:      %pip install -q "fabric-best-practices-scanner[deploy]"
+# Offline wheel:     %pip install -q "/lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl[deploy]"
 
 # %%
 # 2) Parameters — defined AFTER %pip (the session restarts on install). Safe to leave as-is.

@@ -10,11 +10,12 @@
 #   configure a service principal (see `00-setup.md`).
 
 # %%
-# Install the package from the public GitHub repo (no wheel upload needed).
-%pip install -q "git+https://github.com/Diaz506/fabric-best-practices-scanner.git"
+# Install the package + deploy extra from the public GitHub repo (no wheel upload needed).
+# The [deploy] extra pulls semantic-link-labs (not preinstalled in the Fabric runtime).
+%pip install -q "fabric-best-practices-scanner[deploy] @ git+https://github.com/Diaz506/fabric-best-practices-scanner.git"
 # Pin to a release:  ...fabric-best-practices-scanner.git@v0.1.0
-# Once on PyPI:      %pip install -q fabric-best-practices-scanner
-# Offline wheel:     %pip install -q /lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl
+# Once on PyPI:      %pip install -q "fabric-best-practices-scanner[deploy]"
+# Offline wheel:     %pip install -q "/lakehouse/default/Files/fabric_best_practices_scanner-0.1.0-py3-none-any.whl[deploy]"
 
 # %%
 from fabric_bps import scan
@@ -56,7 +57,8 @@ for f in result["findings"]:
 # is refreshed and only missing measures are added. After this, build visuals using the
 # recipe in `powerbi/README.md`, or use the shipped `.pbip` report.
 #
-# Requires `semantic-link-labs` (already present in the Fabric runtime).
+# Requires `semantic-link-labs` — installed by the `[deploy]` extra in the first cell
+# (it is not preinstalled in the Fabric runtime).
 
 # %%
 from fabric_bps.report import deploy_semantic_model

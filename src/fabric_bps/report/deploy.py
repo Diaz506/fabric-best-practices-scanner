@@ -6,8 +6,9 @@ there are no connection placeholders to fill in) and adds the governance measure
 ``model_spec``. This drops the manual deployment effort to just: run ``00_deploy.py``
 (which provisions the Lakehouse) — or attach a Lakehouse and run ``01_run_scanner.py``.
 
-Requires ``semantic-link-labs`` (present in the Fabric runtime; ``pip install
-'fabric-best-practices-scanner[deploy]'`` elsewhere).
+Requires ``semantic-link-labs`` (not preinstalled in the Fabric runtime; install via
+the package's ``[deploy]`` extra, e.g. ``pip install
+'fabric-best-practices-scanner[deploy]'``).
 """
 from __future__ import annotations
 

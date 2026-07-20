@@ -52,6 +52,7 @@ def scan(
     write: str = None,  # "json" | "lakehouse"
     table: str = "governance_findings",
     spark=None,
+    lakehouse_abfss: str = None,
 ) -> dict:
     from .collectors import (
         AdminClient,
@@ -93,6 +94,8 @@ def scan(
     elif write == "lakehouse":
         from .writers import write_lakehouse
 
-        result["output"] = write_lakehouse(result["findings"], table=table, spark=spark)
+        result["output"] = write_lakehouse(
+            result["findings"], table=table, spark=spark, lakehouse_abfss=lakehouse_abfss
+        )
 
     return result

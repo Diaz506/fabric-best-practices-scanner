@@ -157,3 +157,26 @@ rules:
       keeps capacity operations resilient.
     references:
       - https://learn.microsoft.com/fabric/enterprise/scale-capacity
+
+  - id: capacity.no-workspaces-on-paused-capacity
+    dimension: capacity-cost
+    title: No workspaces stranded on a paused/suspended capacity
+    waf_pillar: Reliability
+    impact: high
+    severity: high
+    effort: low
+    applicability:
+      base_confidence: 80
+    evaluate:
+      check: workspaces_not_on_paused_capacity
+      params: {}
+    recommendation: >-
+      Resume the capacity, or reassign its workspaces to an active capacity. Workspaces on a
+      paused/suspended capacity have no compute, so their reports, models, and jobs are
+      unavailable until the capacity resumes.
+    rationale: >-
+      A paused or suspended capacity halts compute for every workspace assigned to it. If those
+      workspaces are still in use, this is an outage — not cost control — and the blast radius
+      grows with the number of workspaces on that capacity.
+    references:
+      - https://learn.microsoft.com/fabric/enterprise/pause-resume

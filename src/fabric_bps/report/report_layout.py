@@ -192,20 +192,21 @@ def build_report_json(table: str = FACT_TABLE, inventory_table: str = INVENTORY_
         _card("cardHighGaps", "High-Impact Gaps (Latest Run)", 632, 16, 296, 96, 3, table, title="High-impact gaps"),
         _card("cardAdherence", "Adherence Rate (Latest Run)", 940, 16, 296, 96, 4, table, title="Adherence rate"),
         _matrix(
-            "matrixAreaStatus", "dimension", "status", count,
+            "matrixAreaStatus", "Area", "Status", count,
             16, 124, 760, 300, 5, table, "Findings by area and status",
         ),
-        _cat_value("donutStatus", "donutChart", "status", count, 792, 124, 472, 300, 6, table, "Findings by status"),
-        _cat_value("colSeverity", "clusteredColumnChart", "severity", count, 16, 436, 616, 268, 7, table, "Findings by severity"),
-        _cat_value("colImpact", "clusteredColumnChart", "impact", "Gaps (Latest Run)", 648, 436, 616, 268, 8, table, "Gaps by impact"),
+        _cat_value("donutStatus", "donutChart", "Status", count, 792, 124, 472, 300, 6, table, "Findings by status"),
+        _cat_value("colSeverity", "clusteredColumnChart", "Severity", count, 16, 436, 616, 268, 7, table, "Findings by severity"),
+        _cat_value("colImpact", "clusteredColumnChart", "Impact", "Gaps (Latest Run)", 648, 436, 616, 268, 8, table, "Gaps by impact"),
     ]
 
     # Page 2 — Findings Detail: filter by area/status, read the finding + recommendation,
-    # and open the official documentation via the clickable link column.
-    table_cols = ["dimension", "title", "status", "impact", "severity", "effort", "recommendation", "reference_url"]
+    # and open the official documentation via the clickable link column. Columns are ordered
+    # for triage: where (area) -> what (best practice) -> current state -> how bad -> what to do.
+    table_cols = ["Area", "Best practice", "Status", "Impact", "Severity", "Effort", "Recommendation", "Docs"]
     detail = [
-        _slicer("slicerArea", "dimension", 16, 16, 250, 336, 1, table, "Area"),
-        _slicer("slicerStatus", "status", 16, 360, 250, 344, 2, table, "Status"),
+        _slicer("slicerArea", "Area", 16, 16, 250, 336, 1, table, "Area"),
+        _slicer("slicerStatus", "Status", 16, 360, 250, 344, 2, table, "Status"),
         _container(
             "tableFindings",
             "tableEx",
@@ -226,20 +227,25 @@ def build_report_json(table: str = FACT_TABLE, inventory_table: str = INVENTORY_
     # resource table.
     inv_count = "Resources (Latest Run)"
     inv_cols = [
-        "resource_type", "name", "state", "sku", "region",
-        "capacity_name", "domain_name", "admin_count", "user_count", "is_orphan",
+        "Resource type", "Name", "State", "SKU", "Region",
+        "Capacity", "Domain", "Admins", "Users", "Orphaned",
     ]
     inventory = [
-        _card("cardResources", inv_count, 16, 16, 240, 96, 1, inventory_table, title="Resources (latest run)"),
-        _card("cardWorkspaces", "Workspaces (Latest Run)", 264, 16, 240, 96, 2, inventory_table, title="Workspaces"),
-        _card("cardCapacities", "Capacities (Latest Run)", 512, 16, 240, 96, 3, inventory_table, title="Capacities"),
-        _card("cardDomains", "Domains (Latest Run)", 760, 16, 240, 96, 4, inventory_table, title="Domains"),
-        _card("cardOrphaned", "Orphaned Resources (Latest Run)", 1008, 16, 256, 96, 5, inventory_table, title="Orphaned"),
+        _card("cardResources", inv_count, 16, 16, 200, 96, 1, inventory_table, title="Resources (latest run)"),
+        _card("cardWorkspaces", "Workspaces (Latest Run)", 224, 16, 200, 96, 2, inventory_table, title="Workspaces"),
+        _card("cardCapacities", "Capacities (Latest Run)", 432, 16, 200, 96, 3, inventory_table, title="Capacities"),
+        _card("cardDomains", "Domains (Latest Run)", 640, 16, 196, 96, 4, inventory_table, title="Domains"),
+        _card("cardOrphaned", "Orphaned Resources (Latest Run)", 844, 16, 200, 96, 5, inventory_table, title="Orphaned"),
+        _card("cardEmptyCapacities", "Capacities Without Workspaces (Latest Run)", 1052, 16, 212, 96, 6, inventory_table, title="Empty capacities"),
         _matrix(
-            "matrixTypeState", "resource_type", "state", inv_count,
-            16, 124, 500, 300, 6, inventory_table, "Resources by type and state",
+            "matrixTypeState", "Resource type", "State", inv_count,
+            16, 124, 500, 300, 7, inventory_table, "Resources by type and state",
         ),
-        _slicer("slicerInvType", "resource_type", 532, 124, 250, 300, 7, inventory_table, "Resource type"),
+        _slicer("slicerInvType", "Resource type", 532, 124, 250, 300, 8, inventory_table, "Resource type"),
+        _cat_value(
+            "barWsByCapacity", "clusteredBarChart", "Capacity", "Workspaces (Latest Run)",
+            798, 124, 466, 300, 9, inventory_table, "Workspaces by capacity",
+        ),
         _container(
             "tableInventory",
             "tableEx",
@@ -247,7 +253,7 @@ def build_report_json(table: str = FACT_TABLE, inventory_table: str = INVENTORY_
             436,
             1248,
             268,
-            8,
+            10,
             {"Values": [{"queryRef": f"{inventory_table}.{c}"} for c in inv_cols]},
             [_column_select(c, inventory_table) for c in inv_cols],
             inventory_table,
@@ -260,12 +266,12 @@ def build_report_json(table: str = FACT_TABLE, inventory_table: str = INVENTORY_
     # Page 4 — Orphans & Unused: hard-filtered to orphaned/unused resources so the page shows
     # only what needs cleanup (no need to toggle a slicer). Resource-type slicer to focus by kind.
     orphan_cols = [
-        "name", "resource_type", "state", "orphan_reasons",
-        "capacity_name", "domain_name", "admin_count", "user_count",
+        "Name", "Resource type", "State", "Why flagged",
+        "Capacity", "Domain", "Admins", "Users",
     ]
     orphans = [
         _card("cardOrphanTotal", "Orphaned Resources (Latest Run)", 16, 16, 296, 96, 1, inventory_table, title="Orphaned resources"),
-        _slicer("slicerOrphanType", "resource_type", 16, 124, 250, 580, 2, inventory_table, "Resource type"),
+        _slicer("slicerOrphanType", "Resource type", 16, 124, 250, 580, 2, inventory_table, "Resource type"),
         _container(
             "tableOrphans",
             "tableEx",
@@ -281,7 +287,7 @@ def build_report_json(table: str = FACT_TABLE, inventory_table: str = INVENTORY_
         ),
     ]
     orphans_filters = json.dumps(
-        [_categorical_eq_filter("orphanOnly", "is_orphan", "Yes", inventory_table)]
+        [_categorical_eq_filter("orphanOnly", "Orphaned", "Yes", inventory_table)]
     )
 
     report_config = {

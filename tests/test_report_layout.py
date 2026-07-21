@@ -6,26 +6,20 @@ in the semantic model (which would break the report on deploy).
 import json
 
 from fabric_bps.report import (
+    FACT_COLUMN_NAMES,
     FACT_TABLE,
+    INVENTORY_COLUMN_NAMES,
     INVENTORY_MEASURE_NAMES,
     INVENTORY_TABLE,
     MEASURE_NAMES,
     build_report_json,
 )
 
-# Columns of the governance_findings fact table (from Finding.to_row()).
-COLUMNS = {
-    "run_id", "timestamp", "rule_id", "dimension", "title", "waf_pillar", "status",
-    "impact", "severity", "applicability_confidence", "recommendation", "rationale",
-    "references", "reference_url", "effort", "evidence", "archetype",
-}
+# Friendly display columns of the governance_findings fact table.
+COLUMNS = set(FACT_COLUMN_NAMES)
 
-# Columns of the governance_inventory table (from InventoryItem.to_row()).
-INVENTORY_COLUMNS = {
-    "run_id", "timestamp", "resource_type", "resource_id", "name", "state", "sku",
-    "region", "on_dedicated_capacity", "capacity_name", "domain_name", "admin_count",
-    "user_count", "is_orphan", "orphan_reasons",
-}
+# Friendly display columns of the governance_inventory table.
+INVENTORY_COLUMNS = set(INVENTORY_COLUMN_NAMES)
 
 _COLUMNS_BY_TABLE = {FACT_TABLE: COLUMNS, INVENTORY_TABLE: INVENTORY_COLUMNS}
 _MEASURES_BY_TABLE = {
@@ -82,7 +76,7 @@ def test_orphans_page_hard_filtered_to_orphans():
     filters = json.loads(orphans["filters"])
     assert filters, "Orphans page must carry a page-level filter"
     f = filters[0]
-    assert f["expression"]["Column"]["Property"] == "is_orphan"
+    assert f["expression"]["Column"]["Property"] == "Orphaned"
     values = f["filter"]["Where"][0]["Condition"]["In"]["Values"]
     assert values == [[{"Literal": {"Value": "'Yes'"}}]]
     # the confusing is_orphan slicer is gone now that the page is pre-filtered

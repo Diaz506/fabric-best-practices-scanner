@@ -1,7 +1,11 @@
 """Report / semantic-model deployment helpers."""
 from .deploy import deploy_report, deploy_semantic_model
 from .model_spec import (
+    FACT_COLUMN_NAMES,
+    FACT_COLUMNS,
     FACT_TABLE,
+    INVENTORY_COLUMN_NAMES,
+    INVENTORY_COLUMNS,
     INVENTORY_MEASURE_NAMES,
     INVENTORY_MEASURES,
     INVENTORY_TABLE,
@@ -19,7 +23,11 @@ __all__ = [
     "MEASURES",
     "MEASURE_NAMES",
     "FACT_TABLE",
+    "FACT_COLUMNS",
+    "FACT_COLUMN_NAMES",
     "INVENTORY_MEASURES",
     "INVENTORY_MEASURE_NAMES",
     "INVENTORY_TABLE",
+    "INVENTORY_COLUMNS",
+    "INVENTORY_COLUMN_NAMES",
 ]

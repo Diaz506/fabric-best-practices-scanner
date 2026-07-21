@@ -13,7 +13,9 @@ the package's ``[deploy]`` extra, e.g. ``pip install
 from __future__ import annotations
 
 from .model_spec import (
+    FACT_COLUMNS,
     FACT_TABLE,
+    INVENTORY_COLUMNS,
     INVENTORY_MEASURES,
     INVENTORY_TABLE,
     MEASURES,
@@ -28,13 +30,32 @@ def _resolve_source(lakehouse):
     return fabric.get_lakehouse_id()  # the Lakehouse attached to this notebook
 
 
-def _categorize_url_columns(tom, table: str) -> None:
-    """Mark the reference_url column as a Web URL so the report renders it as a link."""
+def _apply_columns(tom, table: str, columns: list) -> None:
+    """Rename Delta source columns to friendly display names and set categories.
+
+    The Direct Lake generator creates columns named after the snake_case Delta source
+    column. We rename each to its friendly display ``name`` (keeping ``SourceColumn`` on the
+    original), apply the format string, and mark the docs link column as a Web URL so the
+    report renders it as a clickable link.
+    """
+    by_source = {c["source"]: c for c in columns}
     for t in tom.model.Tables:
         if t.Name != table:
             continue
         for col in t.Columns:
-            if col.Name == "reference_url":
+            spec = by_source.get(col.SourceColumn) or by_source.get(col.Name)
+            if not spec:
+                continue
+            try:
+                col.Name = spec["name"]
+            except Exception:  # noqa: BLE001 - rename is best-effort
+                pass
+            if spec.get("format_string"):
+                try:
+                    col.FormatString = spec["format_string"]
+                except Exception:  # noqa: BLE001
+                    pass
+            if spec.get("category") == "WebUrl":
                 try:
                     col.DataCategory = "WebUrl"
                 except Exception:  # noqa: BLE001 - categorization is best-effort
@@ -114,8 +135,10 @@ def deploy_semantic_model(
             raise
 
     with connect_semantic_model(dataset=dataset, workspace=workspace, readonly=False) as tom:
-        _categorize_url_columns(tom, table)
         model_tables = {t.Name for t in tom.model.Tables}
+        _apply_columns(tom, table, FACT_COLUMNS)
+        if inventory_table in model_tables:
+            _apply_columns(tom, inventory_table, INVENTORY_COLUMNS)
         existing = {m.Name: m for t in tom.model.Tables for m in t.Measures}
         _sync_measures(tom, table, MEASURES, existing)
         if inventory_table in model_tables:

@@ -129,3 +129,22 @@ def test_private_link_dropped_for_non_regulated():
     res = scan_from_signals(load_full_sample())
     ids = {f.rule_id for f in res["findings"]}
     assert "security.private-link" not in ids
+
+
+def test_no_workspaces_on_paused_capacity_adhered():
+    # Full sample: the only capacity is Active -> no stranded workspaces.
+    res = scan_from_signals(load_full_sample())
+    by_id = {f.rule_id: f for f in res["findings"]}
+    assert by_id["capacity.no-workspaces-on-paused-capacity"].status == Status.ADHERED
+
+
+def test_no_workspaces_on_paused_capacity_gap_when_stranded():
+    # A suspended capacity that still has a workspace assigned is an outage risk (GAP).
+    sig = load_full_sample()
+    for c in sig["capacities"]:
+        if c.get("id") == "cap-1":
+            c["state"] = "Suspended"
+    res = scan_from_signals(sig)
+    finding = {f.rule_id: f for f in res["findings"]}["capacity.no-workspaces-on-paused-capacity"]
+    assert finding.status == Status.GAP
+    assert finding.evidence["strandedCount"] >= 1

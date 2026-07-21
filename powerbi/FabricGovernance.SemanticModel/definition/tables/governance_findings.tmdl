@@ -2,7 +2,7 @@ table governance_findings
 	lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0200
 
 	/// The scan run identifier. One value per scan; new runs are appended so posture can be trended.
-	column run_id
+	column 'Run ID'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0201
 		summarizeBy: none
@@ -11,7 +11,7 @@ table governance_findings
 		annotation SummarizationSetBy = Automatic
 
 	/// ISO-8601 UTC timestamp of the scan run. Stored as text; sorts chronologically.
-	column timestamp
+	column 'Timestamp'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0202
 		summarizeBy: none
@@ -19,7 +19,7 @@ table governance_findings
 
 		annotation SummarizationSetBy = Automatic
 
-	column rule_id
+	column 'Rule ID'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0203
 		summarizeBy: none
@@ -27,8 +27,8 @@ table governance_findings
 
 		annotation SummarizationSetBy = Automatic
 
-	/// Governance dimension (e.g. tenant-settings, capacity-cost, workspace-governance).
-	column dimension
+	/// Governance area (e.g. tenant-settings, capacity-cost, workspace-governance).
+	column 'Area'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0204
 		summarizeBy: none
@@ -36,7 +36,7 @@ table governance_findings
 
 		annotation SummarizationSetBy = Automatic
 
-	column title
+	column 'Best practice'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0205
 		summarizeBy: none
@@ -45,7 +45,7 @@ table governance_findings
 		annotation SummarizationSetBy = Automatic
 
 	/// Well-Architected Framework pillar the rule maps to.
-	column waf_pillar
+	column 'WAF pillar'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0206
 		summarizeBy: none
@@ -54,7 +54,7 @@ table governance_findings
 		annotation SummarizationSetBy = Automatic
 
 	/// Finding status: adhered | gap | verify-applicability | insufficient-data | not-applicable.
-	column status
+	column 'Status'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0207
 		summarizeBy: none
@@ -63,7 +63,7 @@ table governance_findings
 		annotation SummarizationSetBy = Automatic
 
 	/// Business impact of the rule: high | medium | low.
-	column impact
+	column 'Impact'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0208
 		summarizeBy: none
@@ -71,7 +71,7 @@ table governance_findings
 
 		annotation SummarizationSetBy = Automatic
 
-	column severity
+	column 'Severity'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0209
 		summarizeBy: none
@@ -79,7 +79,7 @@ table governance_findings
 
 		annotation SummarizationSetBy = Automatic
 
-	column applicability_confidence
+	column 'Applicability %'
 		dataType: int64
 		formatString: 0
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d020a
@@ -88,7 +88,7 @@ table governance_findings
 
 		annotation SummarizationSetBy = Automatic
 
-	column recommendation
+	column 'Recommendation'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d020b
 		summarizeBy: none
@@ -96,7 +96,7 @@ table governance_findings
 
 		annotation SummarizationSetBy = Automatic
 
-	column rationale
+	column 'Rationale'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d020c
 		summarizeBy: none
@@ -104,7 +104,7 @@ table governance_findings
 
 		annotation SummarizationSetBy = Automatic
 
-	column references
+	column 'References'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d020d
 		summarizeBy: none
@@ -113,7 +113,7 @@ table governance_findings
 		annotation SummarizationSetBy = Automatic
 
 	/// First official documentation link for the finding; rendered as a clickable URL.
-	column reference_url
+	column 'Docs'
 		dataType: string
 		dataCategory: WebURL
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0211
@@ -122,7 +122,7 @@ table governance_findings
 
 		annotation SummarizationSetBy = Automatic
 
-	column effort
+	column 'Effort'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d020e
 		summarizeBy: none
@@ -131,7 +131,7 @@ table governance_findings
 		annotation SummarizationSetBy = Automatic
 
 	/// JSON evidence captured by the check (the "why" behind the status).
-	column evidence
+	column 'Evidence'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d020f
 		summarizeBy: none
@@ -140,7 +140,7 @@ table governance_findings
 		annotation SummarizationSetBy = Automatic
 
 	/// Auto-derived tenant archetype used to scope applicability.
-	column archetype
+	column 'Archetype'
 		dataType: string
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0210
 		summarizeBy: none
@@ -152,11 +152,11 @@ table governance_findings
 
 	/// run_id of the most recent scan (by timestamp). Anchors the "current posture" measures.
 	measure 'Latest Run ID' = ```
-			VAR MaxTs = MAX ( governance_findings[timestamp] )
+			VAR MaxTs = MAX ( governance_findings[Timestamp] )
 			RETURN
 			    CALCULATE (
-			        SELECTEDVALUE ( governance_findings[run_id] ),
-			        FILTER ( ALL ( governance_findings ), governance_findings[timestamp] = MaxTs )
+			        SELECTEDVALUE ( governance_findings[Run ID] ),
+			        FILTER ( ALL ( governance_findings ), governance_findings[Timestamp] = MaxTs )
 			    )
 			```
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0300
@@ -164,24 +164,24 @@ table governance_findings
 	measure 'Findings (Latest Run)' = ```
 			VAR lr = [Latest Run ID]
 			RETURN
-			    CALCULATE ( COUNTROWS ( governance_findings ), governance_findings[run_id] = lr )
+			    CALCULATE ( COUNTROWS ( governance_findings ), governance_findings[Run ID] = lr )
 			```
 		formatString: 0
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0301
 
-	measure 'Adhered (Latest Run)' = CALCULATE ( [Findings (Latest Run)], KEEPFILTERS ( governance_findings[status] = "adhered" ) )
+	measure 'Adhered (Latest Run)' = CALCULATE ( [Findings (Latest Run)], KEEPFILTERS ( governance_findings[Status] = "adhered" ) )
 		formatString: 0
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0302
 
-	measure 'Gaps (Latest Run)' = CALCULATE ( [Findings (Latest Run)], KEEPFILTERS ( governance_findings[status] = "gap" ) )
+	measure 'Gaps (Latest Run)' = CALCULATE ( [Findings (Latest Run)], KEEPFILTERS ( governance_findings[Status] = "gap" ) )
 		formatString: 0
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0303
 
-	measure 'Verify Applicability (Latest Run)' = CALCULATE ( [Findings (Latest Run)], KEEPFILTERS ( governance_findings[status] = "verify-applicability" ) )
+	measure 'Verify Applicability (Latest Run)' = CALCULATE ( [Findings (Latest Run)], KEEPFILTERS ( governance_findings[Status] = "verify-applicability" ) )
 		formatString: 0
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0304
 
-	measure 'Insufficient Data (Latest Run)' = CALCULATE ( [Findings (Latest Run)], KEEPFILTERS ( governance_findings[status] = "insufficient-data" ) )
+	measure 'Insufficient Data (Latest Run)' = CALCULATE ( [Findings (Latest Run)], KEEPFILTERS ( governance_findings[Status] = "insufficient-data" ) )
 		formatString: 0
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0305
 
@@ -195,18 +195,18 @@ table governance_findings
 		formatString: 0.0%
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0307
 
-	measure 'High-Impact Gaps (Latest Run)' = CALCULATE ( [Gaps (Latest Run)], KEEPFILTERS ( governance_findings[impact] = "high" ) )
+	measure 'High-Impact Gaps (Latest Run)' = CALCULATE ( [Gaps (Latest Run)], KEEPFILTERS ( governance_findings[Impact] = "high" ) )
 		formatString: 0
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0308
 
 	/// --- Per-run (trend) measures — put run_id or timestamp on the axis --------
 
 	/// Adhered count for the run(s) in the current filter context (for trend visuals).
-	measure 'Adhered (This Run)' = CALCULATE ( COUNTROWS ( governance_findings ), KEEPFILTERS ( governance_findings[status] = "adhered" ) )
+	measure 'Adhered (This Run)' = CALCULATE ( COUNTROWS ( governance_findings ), KEEPFILTERS ( governance_findings[Status] = "adhered" ) )
 		formatString: 0
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d0309
 
-	measure 'Gaps (This Run)' = CALCULATE ( COUNTROWS ( governance_findings ), KEEPFILTERS ( governance_findings[status] = "gap" ) )
+	measure 'Gaps (This Run)' = CALCULATE ( COUNTROWS ( governance_findings ), KEEPFILTERS ( governance_findings[Status] = "gap" ) )
 		formatString: 0
 		lineageTag: 5b3a1c22-0d44-4e77-9a10-8f2b6c1d030a
 

@@ -212,7 +212,37 @@ def capacity_min_admins(sig: Signals, params: dict):
     return Status.ADHERED, {"capacityCount": len(caps), "minimum": minimum}
 
 
-# --- Workspace governance ---------------------------------------------------
+@check("workspaces_not_on_paused_capacity")
+def workspaces_not_on_paused_capacity(sig: Signals, params: dict):
+    """No active workspaces should sit on a paused/suspended capacity (they lose compute)."""
+    caps = sig.capacities or []
+    ws = _real_workspaces(sig)
+    if not caps:
+        return Status.INSUFFICIENT_DATA, {"reason": "no capacities collected"}
+    if not ws:
+        return Status.INSUFFICIENT_DATA, {"reason": "no workspaces collected"}
+    if all(not c.get("state") for c in caps):
+        return Status.INSUFFICIENT_DATA, {"reason": "capacity state not collected"}
+    paused_ids = {
+        c.get("id"): c.get("displayName")
+        for c in caps
+        if str(c.get("state") or "").lower() in ("paused", "suspended")
+    }
+    if not paused_ids:
+        return Status.ADHERED, {"pausedCapacities": 0, "workspaceCount": len(ws)}
+    stranded = [
+        {"workspace": w.get("name"), "capacity": paused_ids.get(w.get("capacityId"))}
+        for w in ws
+        if w.get("capacityId") in paused_ids
+    ]
+    if stranded:
+        return Status.GAP, {
+            "strandedWorkspaces": stranded[:25],
+            "strandedCount": len(stranded),
+            "pausedCapacities": [n for n in paused_ids.values() if n],
+            "reason": "workspaces assigned to a paused/suspended capacity have no compute until it resumes",
+        }
+    return Status.ADHERED, {"pausedCapacities": len(paused_ids), "strandedWorkspaces": 0}
 
 def _real_workspaces(sig: Signals) -> list:
     """Non-personal workspaces (exclude PersonalGroup 'My workspace' entries)."""

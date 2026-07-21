@@ -42,6 +42,38 @@ def _prototype(selects, table: str):
     }
 
 
+def _categorical_eq_filter(fname, column, value, table):
+    """Classic report.json categorical equality filter (e.g. is_orphan = 'Yes')."""
+    return {
+        "name": fname,
+        "expression": {
+            "Column": {"Expression": {"SourceRef": {"Entity": table}}, "Property": column}
+        },
+        "filter": {
+            "Version": 2,
+            "From": [{"Name": _SRC, "Entity": table, "Type": 0}],
+            "Where": [
+                {
+                    "Condition": {
+                        "In": {
+                            "Expressions": [
+                                {
+                                    "Column": {
+                                        "Expression": {"SourceRef": {"Source": _SRC}},
+                                        "Property": column,
+                                    }
+                                }
+                            ],
+                            "Values": [[{"Literal": {"Value": f"'{value}'"}}]],
+                        }
+                    }
+                }
+            ],
+        },
+        "type": "Categorical",
+    }
+
+
 def _container(name, vtype, x, y, w, h, z, projections, selects, table, title=None):
     single = {
         "visualType": vtype,
@@ -225,14 +257,15 @@ def build_report_json(table: str = FACT_TABLE, inventory_table: str = INVENTORY_
 
     # Page 4 — Orphans & Unused: slicers to focus on orphaned/unused resources and the
     # reasons they were flagged, so admins can clean up or reassign.
+    # Page 4 — Orphans & Unused: hard-filtered to orphaned/unused resources so the page shows
+    # only what needs cleanup (no need to toggle a slicer). Resource-type slicer to focus by kind.
     orphan_cols = [
         "name", "resource_type", "state", "orphan_reasons",
         "capacity_name", "domain_name", "admin_count", "user_count",
     ]
     orphans = [
         _card("cardOrphanTotal", "Orphaned Resources (Latest Run)", 16, 16, 296, 96, 1, inventory_table, title="Orphaned resources"),
-        _slicer("slicerOrphanFlag", "is_orphan", 16, 124, 250, 250, 2, inventory_table, "Orphaned?"),
-        _slicer("slicerOrphanType", "resource_type", 16, 384, 250, 320, 3, inventory_table, "Resource type"),
+        _slicer("slicerOrphanType", "resource_type", 16, 124, 250, 580, 2, inventory_table, "Resource type"),
         _container(
             "tableOrphans",
             "tableEx",
@@ -240,13 +273,16 @@ def build_report_json(table: str = FACT_TABLE, inventory_table: str = INVENTORY_
             124,
             982,
             580,
-            4,
+            3,
             {"Values": [{"queryRef": f"{inventory_table}.{c}"} for c in orphan_cols]},
             [_column_select(c, inventory_table) for c in orphan_cols],
             inventory_table,
-            title="Orphaned & unused resources (filter Orphaned? = Yes to focus cleanup)",
+            title="Orphaned & unused resources — what to clean up or reassign",
         ),
     ]
+    orphans_filters = json.dumps(
+        [_categorical_eq_filter("orphanOnly", "is_orphan", "Yes", inventory_table)]
+    )
 
     report_config = {
         "version": "5.55",
@@ -256,11 +292,11 @@ def build_report_json(table: str = FACT_TABLE, inventory_table: str = INVENTORY_
         "settings": {"useStylableVisualContainerHeader": True},
     }
 
-    def page(name, display, ordinal, visuals):
+    def page(name, display, ordinal, visuals, filters="[]"):
         return {
             "name": name,
             "displayName": display,
-            "filters": "[]",
+            "filters": filters,
             "ordinal": ordinal,
             "visualContainers": visuals,
             "config": "{}",
@@ -278,6 +314,6 @@ def build_report_json(table: str = FACT_TABLE, inventory_table: str = INVENTORY_
             page("page-overview", "Governance Overview", 0, overview),
             page("page-detail", "Findings Detail", 1, detail),
             page("page-inventory", "Resource Inventory", 2, inventory),
-            page("page-orphans", "Orphans & Unused", 3, orphans),
+            page("page-orphans", "Orphans & Unused", 3, orphans, filters=orphans_filters),
         ],
     }

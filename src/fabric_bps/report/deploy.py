@@ -147,5 +147,19 @@ def deploy_report(
             workspace=workspace,
         )
         return report
-    except Exception as exc:  # noqa: BLE001 - report deploy is optional
-        return f"report not created ({type(exc).__name__}: {exc}); use the shipped .pbip report instead"
+    except Exception as exc:  # noqa: BLE001 - report may already exist; try an in-place update
+        try:
+            from sempy_labs.report import update_report_from_reportjson
+
+            update_report_from_reportjson(
+                report=report,
+                report_json=report_json,
+                workspace=workspace,
+            )
+            return f"{report} (updated in place)"
+        except Exception as exc2:  # noqa: BLE001 - report deploy is optional
+            return (
+                f"report not created ({type(exc).__name__}: {exc}); "
+                f"update also failed ({type(exc2).__name__}: {exc2}); "
+                "use the shipped .pbip report instead"
+            )

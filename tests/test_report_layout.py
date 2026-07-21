@@ -71,3 +71,20 @@ def test_visual_names_unique():
     rj = build_report_json()
     names = [json.loads(vc["config"])["name"] for _, vc in _visuals(rj)]
     assert len(names) == len(set(names))
+
+
+def test_orphans_page_hard_filtered_to_orphans():
+    rj = build_report_json()
+    pages = {s["name"]: s for s in rj["sections"]}
+    for s in rj["sections"]:
+        json.loads(s["filters"])  # every page's filters is valid JSON
+    orphans = pages["page-orphans"]
+    filters = json.loads(orphans["filters"])
+    assert filters, "Orphans page must carry a page-level filter"
+    f = filters[0]
+    assert f["expression"]["Column"]["Property"] == "is_orphan"
+    values = f["filter"]["Where"][0]["Condition"]["In"]["Values"]
+    assert values == [[{"Literal": {"Value": "'Yes'"}}]]
+    # the confusing is_orphan slicer is gone now that the page is pre-filtered
+    names = [json.loads(vc["config"])["name"] for vc in orphans["visualContainers"]]
+    assert "slicerOrphanFlag" not in names

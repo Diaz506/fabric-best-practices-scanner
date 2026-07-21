@@ -3,7 +3,7 @@
 Runs inside a Fabric notebook after the scan has written the ``governance_findings``
 Delta table. It creates a Direct Lake semantic model bound to the *live* Lakehouse (so
 there are no connection placeholders to fill in) and adds the governance measures from
-``model_spec``. This drops the manual deployment effort to just: run ``00_deploy.py``
+``model_spec``. This drops the manual deployment effort to just: run ``00_deploy.ipynb``
 (which provisions the Lakehouse) — or attach a Lakehouse and run ``01_run_scanner.py``.
 
 Requires ``semantic-link-labs`` (not preinstalled in the Fabric runtime; install via

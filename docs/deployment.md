@@ -10,14 +10,14 @@ every finding comes from what the APIs report. The only manual work is one-time 
 |---|------|--------|-----|------|------------------------------|
 | 1 | Deploy the solution (notebook + semantic model + report) into the workspace | **Automated** | — | Once | Yes — done by the Jumpstart install / Git integration |
 | 2 | Provide a read-only admin identity | **Manual, ~5–10 min** | Tenant admin | Once | Path A is free if you already have an admin login; Path B (SP) is the ~10-min part |
-| 3 | Create the findings Lakehouse | **Automated** | — | Once | Yes — `00_deploy.py` creates it and writes by path (no manual attach) |
+| 3 | Create the findings Lakehouse | **Automated** | — | Once | Yes — `00_deploy.ipynb` creates it and writes by path (no manual attach) |
 | 4 | Run the scan + auto-deploy the semantic model | **1 click / automated** | Analyst | Each run | The notebook provisions the Lakehouse, scans, and creates a Lakehouse-bound Direct Lake model with the measures — **no connection placeholders to fill in** |
 | 5 | Report visuals | **Automated** | — | Once | Yes — `deploy_report` creates a populated report (cards + charts + findings table); customize optionally |
 | 6 | Schedule re-runs for trend | **Optional, ~2 min** | Analyst | Once | Optional |
 | 7 | Enable AI rationale | **Optional** | Analyst | Once | Optional — set Azure OpenAI env vars |
 
 **Bottom line:** if you already have a Fabric/Power BI admin login, the minimum path is
-**import `00_deploy.py` → run all cells (~2–3 minutes)** — it provisions the Lakehouse, runs
+**import `00_deploy.ipynb` → run all cells (~2–3 minutes)** — it provisions the Lakehouse, runs
 the scan, and creates and binds the semantic model automatically. The service-principal path
 (step 2, Path B) adds a one-time ~10 minutes but gives you a headless, schedulable setup.
 

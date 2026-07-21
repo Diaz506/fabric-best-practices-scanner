@@ -16,7 +16,7 @@ All notable changes to this project are documented here. The format is based on
 - Read-only admin API collectors (tenant settings, capacities, workspaces, domains,
   pipelines) with Fabric-notebook and service-principal token providers.
 - JSON and Lakehouse Delta writers; `scan()` / `scan_from_signals()` entry points.
-- One-click deploy notebook (`notebooks/00_deploy.ipynb` / `.py`) that provisions the
+- One-click deploy notebook (`notebooks/00_deploy.ipynb`) that provisions the
   findings Lakehouse, runs the scan, and deploys a Direct Lake semantic model with
   prebuilt measures. Manual `notebooks/01_run_scanner.py` path also provided.
 - Power BI `.pbip` project (Direct Lake semantic model + starter report) and an

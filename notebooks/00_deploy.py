@@ -5,7 +5,7 @@
 #
 # 1. Installs the scanner package.
 # 2. Provisions the **Lakehouse** that stores findings (creates it if missing).
-# 3. Runs the scan and writes `governance_findings` to the Lakehouse.
+# 3. Runs the scan and writes `governance_findings` and `governance_inventory` to the Lakehouse.
 # 4. Deploys the **Direct Lake semantic model** (with prebuilt measures) bound to it.
 #
 # You do **not** need to create or attach a Lakehouse by hand — this notebook does it.
@@ -54,6 +54,7 @@ result = scan(
 
 print("Archetype:", result["context"]["archetype"])
 print("Findings:", len(result["findings"]))
+print("Inventory resources:", len(result["inventory"]))
 print("Output:", result.get("output"))
 if result.get("collection_errors"):
     print("Collection errors:", result["collection_errors"])
@@ -88,10 +89,11 @@ print(deploy_report(dataset=DATASET_NAME, report=DATASET_NAME, workspace=lh["wor
 # %% [markdown]
 # ## Done
 #
-# You now have, in *this* workspace: the **`governance_findings`** table in the
-# `GovernanceScanner` Lakehouse, the **`FabricGovernance`** semantic model, and a populated
-# **`FabricGovernance`** report (overview cards + charts and a findings table). Open the
-# report to review your posture, or customize it further with the recipe in `powerbi/README.md`.
+# You now have, in *this* workspace: the **`governance_findings`** and
+# **`governance_inventory`** tables in the `GovernanceScanner` Lakehouse, the
+# **`FabricGovernance`** semantic model, and a populated **`FabricGovernance`** report
+# (Governance Overview, Findings Detail, Resource Inventory, and Orphans & Unused pages). Open
+# the report to review your posture, or customize it further with the recipe in `powerbi/README.md`.
 #
 # Re-run any time to refresh — findings append (with run id + timestamp) so the report can
 # trend posture over successive runs.

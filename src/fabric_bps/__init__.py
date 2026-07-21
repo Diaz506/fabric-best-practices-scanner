@@ -20,6 +20,7 @@ from . import checks  # noqa: F401  (imported for side effect: registers check p
 from .archetype import classify
 from .catalog import load_catalog
 from .engine import evaluate
+from .inventory import build_inventory
 from .models import Finding, Impact, Rule, Severity, Status
 from .run import scan, scan_from_signals
 from .signals import Signals
@@ -32,6 +33,7 @@ __all__ = [
     "load_catalog",
     "classify",
     "evaluate",
+    "build_inventory",
     "Signals",
     "Finding",
     "Rule",

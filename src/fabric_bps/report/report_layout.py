@@ -1,8 +1,11 @@
 """Build a populated Power BI report layout (classic report.json) for the findings model.
 
-Produces a two-page report bound to the ``governance_findings`` table and its measures:
+Produces a four-page report bound to the ``governance_findings`` fact table and the
+``governance_inventory`` inventory table (admin control center):
   * Governance Overview  — KPI cards + charts by area / status / severity / impact.
-  * Findings Detail      — a status slicer + a findings table.
+  * Findings Detail      — area + status slicers + a findings table with doc links.
+  * Resource Inventory   — resource counts + a type x state matrix + a resource table.
+  * Orphans & Unused     — slicers + a table of orphaned/unused resources and why.
 
 ``deploy_report`` deploys the output via ``sempy_labs.report.create_report_from_reportjson``,
 and the shipped ``.pbip`` report mirrors it. Kept as a builder (not static JSON) so the
@@ -12,7 +15,7 @@ from __future__ import annotations
 
 import json
 
-from .model_spec import FACT_TABLE
+from .model_spec import FACT_TABLE, INVENTORY_TABLE
 
 _SRC = "g"
 
@@ -146,7 +149,7 @@ def _cat_value(name, vtype, category, measure, x, y, w, h, z, table, title):
     )
 
 
-def build_report_json(table: str = FACT_TABLE) -> dict:
+def build_report_json(table: str = FACT_TABLE, inventory_table: str = INVENTORY_TABLE) -> dict:
     count = "Findings (Latest Run)"
 
     # Page 1 — Governance Overview: labeled KPIs, a categorized area x status matrix,
@@ -186,6 +189,65 @@ def build_report_json(table: str = FACT_TABLE) -> dict:
         ),
     ]
 
+    # Page 3 — Resource Inventory (admin control center): current-state counts of every
+    # workspace, capacity, and domain, with a resource_type x state breakdown and a browsable
+    # resource table.
+    inv_count = "Resources (Latest Run)"
+    inv_cols = [
+        "resource_type", "name", "state", "sku", "region",
+        "capacity_name", "domain_name", "admin_count", "user_count", "is_orphan",
+    ]
+    inventory = [
+        _card("cardResources", inv_count, 16, 16, 240, 96, 1, inventory_table, title="Resources (latest run)"),
+        _card("cardWorkspaces", "Workspaces (Latest Run)", 264, 16, 240, 96, 2, inventory_table, title="Workspaces"),
+        _card("cardCapacities", "Capacities (Latest Run)", 512, 16, 240, 96, 3, inventory_table, title="Capacities"),
+        _card("cardDomains", "Domains (Latest Run)", 760, 16, 240, 96, 4, inventory_table, title="Domains"),
+        _card("cardOrphaned", "Orphaned Resources (Latest Run)", 1008, 16, 256, 96, 5, inventory_table, title="Orphaned"),
+        _matrix(
+            "matrixTypeState", "resource_type", "state", inv_count,
+            16, 124, 500, 300, 6, inventory_table, "Resources by type and state",
+        ),
+        _slicer("slicerInvType", "resource_type", 532, 124, 250, 300, 7, inventory_table, "Resource type"),
+        _container(
+            "tableInventory",
+            "tableEx",
+            16,
+            436,
+            1248,
+            268,
+            8,
+            {"Values": [{"queryRef": f"{inventory_table}.{c}"} for c in inv_cols]},
+            [_column_select(c, inventory_table) for c in inv_cols],
+            inventory_table,
+            title="Resource inventory",
+        ),
+    ]
+
+    # Page 4 — Orphans & Unused: slicers to focus on orphaned/unused resources and the
+    # reasons they were flagged, so admins can clean up or reassign.
+    orphan_cols = [
+        "name", "resource_type", "state", "orphan_reasons",
+        "capacity_name", "domain_name", "admin_count", "user_count",
+    ]
+    orphans = [
+        _card("cardOrphanTotal", "Orphaned Resources (Latest Run)", 16, 16, 296, 96, 1, inventory_table, title="Orphaned resources"),
+        _slicer("slicerOrphanFlag", "is_orphan", 16, 124, 250, 250, 2, inventory_table, "Orphaned?"),
+        _slicer("slicerOrphanType", "resource_type", 16, 384, 250, 320, 3, inventory_table, "Resource type"),
+        _container(
+            "tableOrphans",
+            "tableEx",
+            282,
+            124,
+            982,
+            580,
+            4,
+            {"Values": [{"queryRef": f"{inventory_table}.{c}"} for c in orphan_cols]},
+            [_column_select(c, inventory_table) for c in orphan_cols],
+            inventory_table,
+            title="Orphaned & unused resources (filter Orphaned? = Yes to focus cleanup)",
+        ),
+    ]
+
     report_config = {
         "version": "5.55",
         "themeCollection": {"baseTheme": {"name": "CY24SU10"}},
@@ -215,5 +277,7 @@ def build_report_json(table: str = FACT_TABLE) -> dict:
         "sections": [
             page("page-overview", "Governance Overview", 0, overview),
             page("page-detail", "Findings Detail", 1, detail),
+            page("page-inventory", "Resource Inventory", 2, inventory),
+            page("page-orphans", "Orphans & Unused", 3, orphans),
         ],
     }

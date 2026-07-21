@@ -1,0 +1,176 @@
+table governance_inventory
+	lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0300
+
+	/// The scan run identifier. One value per scan; new snapshots are appended so inventory can be trended.
+	column run_id
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0301
+		summarizeBy: none
+		sourceColumn: run_id
+
+		annotation SummarizationSetBy = Automatic
+
+	/// ISO-8601 UTC timestamp of the inventory snapshot. Stored as text; sorts chronologically.
+	column timestamp
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0302
+		summarizeBy: none
+		sourceColumn: timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Resource kind: Workspace | Personal Workspace | Capacity | Domain.
+	column resource_type
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0303
+		summarizeBy: none
+		sourceColumn: resource_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column resource_id
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0304
+		summarizeBy: none
+		sourceColumn: resource_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0305
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Lifecycle state of the resource (e.g. Active, Deleted, Paused).
+	column state
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0306
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column sku
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0307
+		summarizeBy: none
+		sourceColumn: sku
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0308
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	column on_dedicated_capacity
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0309
+		summarizeBy: none
+		sourceColumn: on_dedicated_capacity
+
+		annotation SummarizationSetBy = Automatic
+
+	column capacity_name
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e030a
+		summarizeBy: none
+		sourceColumn: capacity_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column domain_name
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e030b
+		summarizeBy: none
+		sourceColumn: domain_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column admin_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e030c
+		summarizeBy: none
+		sourceColumn: admin_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e030d
+		summarizeBy: none
+		sourceColumn: user_count
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Whether the resource is orphaned/unused (Yes | No).
+	column is_orphan
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e030e
+		summarizeBy: none
+		sourceColumn: is_orphan
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Comma-separated reasons the resource was flagged as orphaned/unused.
+	column orphan_reasons
+		dataType: string
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e030f
+		summarizeBy: none
+		sourceColumn: orphan_reasons
+
+		annotation SummarizationSetBy = Automatic
+
+	/// --- Latest-snapshot inventory measures (current state) --------------------
+
+	/// run_id of the most recent inventory snapshot; anchors the current-state counts.
+	measure 'Latest Inventory Run ID' = ```
+			VAR MaxTs = MAX ( governance_inventory[timestamp] )
+			RETURN
+			    CALCULATE (
+			        SELECTEDVALUE ( governance_inventory[run_id] ),
+			        FILTER ( ALL ( governance_inventory ), governance_inventory[timestamp] = MaxTs )
+			    )
+			```
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0400
+
+	measure 'Resources (Latest Run)' = ```
+			VAR lr = [Latest Inventory Run ID]
+			RETURN
+			    CALCULATE ( COUNTROWS ( governance_inventory ), governance_inventory[run_id] = lr )
+			```
+		formatString: 0
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0401
+
+	measure 'Orphaned Resources (Latest Run)' = CALCULATE ( [Resources (Latest Run)], KEEPFILTERS ( governance_inventory[is_orphan] = "Yes" ) )
+		formatString: 0
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0402
+
+	measure 'Workspaces (Latest Run)' = CALCULATE ( [Resources (Latest Run)], KEEPFILTERS ( governance_inventory[resource_type] = "Workspace" ) )
+		formatString: 0
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0403
+
+	measure 'Capacities (Latest Run)' = CALCULATE ( [Resources (Latest Run)], KEEPFILTERS ( governance_inventory[resource_type] = "Capacity" ) )
+		formatString: 0
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0404
+
+	measure 'Domains (Latest Run)' = CALCULATE ( [Resources (Latest Run)], KEEPFILTERS ( governance_inventory[resource_type] = "Domain" ) )
+		formatString: 0
+		lineageTag: 6c4b2d33-1e55-4f88-ab21-9a3c7d2e0405
+
+	partition governance_inventory = entity
+		mode: directLake
+		source
+			entityName: governance_inventory
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table

@@ -88,7 +88,8 @@ model automatically. Full breakdown in [`docs/deployment.md`](docs/deployment.md
 1. Sign in as a user with **Fabric Administrator / Power BI Service Administrator**.
 2. Import [`notebooks/00_deploy.ipynb`](notebooks/00_deploy.ipynb) into your workspace.
 3. **Run all cells.** It provisions the `GovernanceScanner` Lakehouse, scans your tenant,
-   writes `governance_findings`, and deploys the `FabricGovernance` semantic model.
+   writes `governance_findings` and `governance_inventory`, and deploys the `FabricGovernance`
+   semantic model and report (findings + an admin control center: inventory and orphans).
 
 > The notebook installs the package from this **public GitHub repo**
 > (`%pip install "git+https://github.com/Diaz506/fabric-best-practices-scanner.git"`) —
@@ -151,9 +152,11 @@ for f in result["findings"]:
 ```
 
 ## Output → Power BI
-Findings are written to a Lakehouse Delta table (`governance_findings`), appended per run
-with `run_id` + `timestamp`. A semantic model + report template over that table gives a
-governance report with trend over time. See [`powerbi/README.md`](powerbi/README.md).
+Findings are written to a Lakehouse Delta table (`governance_findings`) and a resource
+inventory to `governance_inventory`, both appended per run with `run_id` + `timestamp`. A
+semantic model + report template over those tables gives a governance report (Overview,
+Findings Detail) plus an admin control center (Resource Inventory, Orphans & Unused) with
+trend over time. See [`powerbi/README.md`](powerbi/README.md).
 
 ## Develop / test
 ```bash

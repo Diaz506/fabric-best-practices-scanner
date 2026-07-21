@@ -126,6 +126,138 @@
       "displayOption": 1,
       "width": 1280,
       "height": 720
+    },
+    {
+      "name": "page-inventory",
+      "displayName": "Resource Inventory",
+      "filters": "[]",
+      "ordinal": 2,
+      "visualContainers": [
+        {
+          "x": 16,
+          "y": 16,
+          "z": 1,
+          "width": 240,
+          "height": 96,
+          "config": "{\"name\": \"cardResources\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 16, \"z\": 1, \"width\": 240, \"height\": 96, \"tabOrder\": 1}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_inventory.Resources (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_inventory\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Resources (Latest Run)\"}, \"Name\": \"governance_inventory.Resources (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Resources (latest run)'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 264,
+          "y": 16,
+          "z": 2,
+          "width": 240,
+          "height": 96,
+          "config": "{\"name\": \"cardWorkspaces\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 264, \"y\": 16, \"z\": 2, \"width\": 240, \"height\": 96, \"tabOrder\": 2}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_inventory.Workspaces (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_inventory\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Workspaces (Latest Run)\"}, \"Name\": \"governance_inventory.Workspaces (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Workspaces'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 512,
+          "y": 16,
+          "z": 3,
+          "width": 240,
+          "height": 96,
+          "config": "{\"name\": \"cardCapacities\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 512, \"y\": 16, \"z\": 3, \"width\": 240, \"height\": 96, \"tabOrder\": 3}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_inventory.Capacities (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_inventory\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Capacities (Latest Run)\"}, \"Name\": \"governance_inventory.Capacities (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Capacities'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 760,
+          "y": 16,
+          "z": 4,
+          "width": 240,
+          "height": 96,
+          "config": "{\"name\": \"cardDomains\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 760, \"y\": 16, \"z\": 4, \"width\": 240, \"height\": 96, \"tabOrder\": 4}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_inventory.Domains (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_inventory\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Domains (Latest Run)\"}, \"Name\": \"governance_inventory.Domains (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Domains'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 1008,
+          "y": 16,
+          "z": 5,
+          "width": 256,
+          "height": 96,
+          "config": "{\"name\": \"cardOrphaned\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 1008, \"y\": 16, \"z\": 5, \"width\": 256, \"height\": 96, \"tabOrder\": 5}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_inventory.Orphaned Resources (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_inventory\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Orphaned Resources (Latest Run)\"}, \"Name\": \"governance_inventory.Orphaned Resources (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Orphaned'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 16,
+          "y": 124,
+          "z": 6,
+          "width": 500,
+          "height": 300,
+          "config": "{\"name\": \"matrixTypeState\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 124, \"z\": 6, \"width\": 500, \"height\": 300, \"tabOrder\": 6}}], \"singleVisual\": {\"visualType\": \"pivotTable\", \"projections\": {\"Rows\": [{\"queryRef\": \"governance_inventory.resource_type\"}], \"Columns\": [{\"queryRef\": \"governance_inventory.state\"}], \"Values\": [{\"queryRef\": \"governance_inventory.Resources (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_inventory\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"resource_type\"}, \"Name\": \"governance_inventory.resource_type\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"state\"}, \"Name\": \"governance_inventory.state\"}, {\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Resources (Latest Run)\"}, \"Name\": \"governance_inventory.Resources (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Resources by type and state'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 532,
+          "y": 124,
+          "z": 7,
+          "width": 250,
+          "height": 300,
+          "config": "{\"name\": \"slicerInvType\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 532, \"y\": 124, \"z\": 7, \"width\": 250, \"height\": 300, \"tabOrder\": 7}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_inventory.resource_type\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_inventory\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"resource_type\"}, \"Name\": \"governance_inventory.resource_type\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Resource type'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 16,
+          "y": 436,
+          "z": 8,
+          "width": 1248,
+          "height": 268,
+          "config": "{\"name\": \"tableInventory\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 436, \"z\": 8, \"width\": 1248, \"height\": 268, \"tabOrder\": 8}}], \"singleVisual\": {\"visualType\": \"tableEx\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_inventory.resource_type\"}, {\"queryRef\": \"governance_inventory.name\"}, {\"queryRef\": \"governance_inventory.state\"}, {\"queryRef\": \"governance_inventory.sku\"}, {\"queryRef\": \"governance_inventory.region\"}, {\"queryRef\": \"governance_inventory.capacity_name\"}, {\"queryRef\": \"governance_inventory.domain_name\"}, {\"queryRef\": \"governance_inventory.admin_count\"}, {\"queryRef\": \"governance_inventory.user_count\"}, {\"queryRef\": \"governance_inventory.is_orphan\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_inventory\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"resource_type\"}, \"Name\": \"governance_inventory.resource_type\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"name\"}, \"Name\": \"governance_inventory.name\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"state\"}, \"Name\": \"governance_inventory.state\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"sku\"}, \"Name\": \"governance_inventory.sku\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"region\"}, \"Name\": \"governance_inventory.region\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"capacity_name\"}, \"Name\": \"governance_inventory.capacity_name\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"domain_name\"}, \"Name\": \"governance_inventory.domain_name\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"admin_count\"}, \"Name\": \"governance_inventory.admin_count\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"user_count\"}, \"Name\": \"governance_inventory.user_count\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"is_orphan\"}, \"Name\": \"governance_inventory.is_orphan\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Resource inventory'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        }
+      ],
+      "config": "{}",
+      "displayOption": 1,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "name": "page-orphans",
+      "displayName": "Orphans & Unused",
+      "filters": "[]",
+      "ordinal": 3,
+      "visualContainers": [
+        {
+          "x": 16,
+          "y": 16,
+          "z": 1,
+          "width": 296,
+          "height": 96,
+          "config": "{\"name\": \"cardOrphanTotal\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 16, \"z\": 1, \"width\": 296, \"height\": 96, \"tabOrder\": 1}}], \"singleVisual\": {\"visualType\": \"card\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_inventory.Orphaned Resources (Latest Run)\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_inventory\", \"Type\": 0}], \"Select\": [{\"Measure\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"Orphaned Resources (Latest Run)\"}, \"Name\": \"governance_inventory.Orphaned Resources (Latest Run)\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Orphaned resources'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 16,
+          "y": 124,
+          "z": 2,
+          "width": 250,
+          "height": 250,
+          "config": "{\"name\": \"slicerOrphanFlag\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 124, \"z\": 2, \"width\": 250, \"height\": 250, \"tabOrder\": 2}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_inventory.is_orphan\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_inventory\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"is_orphan\"}, \"Name\": \"governance_inventory.is_orphan\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Orphaned?'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 16,
+          "y": 384,
+          "z": 3,
+          "width": 250,
+          "height": 320,
+          "config": "{\"name\": \"slicerOrphanType\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 16, \"y\": 384, \"z\": 3, \"width\": 250, \"height\": 320, \"tabOrder\": 3}}], \"singleVisual\": {\"visualType\": \"slicer\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_inventory.resource_type\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_inventory\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"resource_type\"}, \"Name\": \"governance_inventory.resource_type\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Resource type'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        },
+        {
+          "x": 282,
+          "y": 124,
+          "z": 4,
+          "width": 982,
+          "height": 580,
+          "config": "{\"name\": \"tableOrphans\", \"layouts\": [{\"id\": 0, \"position\": {\"x\": 282, \"y\": 124, \"z\": 4, \"width\": 982, \"height\": 580, \"tabOrder\": 4}}], \"singleVisual\": {\"visualType\": \"tableEx\", \"projections\": {\"Values\": [{\"queryRef\": \"governance_inventory.name\"}, {\"queryRef\": \"governance_inventory.resource_type\"}, {\"queryRef\": \"governance_inventory.state\"}, {\"queryRef\": \"governance_inventory.orphan_reasons\"}, {\"queryRef\": \"governance_inventory.capacity_name\"}, {\"queryRef\": \"governance_inventory.domain_name\"}, {\"queryRef\": \"governance_inventory.admin_count\"}, {\"queryRef\": \"governance_inventory.user_count\"}]}, \"prototypeQuery\": {\"Version\": 2, \"From\": [{\"Name\": \"g\", \"Entity\": \"governance_inventory\", \"Type\": 0}], \"Select\": [{\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"name\"}, \"Name\": \"governance_inventory.name\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"resource_type\"}, \"Name\": \"governance_inventory.resource_type\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"state\"}, \"Name\": \"governance_inventory.state\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"orphan_reasons\"}, \"Name\": \"governance_inventory.orphan_reasons\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"capacity_name\"}, \"Name\": \"governance_inventory.capacity_name\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"domain_name\"}, \"Name\": \"governance_inventory.domain_name\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"admin_count\"}, \"Name\": \"governance_inventory.admin_count\"}, {\"Column\": {\"Expression\": {\"SourceRef\": {\"Source\": \"g\"}}, \"Property\": \"user_count\"}, \"Name\": \"governance_inventory.user_count\"}]}, \"drillFilterOtherVisuals\": true, \"vcObjects\": {\"title\": [{\"properties\": {\"text\": {\"expr\": {\"Literal\": {\"Value\": \"'Orphaned & unused resources (filter Orphaned? = Yes to focus cleanup)'\"}}}, \"show\": {\"expr\": {\"Literal\": {\"Value\": \"true\"}}}}}]}}}",
+          "filters": "[]"
+        }
+      ],
+      "config": "{}",
+      "displayOption": 1,
+      "width": 1280,
+      "height": 720
     }
   ]
 }

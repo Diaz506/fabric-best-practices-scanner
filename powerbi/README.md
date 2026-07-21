@@ -6,16 +6,18 @@ The scanner writes findings to a Lakehouse Delta table (`governance_findings`), 
 are versioned as plain text and deploy via Fabric Git integration.
 
 The one-click notebook's `deploy_report` step builds this same report automatically in your
-workspace (overview cards + charts and a findings table), so you normally don't touch this
-folder. The recipe below is here if you want to rebuild or customize the visuals by hand.
+workspace (Governance Overview, Findings Detail, Resource Inventory, and Orphans & Unused
+pages), so you normally don't touch this folder. The recipe below is here if you want to
+rebuild or customize the visuals by hand.
 
 ## What's in this folder
 ```
 FabricGovernance.pbip                     <- open this in Power BI Desktop (Fabric-enabled)
-FabricGovernance.SemanticModel/           <- DirectLake model over governance_findings (TMDL)
+FabricGovernance.SemanticModel/           <- DirectLake model over the Lakehouse tables (TMDL)
   definition/expressions.tmdl             <- Lakehouse SQL endpoint connection (edit placeholders)
-  definition/tables/governance_findings.tmdl  <- columns + all governance measures
-FabricGovernance.Report/                  <- report (2 named pages, populated) bound to the model
+  definition/tables/governance_findings.tmdl   <- findings columns + all governance measures
+  definition/tables/governance_inventory.tmdl  <- inventory columns + admin control-center measures
+FabricGovernance.Report/                  <- report (4 named pages, populated) bound to the model
 ```
 The semantic model is the reusable asset: schema + measures. The report ships populated (and
 `deploy_report` rebuilds it in your workspace); the recipe below documents how the visuals are
@@ -76,4 +78,42 @@ Trend (put `run_id` or `timestamp` on the axis):
 - Page-level filter `status = gap` for the priority queue; duplicate for a
   `verify-applicability` review page if desired.
 - Add `evidence` as a tooltip/drill-through to expose what the scanner observed.
+
+## Admin control center (inventory)
+The scanner also writes a resource inventory to the Lakehouse Delta table
+`governance_inventory` (one row per workspace, capacity, and domain, appended each run) with
+orphan/unused flags. The model exposes control-center measures: `Latest Inventory Run ID`,
+`Resources (Latest Run)`, `Workspaces (Latest Run)`, `Capacities (Latest Run)`,
+`Domains (Latest Run)`, `Orphaned Resources (Latest Run)`.
+
+### Inventory table schema
+| Column | Type | Notes |
+|---|---|---|
+| run_id | string | Groups one snapshot; use for latest-run and trend |
+| timestamp | string (ISO) | Sorts chronologically as text |
+| resource_type | string | Workspace / Personal Workspace / Capacity / Domain |
+| resource_id | string | Fabric resource id |
+| name | string | Display name |
+| state | string | e.g. Active, Deleted, Paused |
+| sku | string | Capacity SKU (capacities) |
+| region | string | Capacity region (capacities) |
+| on_dedicated_capacity | string | Yes / No (workspaces) |
+| capacity_name | string | Assigned capacity (workspaces) |
+| domain_name | string | Assigned domain |
+| admin_count | int | Number of admins |
+| user_count | int | Number of role assignments |
+| is_orphan | string | Yes / No |
+| orphan_reasons | string | Comma-separated flags (e.g. no-workspaces-assigned) |
+
+**Page 3 — Resource Inventory**
+- Cards: `Resources (Latest Run)`, `Workspaces (Latest Run)`, `Capacities (Latest Run)`,
+  `Domains (Latest Run)`, `Orphaned Resources (Latest Run)`.
+- Matrix: Rows = `resource_type`, Columns = `state`, Values = `Resources (Latest Run)`.
+- Table: `resource_type`, `name`, `state`, `sku`, `region`, `capacity_name`, `domain_name`,
+  `admin_count`, `user_count`, `is_orphan`, sliced by `resource_type`.
+
+**Page 4 — Orphans & Unused**
+- Slicers: `is_orphan` and `resource_type` to focus cleanup.
+- Table: `name`, `resource_type`, `state`, `orphan_reasons`, `capacity_name`, `domain_name`,
+  `admin_count`, `user_count`.
 

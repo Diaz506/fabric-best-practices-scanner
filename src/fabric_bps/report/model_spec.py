@@ -98,3 +98,58 @@ MEASURES = [
 ]
 
 MEASURE_NAMES = [m["name"] for m in MEASURES]
+
+# --- Inventory (admin control center) ---------------------------------------
+INVENTORY_TABLE = "governance_inventory"
+
+INVENTORY_MEASURES = [
+    {
+        "name": "Latest Inventory Run ID",
+        "expression": (
+            "VAR MaxTs = MAX ( governance_inventory[timestamp] )\n"
+            "RETURN\n"
+            "    CALCULATE (\n"
+            "        SELECTEDVALUE ( governance_inventory[run_id] ),\n"
+            "        FILTER ( ALL ( governance_inventory ), governance_inventory[timestamp] = MaxTs )\n"
+            "    )"
+        ),
+        "format_string": None,
+        "description": "run_id of the most recent inventory snapshot; anchors the current-state counts.",
+    },
+    {
+        "name": "Resources (Latest Run)",
+        "expression": (
+            "VAR lr = [Latest Inventory Run ID]\n"
+            "RETURN\n"
+            "    CALCULATE ( COUNTROWS ( governance_inventory ), governance_inventory[run_id] = lr )"
+        ),
+        "format_string": "0",
+        "description": None,
+    },
+    {
+        "name": "Orphaned Resources (Latest Run)",
+        "expression": 'CALCULATE ( [Resources (Latest Run)], KEEPFILTERS ( governance_inventory[is_orphan] = "Yes" ) )',
+        "format_string": "0",
+        "description": None,
+    },
+    {
+        "name": "Workspaces (Latest Run)",
+        "expression": 'CALCULATE ( [Resources (Latest Run)], KEEPFILTERS ( governance_inventory[resource_type] = "Workspace" ) )',
+        "format_string": "0",
+        "description": None,
+    },
+    {
+        "name": "Capacities (Latest Run)",
+        "expression": 'CALCULATE ( [Resources (Latest Run)], KEEPFILTERS ( governance_inventory[resource_type] = "Capacity" ) )',
+        "format_string": "0",
+        "description": None,
+    },
+    {
+        "name": "Domains (Latest Run)",
+        "expression": 'CALCULATE ( [Resources (Latest Run)], KEEPFILTERS ( governance_inventory[resource_type] = "Domain" ) )',
+        "format_string": "0",
+        "description": None,
+    },
+]
+
+INVENTORY_MEASURE_NAMES = [m["name"] for m in INVENTORY_MEASURES]

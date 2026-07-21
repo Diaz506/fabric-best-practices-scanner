@@ -10,6 +10,7 @@ import uuid
 from .archetype import classify
 from .catalog import load_catalog
 from .engine import evaluate
+from .inventory import build_inventory
 from .signals import Signals
 
 
@@ -25,13 +26,14 @@ def scan_from_signals(
     context = classify(signals, context_overrides)
     rules = load_catalog(dimensions=dimensions)
     findings = evaluate(signals, context, rules, run_id=run_id)
+    inventory = build_inventory(signals, run_id=run_id)
 
     if ai_rationale:
         from .ai import enrich_rationale
 
         findings = enrich_rationale(findings)
 
-    return {"run_id": run_id, "context": context, "findings": findings}
+    return {"run_id": run_id, "context": context, "findings": findings, "inventory": inventory}
 
 
 def _safe(fn, default, errors, label):
@@ -51,6 +53,7 @@ def scan(
     ai_rationale: bool = False,
     write: str = None,  # "json" | "lakehouse"
     table: str = "governance_findings",
+    inventory_table: str = "governance_inventory",
     spark=None,
     lakehouse_abfss: str = None,
 ) -> dict:
@@ -96,6 +99,9 @@ def scan(
 
         result["output"] = write_lakehouse(
             result["findings"], table=table, spark=spark, lakehouse_abfss=lakehouse_abfss
+        )
+        result["inventory_output"] = write_lakehouse(
+            result["inventory"], table=inventory_table, spark=spark, lakehouse_abfss=lakehouse_abfss
         )
 
     return result

@@ -19,12 +19,12 @@ import json
 
 
 def write_lakehouse(
-    findings,
+    records,
     table: str = "governance_findings",
     spark=None,
     lakehouse_abfss: str = None,
 ) -> str:
-    rows = [f.to_row() for f in findings]
+    rows = [r.to_row() for r in records]
 
     if spark is not None:
         df = spark.createDataFrame(rows)

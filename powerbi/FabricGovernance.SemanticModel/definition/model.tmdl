@@ -13,4 +13,6 @@ annotation PBI_ProTooling = ["DevMode"]
 
 ref table governance_findings
 
+ref table governance_inventory
+
 ref expression DatabaseQuery

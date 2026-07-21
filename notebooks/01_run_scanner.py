@@ -29,6 +29,7 @@ result = scan(
 
 print("Archetype:", result["context"]["archetype"])
 print("Findings:", len(result["findings"]))
+print("Inventory resources:", len(result["inventory"]))
 print("Output:", result.get("output"))
 
 # %%

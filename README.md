@@ -50,9 +50,11 @@ collect (admin APIs)  ->  classify (archetype)  ->  evaluate (rules + evidence)
 4. **AI only for rationale** — Azure OpenAI (optional) expands narrative; it never decides status.
 
 ## Coverage
-The catalog checks seven areas of Fabric governance:
+The catalog checks eight areas of Fabric governance:
 **Tenant Settings & Administration**, **Capacity & Cost**, **Workspace Governance**,
-**Roles & Access**, **Domains & Data Mesh**, **Data Security**, and **Monitoring & Deployment**.
+**Roles & Access**, **Domains & Data Mesh**, **Data Security**, **Monitoring & Deployment**,
+and **Content Governance** (endorsement, sensitivity labels, row-level security, and orphaned
+items — from the Scanner API metadata).
 These are how this catalog is organized, not an official Microsoft taxonomy.
 Add or tune rules by editing the YAML files in `src/fabric_bps/catalog/`.
 
@@ -65,6 +67,10 @@ Add or tune rules by editing the YAML files in `src/fabric_bps/catalog/`.
   - Run inside a **Fabric notebook** as a user with **Fabric Administrator / Power BI Service Administrator**, or
   - A **service principal** added to the group allowed by the tenant setting
     **"Service principals can use read-only admin APIs"** (enable it once as a tenant admin).
+- For **Content Governance** rules (endorsement, sensitivity labels, RLS, orphaned items),
+  enable the tenant setting **"Enhance admin APIs responses with detailed metadata"** so the
+  Scanner API returns per-item metadata. Without it these rules simply report insufficient-data;
+  the rest of the scan is unaffected. Set `scan(..., scanner=False)` to skip the Scanner API.
 
 ## Deployment & manual effort
 
@@ -182,6 +188,5 @@ powerbi/            # semantic model + report template
 ```
 
 ## Roadmap
-- Add the Scanner API collector for deeper per-item lineage, endorsement, and label coverage.
-- Add collectors for sensitivity labels, activity events, and Git integration.
+- Add collectors for sensitivity-label taxonomy, activity events, and Git integration.
 - Publish as a listed solution in the Fabric Jumpstart catalog.

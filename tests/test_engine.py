@@ -148,3 +148,36 @@ def test_no_workspaces_on_paused_capacity_gap_when_stranded():
     finding = {f.rule_id: f for f in res["findings"]}["capacity.no-workspaces-on-paused-capacity"]
     assert finding.status == Status.GAP
     assert finding.evidence["strandedCount"] >= 1
+
+
+def test_content_governance_statuses():
+    # Full sample carries Scanner API items (2 datasets, 2 reports; one report orphaned).
+    res = scan_from_signals(load_full_sample())
+    by_id = {f.rule_id: f for f in res["findings"]}
+    # Both datasets endorsed -> adhered.
+    assert by_id["content.datasets-endorsed"].status == Status.ADHERED
+    # rep-2 points at a deleted dataset -> gap.
+    assert by_id["content.no-orphaned-reports"].status == Status.GAP
+    # Low base confidence for a non-regulated tenant -> flagged to verify, not a hard gap.
+    assert by_id["content.sensitivity-labels-applied"].status == Status.VERIFY_APPLICABILITY
+    assert by_id["content.rls-on-datasets"].status == Status.VERIFY_APPLICABILITY
+
+
+def test_content_rules_become_gaps_for_regulated_tenant():
+    # Regulated context boosts applicability so the sensitivity/RLS gaps become real gaps.
+    res = scan_from_signals(load_full_sample(), context_overrides={"regulated": True})
+    by_id = {f.rule_id: f for f in res["findings"]}
+    assert by_id["content.sensitivity-labels-applied"].status == Status.GAP
+    assert by_id["content.rls-on-datasets"].status == Status.GAP
+
+
+def test_content_rules_insufficient_data_without_scanner():
+    # Base sample has no Scanner API items -> content rules can't evaluate.
+    res = scan_from_signals(load_sample())
+    by_id = {f.rule_id: f for f in res["findings"]}
+    assert by_id["content.datasets-endorsed"].status == Status.INSUFFICIENT_DATA
+
+
+def test_catalog_includes_content_governance():
+    dims = {r.dimension for r in load_catalog()}
+    assert "content-governance" in dims

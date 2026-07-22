@@ -1,0 +1,100 @@
+# Content Governance — best-practice rules over per-artifact metadata (Scanner API).
+# These require the Scanner API collector; without it they report insufficient-data.
+rules:
+  - id: content.datasets-endorsed
+    dimension: content-governance
+    title: Datasets are endorsed (Certified or Promoted)
+    waf_pillar: Operational Excellence
+    impact: medium
+    severity: medium
+    effort: medium
+    applicability:
+      base_confidence: 70
+      boosts:
+        - when: { archetype: [large-enterprise, data-mesh-adopter, regulated-enterprise] }
+          confidence: 85
+    evaluate:
+      check: content_endorsement_coverage
+      params: { min_pct: 50 }
+    recommendation: >-
+      Endorse trusted datasets as Certified (or Promoted) so consumers can tell governed,
+      reusable data from ad-hoc content, and discourage duplicate models.
+    rationale: >-
+      Without endorsement, users can't distinguish authoritative datasets from personal
+      experiments, which drives model sprawl and inconsistent numbers across reports.
+    references:
+      - https://learn.microsoft.com/fabric/governance/endorsement-overview
+
+  - id: content.sensitivity-labels-applied
+    dimension: content-governance
+    title: Datasets and reports carry a sensitivity label
+    waf_pillar: Security
+    impact: high
+    severity: high
+    effort: medium
+    applicability:
+      base_confidence: 45
+      boosts:
+        - when: { regulated: true }
+          confidence: 85
+        - when: { has_sensitive_data: true }
+          confidence: 80
+    evaluate:
+      check: content_sensitivity_label_coverage
+      params: { min_pct: 80 }
+    recommendation: >-
+      Apply Microsoft Purview sensitivity labels to datasets and reports so encryption and
+      usage rights travel with data when it is exported to Excel, PDF, or PowerPoint.
+    rationale: >-
+      Unlabeled content can be exported and shared with no protection. Labels enforce
+      encryption and access controls downstream, which is essential where data is sensitive
+      or regulated.
+    references:
+      - https://learn.microsoft.com/power-bi/enterprise/service-security-sensitivity-label-overview
+
+  - id: content.no-orphaned-reports
+    dimension: content-governance
+    title: No reports left orphaned from their dataset
+    waf_pillar: Operational Excellence
+    impact: medium
+    severity: medium
+    effort: low
+    applicability:
+      base_confidence: 75
+    evaluate:
+      check: content_no_orphaned_reports
+      params: {}
+    recommendation: >-
+      Repoint or remove reports whose underlying dataset has been deleted so users don't hit
+      broken reports and the workspace stays clean.
+    rationale: >-
+      A report whose dataset no longer exists cannot render and only adds clutter and support
+      noise; it signals incomplete lifecycle management.
+    references:
+      - https://learn.microsoft.com/power-bi/collaborate-share/service-datasets-across-workspaces
+
+  - id: content.rls-on-datasets
+    dimension: content-governance
+    title: Shareable datasets enforce row-level security
+    waf_pillar: Security
+    impact: high
+    severity: high
+    effort: medium
+    applicability:
+      base_confidence: 40
+      boosts:
+        - when: { regulated: true }
+          confidence: 80
+        - when: { has_sensitive_data: true }
+          confidence: 75
+    evaluate:
+      check: content_rls_on_datasets
+      params: {}
+    recommendation: >-
+      Define row-level security roles on datasets that serve a broad audience so each user
+      sees only the rows they are permitted to see.
+    rationale: >-
+      Without RLS, everyone with report access sees every row. For datasets shared across
+      teams or containing sensitive records, that is an over-exposure risk.
+    references:
+      - https://learn.microsoft.com/power-bi/enterprise/service-admin-rls

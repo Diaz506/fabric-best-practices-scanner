@@ -440,3 +440,102 @@ def audit_log_accessible(sig: Signals, params: dict):
     return Status.VERIFY_APPLICABILITY, {
         "reason": "audit-log access could not be confirmed in this run; verify audit retention and access",
     }
+
+
+# --- Content governance (Scanner API metadata) -------------------------------
+
+_SCANNER_NOT_RUN = "Scanner API content metadata not collected (run scan with scanner enabled)"
+
+
+def _items_of_type(sig: Signals, *types) -> list:
+    return [i for i in (sig.items or []) if i.get("itemType") in types]
+
+
+@check("content_endorsement_coverage")
+def content_endorsement_coverage(sig: Signals, params: dict):
+    """A healthy share of datasets should be endorsed (Certified/Promoted) so consumers know
+    which are trustworthy."""
+    min_pct = int(params.get("min_pct", 50))
+    if not sig.items:
+        return Status.INSUFFICIENT_DATA, {"reason": _SCANNER_NOT_RUN}
+    datasets = _items_of_type(sig, "Dataset")
+    if not datasets:
+        return Status.INSUFFICIENT_DATA, {"reason": "no datasets in scan result"}
+    endorsed = [d for d in datasets if d.get("endorsement") in ("Certified", "Promoted")]
+    pct = round(100 * len(endorsed) / len(datasets))
+    if pct < min_pct:
+        unendorsed = [d.get("name") for d in datasets if d.get("endorsement") not in ("Certified", "Promoted")]
+        return Status.GAP, {
+            "datasets": len(datasets),
+            "endorsed": len(endorsed),
+            "endorsedPct": pct,
+            "minimum": min_pct,
+            "unendorsedExamples": [x for x in unendorsed if x][:25],
+        }
+    return Status.ADHERED, {"datasets": len(datasets), "endorsed": len(endorsed), "endorsedPct": pct}
+
+
+@check("content_sensitivity_label_coverage")
+def content_sensitivity_label_coverage(sig: Signals, params: dict):
+    """Datasets and reports should carry a sensitivity (MIP) label so protection travels with
+    exported data."""
+    min_pct = int(params.get("min_pct", 80))
+    if not sig.items:
+        return Status.INSUFFICIENT_DATA, {"reason": _SCANNER_NOT_RUN}
+    content = _items_of_type(sig, "Dataset", "Report")
+    if not content:
+        return Status.INSUFFICIENT_DATA, {"reason": "no datasets/reports in scan result"}
+    labeled = [c for c in content if c.get("hasSensitivityLabel")]
+    pct = round(100 * len(labeled) / len(content))
+    if pct < min_pct:
+        unlabeled = [c.get("name") for c in content if not c.get("hasSensitivityLabel")]
+        return Status.GAP, {
+            "items": len(content),
+            "labeled": len(labeled),
+            "labeledPct": pct,
+            "minimum": min_pct,
+            "unlabeledExamples": [x for x in unlabeled if x][:25],
+        }
+    return Status.ADHERED, {"items": len(content), "labeled": len(labeled), "labeledPct": pct}
+
+
+@check("content_no_orphaned_reports")
+def content_no_orphaned_reports(sig: Signals, params: dict):
+    """Reports whose underlying dataset is missing are broken and should be cleaned up."""
+    if not sig.items:
+        return Status.INSUFFICIENT_DATA, {"reason": _SCANNER_NOT_RUN}
+    reports = _items_of_type(sig, "Report")
+    if not reports:
+        return Status.INSUFFICIENT_DATA, {"reason": "no reports in scan result"}
+    orphaned = [r.get("name") for r in reports if r.get("orphaned")]
+    if orphaned:
+        return Status.GAP, {
+            "orphanedReports": [x for x in orphaned if x][:25],
+            "orphanedCount": len([x for x in orphaned if x]),
+            "reason": "reports whose backing dataset no longer exists",
+        }
+    return Status.ADHERED, {"reportCount": len(reports)}
+
+
+@check("content_rls_on_datasets")
+def content_rls_on_datasets(sig: Signals, params: dict):
+    """Shareable datasets should enforce row-level security so users only see permitted rows.
+
+    Applicability is genuinely context-dependent (not every dataset needs RLS), so this rule
+    carries low base confidence and is boosted for regulated/sensitive tenants — the engine
+    surfaces it as verify-applicability elsewhere and as a gap where it clearly matters.
+    """
+    if not sig.items:
+        return Status.INSUFFICIENT_DATA, {"reason": _SCANNER_NOT_RUN}
+    datasets = _items_of_type(sig, "Dataset")
+    if not datasets:
+        return Status.INSUFFICIENT_DATA, {"reason": "no datasets in scan result"}
+    without = [d.get("name") for d in datasets if not d.get("hasRls")]
+    if without:
+        return Status.GAP, {
+            "datasetsWithoutRls": [x for x in without if x][:25],
+            "withoutRlsCount": len([x for x in without if x]),
+            "datasets": len(datasets),
+            "reason": "datasets with no row-level security roles defined",
+        }
+    return Status.ADHERED, {"datasets": len(datasets)}

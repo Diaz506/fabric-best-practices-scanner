@@ -69,6 +69,12 @@
   "domains": [
     { "id": "dom-1", "displayName": "Finance", "parentDomainId": null, "contributorsScope": "SpecificUsersAndGroups" }
   ],
+  "items": [
+    { "workspaceId": "ws-1", "workspaceName": "Finance-Prod", "itemType": "Dataset", "id": "ds-a", "name": "Finance Model", "endorsement": "Certified", "hasSensitivityLabel": true, "sensitivityLabelId": "lbl-conf", "configuredBy": "u1@contoso.com", "hasRls": true, "storageMode": "Import" },
+    { "workspaceId": "ws-1", "workspaceName": "Finance-Prod", "itemType": "Dataset", "id": "ds-b", "name": "Scratch Model", "endorsement": "Promoted", "hasSensitivityLabel": false, "sensitivityLabelId": "", "configuredBy": "u1@contoso.com", "hasRls": false, "storageMode": "Import" },
+    { "workspaceId": "ws-1", "workspaceName": "Finance-Prod", "itemType": "Report", "id": "rep-1", "name": "Finance Dashboard", "endorsement": "None", "hasSensitivityLabel": true, "sensitivityLabelId": "lbl-conf", "configuredBy": "u1@contoso.com", "datasetId": "ds-a", "orphaned": false },
+    { "workspaceId": "ws-1", "workspaceName": "Finance-Prod", "itemType": "Report", "id": "rep-2", "name": "Legacy Report", "endorsement": "None", "hasSensitivityLabel": false, "sensitivityLabelId": "", "configuredBy": "u1@contoso.com", "datasetId": "ds-deleted", "orphaned": true }
+  ],
   "activity_available": true,
   "meta": {
     "pipelines": [

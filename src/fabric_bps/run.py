@@ -56,12 +56,14 @@ def scan(
     inventory_table: str = "governance_inventory",
     spark=None,
     lakehouse_abfss: str = None,
+    scanner: bool = True,
 ) -> dict:
     from .collectors import (
         AdminClient,
         collect_capacities,
         collect_domains,
         collect_pipelines,
+        collect_scanner_items,
         collect_tenant_settings,
         collect_workspaces,
     )
@@ -69,13 +71,19 @@ def scan(
     client = AdminClient(token_provider)
     errors: dict = {}
 
+    workspaces = _safe(lambda: collect_workspaces(client), [], errors, "workspaces")
     signals_dict = {
         "tenant_settings": _safe(lambda: collect_tenant_settings(client), {}, errors, "tenant_settings"),
         "capacities": _safe(lambda: collect_capacities(client), [], errors, "capacities"),
-        "workspaces": _safe(lambda: collect_workspaces(client), [], errors, "workspaces"),
+        "workspaces": workspaces,
         "domains": _safe(lambda: collect_domains(client), [], errors, "domains"),
         "meta": {"pipelines": _safe(lambda: collect_pipelines(client), [], errors, "pipelines")},
     }
+    if scanner:
+        ws_ids = [w.get("id") for w in workspaces if w.get("id")]
+        signals_dict["items"] = _safe(
+            lambda: collect_scanner_items(client, ws_ids), [], errors, "scanner"
+        )
     if errors:
         signals_dict["meta"]["collection_errors"] = errors
 

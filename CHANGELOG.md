@@ -5,6 +5,13 @@ All notable changes to this project are documented here. The format is based on
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- **Content Governance** dimension (Tier B): a Scanner API collector
+  (`collectors/scanner.py`) that runs the async metadata-scanning flow
+  (getInfo → scanStatus → scanResult, batched at 100 workspaces) and flattens
+  per-artifact metadata into signals. New rules cover dataset endorsement
+  coverage, sensitivity-label coverage, orphaned reports, and row-level security.
+- `scan(..., scanner=True)` toggle and `AdminClient.post` for the Scanner API.
 
 ## [0.1.0] - 2026-07-20
 ### Added

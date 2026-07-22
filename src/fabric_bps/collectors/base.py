@@ -32,6 +32,14 @@ class AdminClient:
         resp.raise_for_status()
         return resp.json()
 
+    def post(self, url: str, params: dict = None, json: dict = None) -> dict:
+        headers = {"Authorization": f"Bearer {self._token_provider()}"}
+        resp = self._session.post(
+            url, headers=headers, params=params, json=json, timeout=60
+        )
+        resp.raise_for_status()
+        return resp.json() if resp.content else {}
+
 
 def fabric_notebook_token_provider(resource: str = "pbi") -> Callable[[], str]:
     def _provider() -> str:

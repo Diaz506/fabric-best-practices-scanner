@@ -19,6 +19,7 @@ class Signals:
     workspaces: list = field(default_factory=list)
     labels: list = field(default_factory=list)
     domains: list = field(default_factory=list)
+    items: list = field(default_factory=list)  # content artifacts from the Scanner API
     activity_available: bool = False
     meta: dict = field(default_factory=dict)
 
@@ -31,6 +32,7 @@ class Signals:
             workspaces=d.get("workspaces", []) or [],
             labels=d.get("labels", []) or [],
             domains=d.get("domains", []) or [],
+            items=d.get("items", []) or [],
             activity_available=bool(d.get("activity_available", False)),
             meta=d.get("meta", {}) or {},
         )

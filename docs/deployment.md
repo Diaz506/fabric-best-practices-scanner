@@ -36,6 +36,21 @@ One-time tenant-admin configuration (~10 min):
 
 Choose Path B only if you want the scan to run unattended on a schedule.
 
+## Tenant settings checklist
+
+Configure these once in the **Fabric/Power BI Admin portal → Tenant settings** (the API-related
+ones live under **Admin API settings**):
+
+| Tenant setting | Needed for | Required? | Without it |
+|---|---|---|---|
+| **Fabric Administrator / Power BI Service Administrator** role (or an SP in the allowed group) | All admin API calls | **Required** | The scan cannot read tenant state |
+| **Service principals can use read-only admin APIs** | Service-principal (headless) auth — Path B | Required **only for Path B** | Use an admin user (Path A) |
+| **Enhance admin APIs responses with detailed metadata** | Content Governance rules (endorsement, sensitivity labels, RLS, storage mode, orphaned reports) via the Scanner API | Required for content rules | Content rules report `insufficient-data`; rest of the scan is unaffected. Call `scan(..., scanner=False)` to skip the Scanner API |
+| **Enhance admin APIs responses with detailed metadata of users** | Per-artifact user lists (future item-ownership rules) | Optional | Item-level user metadata omitted; no current rule fails |
+
+Changes to *"Enhance admin APIs responses..."* settings can take a few minutes to take effect
+across the tenant.
+
 ## What is *not* manual
 - **No data entry** — the scanner does not ask you anything about your tenant; it observes it
   via the admin APIs.

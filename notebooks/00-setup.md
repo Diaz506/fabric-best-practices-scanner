@@ -30,6 +30,19 @@ tp = service_principal_token_provider(TENANT_ID, CLIENT_ID, CLIENT_SECRET)
 result = scan(tp, write="json")
 ```
 
+## Content Governance (Scanner API) — one extra tenant setting
+The **Content Governance** rules (dataset endorsement, sensitivity labels, row-level security,
+storage mode, orphaned reports) read per-artifact metadata from the **Scanner API**. Enable:
+
+1. **Fabric/Power BI Admin portal → Tenant settings → Admin API settings →
+   "Enhance admin APIs responses with detailed metadata"** — required for these rules.
+2. *(Optional)* **"Enhance admin APIs responses with detailed metadata of users"** — adds
+   per-artifact user lists for future item-ownership rules.
+
+Without the *detailed metadata* setting, content rules report `insufficient-data` and the rest
+of the scan is unaffected. To skip the Scanner API entirely, call `scan(..., scanner=False)`.
+Changes to these settings can take a few minutes to propagate across the tenant.
+
 ## Optional — AI rationale (Azure OpenAI)
 Set these environment variables to enable narrative enrichment (`ai_rationale=True`):
 - `AZURE_OPENAI_ENDPOINT`
@@ -43,3 +56,6 @@ AI never decides status/applicability — it only expands human-readable rationa
 |---|---|---|
 | Tenant settings | `GET /admin/tenantsettings` (Fabric) | Fabric/Power BI admin or scoped SP |
 | Capacities | `GET /admin/capacities` (Power BI) | Fabric/Power BI admin or scoped SP |
+| Workspaces + roles | `GET /admin/groups?$expand=users` (Power BI) | Fabric/Power BI admin or scoped SP |
+| Domains | `GET /admin/domains` (Fabric) | Fabric/Power BI admin or scoped SP |
+| Content metadata (endorsement, labels, RLS, orphaned items) | Scanner API: `POST /admin/workspaces/getInfo` → `GET /admin/workspaces/scanStatus/{id}` → `GET /admin/workspaces/scanResult/{id}` (Power BI) | Admin/SP **plus** the *"Enhance admin APIs responses with detailed metadata"* tenant setting |

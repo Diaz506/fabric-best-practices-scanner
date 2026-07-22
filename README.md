@@ -63,14 +63,26 @@ Add or tune rules by editing the YAML files in `src/fabric_bps/catalog/`.
 ## Prerequisites
 
 - Python 3.9+
-- A way to call the **read-only admin APIs**, one of:
-  - Run inside a **Fabric notebook** as a user with **Fabric Administrator / Power BI Service Administrator**, or
-  - A **service principal** added to the group allowed by the tenant setting
-    **"Service principals can use read-only admin APIs"** (enable it once as a tenant admin).
-- For **Content Governance** rules (endorsement, sensitivity labels, RLS, orphaned items),
-  enable the tenant setting **"Enhance admin APIs responses with detailed metadata"** so the
-  Scanner API returns per-item metadata. Without it these rules simply report insufficient-data;
-  the rest of the scan is unaffected. Set `scan(..., scanner=False)` to skip the Scanner API.
+- **An admin identity** to call the read-only admin APIs, one of:
+  - Run inside a **Fabric notebook** as a user with the **Fabric Administrator** or **Power BI
+    Service Administrator** role, or
+  - A **service principal** added to the security group allowed by the *"Service principals can
+    use read-only admin APIs"* tenant setting (headless / scheduled runs).
+
+### Required & optional tenant settings
+
+Set these once in the **Fabric/Power BI Admin portal → Tenant settings** (mostly under the
+**Admin API settings** group). Each row notes what it unlocks and what happens without it.
+
+| Tenant setting | Needed for | Required? | Without it |
+|---|---|---|---|
+| **Fabric Administrator / Power BI Service Administrator** role (or an SP in the allowed group) | All admin API calls (tenant settings, capacities, workspaces, domains) | **Required** | The scan cannot read tenant state at all |
+| **Service principals can use read-only admin APIs** | Running headless via a service principal (Path B) | Required **only for the SP path** | Use an admin user instead (Path A) |
+| **Enhance admin APIs responses with detailed metadata** | **Content Governance** rules — dataset endorsement, sensitivity labels, row-level security, storage mode, orphaned reports (Scanner API) | Required for content rules | Content rules report `insufficient-data`; the rest of the scan is unaffected |
+| **Enhance admin APIs responses with detailed metadata of users** | Per-artifact user lists (future item-ownership rules) | Optional | Item-level user metadata is omitted; no current rule fails |
+
+> Scanner API note: content rules run only when the *detailed metadata* setting is on. To skip
+> the Scanner API entirely (e.g. before enabling the setting), call `scan(..., scanner=False)`.
 
 ## Deployment & manual effort
 

@@ -8,6 +8,10 @@
 # - Attach this notebook to a Lakehouse (for the `governance_findings` table).
 # - Run as a user with **Fabric Administrator / Power BI Service Administrator**, OR
 #   configure a service principal (see `00-setup.md`).
+# - For **Content Governance** rules, enable the tenant setting
+#   **"Enhance admin APIs responses with detailed metadata"** (Scanner API). Without it those
+#   rules report `insufficient-data`; the rest of the scan is unaffected. Pass
+#   `scan(..., scanner=False)` to skip the Scanner API.
 
 # %%
 # Install the package + deploy extra from the public GitHub repo (no wheel upload needed).
